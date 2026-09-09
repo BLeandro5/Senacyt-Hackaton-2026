@@ -1,3 +1,4 @@
+import { AppLayout, RouteError } from '../components/AppLayout'
 import { createBrowserRouter } from 'react-router-dom'
 
 import LoginPage from '../pages/Login/LoginPage'
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
     path: '/login',
     element: <LoginPage />,
   },
+  { element: <AppLayout />, errorElement: <RouteError />, children: [
   {
     path: '/home',
     element: <HomePage />,
@@ -51,4 +53,6 @@ export const router = createBrowserRouter([
   path: '/visits/:visitId',
   element: <VisitDetailPage />,
 },
+  ] },
+  { path: "*", element: <RouteError /> },
 ])

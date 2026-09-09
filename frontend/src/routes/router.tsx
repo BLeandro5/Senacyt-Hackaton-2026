@@ -7,6 +7,7 @@ import CapturePage from '../pages/Capture/CapturePage'
 import ReviewPage from '../pages/Review/ReviewPage'
 import MatchPage from '../pages/Match/MatchPage'
 import SuccessPage from '../pages/Success/SuccessPage'
+import VisitsPage from '../pages/Visits/VisitsPage'
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
   {
     path: '/home',
     element: <HomePage />,
+  },
+  {
+    path: '/visits',
+    element: <VisitsPage />,
   },
   {
     path: '/visits/new',

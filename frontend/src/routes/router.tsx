@@ -14,6 +14,7 @@ import SupervisorLayout from '../components/SupervisorLayout'
 import SupervisorDashboardPage from '../pages/SupervisorDashboard/SupervisorDashboardPage'
 import HospitalDetailPage from '../pages/HospitalDetail/HospitalDetailPage'
 import HospitalsPage from '../pages/Hospitals/HospitalsPage'
+import ReviewQueuePage from '../pages/ReviewQueue/ReviewQueuePage'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
     {
       path: '/supervisor/hospitals/:hospitalId',
       element: <HospitalDetailPage />,
+    },
+    {
+      path: '/supervisor/review',
+      element: <ReviewQueuePage />,
     },
   ],
 },

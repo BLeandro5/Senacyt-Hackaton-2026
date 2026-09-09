@@ -6,7 +6,7 @@ import { readStored, type Capture, type CurrentVisit, type Decision, type Record
 export function AppLayout() {
   const location = useLocation()
   const navigate = useNavigate()
-  const user = readStored<{ name: string } | null>('demo-user', null)
+  const user = readStored<{ name: string; role?: string } | null>('demo-user', null)
   const [online, setOnline] = useState(navigator.onLine)
   useEffect(() => {
     const update = () => setOnline(navigator.onLine)
@@ -16,6 +16,8 @@ export function AppLayout() {
   }, [])
   useEffect(() => { window.scrollTo(0, 0) }, [location.pathname])
   if (!user?.name) return <Navigate to="/login" replace />
+  if (user.role === 'supervisor') return <Navigate to="/supervisor" replace />
+  if (user.role !== 'field') return <Navigate to="/login" replace />
   const visit = readStored<CurrentVisit | null>('current-visit', null)
   const capture = readStored<Capture | null>('current-observation', null)
   const record = readStored<RecordDraft | null>('current-structured-record', null)
@@ -44,7 +46,7 @@ export function AppLayout() {
       </div>
     </header>
     {!online && <p className="offline-notice" role="status">Sin conexión. Puedes seguir registrando en este dispositivo. La sincronización con el servidor aún no está disponible.</p>}
-    <div id="page-content" key={location.pathname}><Outlet /></div>
+    <div id="page-content" className="page-enter" key={location.pathname}><Outlet /></div>
     <nav className="mobile-nav" aria-label="Navegación móvil">
       <NavLink to="/home"><Building2 size={21} />Inicio</NavLink>
       <NavLink to="/visits/new"><Plus size={23} />Nueva visita</NavLink>

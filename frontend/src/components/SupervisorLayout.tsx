@@ -33,7 +33,8 @@ function SupervisorLayout() {
   const user = readStored<StoredUser | null>('demo-user', null)
 
   const [online, setOnline] = useState(navigator.onLine)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuKey, setMobileMenuKey] = useState<string | null>(null)
+  const mobileMenuOpen = mobileMenuKey === location.key
 
   useEffect(() => {
     const updateStatus = () => setOnline(navigator.onLine)
@@ -49,7 +50,6 @@ function SupervisorLayout() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    setMobileMenuOpen(false)
   }, [location.pathname])
 
   if (!user?.name) {
@@ -57,7 +57,7 @@ function SupervisorLayout() {
   }
 
   if (user.role !== 'supervisor') {
-    return <Navigate to="/home" replace />
+    return <Navigate to={user.role === 'field' ? '/home' : '/login'} replace />
   }
 
   const logout = () => {
@@ -82,8 +82,10 @@ function SupervisorLayout() {
 
           <button
             type="button"
-            aria-label="Abrir navegación"
-            onClick={() => setMobileMenuOpen((current) => !current)}
+            aria-label={mobileMenuOpen ? 'Cerrar navegación' : 'Abrir navegación'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="supervisor-mobile-nav"
+            onClick={() => setMobileMenuKey(mobileMenuOpen ? null : location.key)}
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -91,7 +93,7 @@ function SupervisorLayout() {
         </div>
 
         {mobileMenuOpen && (
-          <nav className="space-y-1 border-t border-slate-100 px-4 py-3">
+          <nav id="supervisor-mobile-nav" aria-label="Navegación del supervisor" className="mobile-menu-enter space-y-1 border-t border-slate-100 px-4 py-3" onClick={() => setMobileMenuKey(null)} onKeyDown={event => { if (event.key === 'Escape') setMobileMenuKey(null) }}>
             <SupervisorMobileLink
               to="/supervisor"
               icon={<LayoutDashboard size={18} />}
@@ -113,6 +115,11 @@ function SupervisorLayout() {
             >
               Por revisar
             </SupervisorMobileLink>
+            <div className="border-t border-slate-100 px-3 pt-3 text-sm">
+              <p className="font-semibold">{user.name}</p>
+              <p role="status" className={online ? 'text-emerald-700' : 'text-amber-700'}>{online ? 'En línea' : 'Sin conexión'}</p>
+              <button onClick={logout} className="mt-2 flex min-h-11 items-center gap-2"><LogOut size={18} />Cerrar sesión</button>
+            </div>
           </nav>
         )}
       </header>
@@ -197,13 +204,13 @@ function SupervisorLayout() {
         {/* Main */}
         <div className="min-w-0 flex-1">
           {!online && (
-            <div className="border-b border-amber-200 bg-amber-50 px-5 py-3 text-sm text-amber-800">
+            <div role="status" className="border-b border-amber-200 bg-amber-50 px-5 py-3 text-sm text-amber-800">
               Estás sin conexión. La información disponible corresponde a los
               datos almacenados en este dispositivo.
             </div>
           )}
 
-          <Outlet />
+          <div className="page-enter" key={location.pathname}><Outlet /></div>
         </div>
       </div>
     </div>

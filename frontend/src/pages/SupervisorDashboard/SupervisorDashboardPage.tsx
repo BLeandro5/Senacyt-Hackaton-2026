@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 
 import { getVisits } from '../../data/visits'
+import { hospitals as hospitalCatalog } from '../../data/hospitals'
 import {
   displayDate,
   type Equipment,
@@ -167,9 +168,9 @@ function SupervisorDashboardPage() {
                       key={visit.id}
                       onClick={() =>
                         navigate(
-                          `/supervisor/hospitals/${encodeURIComponent(
-                            visit.hospital,
-                          )}`,
+                          hospitalCatalog.find(hospital => hospital.name === visit.hospital)
+                            ? `/supervisor/hospitals/${hospitalCatalog.find(hospital => hospital.name === visit.hospital)!.id}`
+                            : '/supervisor/hospitals',
                         )
                       }
                       className={`group flex w-full items-center gap-4 bg-white px-4 py-4 text-left transition hover:bg-slate-50 ${

@@ -59,4 +59,10 @@ textarea, input, select { font: inherit; }
   .flow-match .comparison { grid-template-columns: 1fr 1fr; }
   .flow-review .equipment-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+.page-enter { animation: page-enter 240ms ease-out; }
+.mobile-menu-enter { animation: page-enter 200ms ease-out; }
+button { transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+button:not(:disabled):active { transform: scale(.99); }
+@media (hover: hover) { button.group:hover { box-shadow: 0 3px 12px #1720330a; } }
+@keyframes page-enter { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } button:not(:disabled):active { transform: none; } }

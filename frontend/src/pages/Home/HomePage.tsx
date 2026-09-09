@@ -1,4 +1,4 @@
-import { getVisits } from '../../data/visits'
+import { useVisits } from '../../data/useVisits'
 import { readStored, displayDate, resumePath, clearObservation } from '../../data/visitStore'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -24,7 +24,7 @@ function HomePage() {
 
   const [user] = useState<DemoUser>(() => readStored('demo-user', { name: 'Colaborador' }))
   const [currentVisit, setCurrentVisit] = useState<CurrentVisit | null>(() => readStored('current-visit', null))
-  const [allVisits] = useState(getVisits)
+  const { visits: allVisits, error: storageError } = useVisits(false)
   const recentVisits = allVisits.slice(0, 4).map(v => ({ ...v, date: displayDate(v.date), equipmentCount: v.observations.reduce((n,o) => n + o.equipment.length, 0) }))
   const todayVisits = allVisits.filter(v => v.completedAt.includes('T') && new Date(v.completedAt).toDateString() === new Date().toDateString())
   const pendingCount = allVisits.filter(v => v.syncStatus === 'pending').length
@@ -63,6 +63,7 @@ function HomePage() {
 
 
       <main className="mx-auto max-w-[1380px] px-4 pb-28 pt-7 sm:px-6 lg:px-8 lg:pb-10 lg:pt-9">
+        {storageError && <p role="alert" className="storage-error">{storageError}</p>}
         {/* Greeting */}
         <section className="mb-6">
           <p className="text-sm font-semibold text-[#0B5ED7]">
@@ -396,8 +397,8 @@ function HomePage() {
                     }`}
                   >
                     {isOnline
-                      ? 'Guardadas localmente. Sin envío al servidor.'
-                      : 'Tus registros se guardarán localmente.'}
+                      ? 'Visitas confirmadas en SQLite local.'
+                      : 'SQLite funciona sin Internet; mantén el backend iniciado.'}
                   </p>
                 </div>
               </div>
@@ -406,7 +407,7 @@ function HomePage() {
             <div className="mt-5 grid grid-cols-2 divide-x divide-slate-100 border-t border-slate-100 pt-4">
               <div className="pr-4">
                 <p className="text-[11px] text-slate-400">
-                  Última sincronización
+                  Almacenamiento
                 </p>
 
                 <p className="mt-1 text-xs font-medium text-slate-700">

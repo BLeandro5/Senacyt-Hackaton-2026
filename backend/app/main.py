@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.observations import router as observations_router
+from app.api.visits import router as visits_router
 
 
 # AplicaciÃ³n principal del backend
@@ -15,11 +16,12 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
-    allow_methods=["POST"],
+    allow_methods=["GET", "POST", "PUT"],
     allow_headers=["Content-Type"],
 )
 
 app.include_router(observations_router)
+app.include_router(visits_router)
 
 
 @app.get("/")

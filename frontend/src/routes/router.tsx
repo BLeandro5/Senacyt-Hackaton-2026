@@ -10,6 +10,8 @@ import MatchPage from '../pages/Match/MatchPage'
 import SuccessPage from '../pages/Success/SuccessPage'
 import VisitsPage from '../pages/Visits/VisitsPage'
 import VisitDetailPage from '../pages/VisitDetail/VisitDetailPage'
+import HospitalsPage from '../pages/Hospitals/HospitalsPage'
+import DashboardPage from '../pages/Dashboard/DashboardPage'
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +23,9 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   { element: <AppLayout />, errorElement: <RouteError />, children: [
+  { path: '/dashboard', element: <DashboardPage /> },
+  { path: '/hospitals', element: <HospitalsPage /> },
+  { path: '/hospitals/:hospitalId', element: <HospitalsPage /> },
   {
     path: '/home',
     element: <HomePage />,

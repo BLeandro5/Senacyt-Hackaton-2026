@@ -48,7 +48,7 @@ Evitar mantener otro servidor con el mismo modelo cargado para no duplicar memor
 ```powershell
 # 2. API
 cd backend
-.venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+.venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 ```powershell
@@ -67,7 +67,73 @@ real todavía. Revisar los datos extraídos antes de utilizarlos: pueden contene
 errores. Esta herramienta organiza inventario; no diagnostica ni recomienda
 tratamientos.
 
-### Evaluación reproducible
+### Persistencia SQLite
+
+FastAPI crea `backend/data/inventory.sqlite3` al consultar o guardar datos.
+El archivo está ignorado por Git. Se puede cambiar su ubicación con la variable
+`APP_DATABASE_PATH` antes de iniciar el backend. El catálogo inicial de cinco
+hospitales está en `backend/app/db/hospitals.json`.
+
+Tablas: `hospitals`, `visits`, `observations` y `equipment`, relacionadas con
+claves foráneas. Cada fila de equipo representa un equipo observado en una
+observación; todavía no es un inventario físico deduplicado. Las coincidencias
+de la interfaz siguen siendo demostrativas y no se usan como claves de SQLite.
+Las edades revisadas se conservan como texto para respetar valores desconocidos
+o aproximados introducidos por el usuario.
+
+Al confirmar las decisiones se guarda la visita en curso en SQLite. Finalizar
+la visita confirma el guardado y entonces limpia el borrador. Los reintentos
+con el mismo ID no duplican observaciones ni equipos; cada guardado es una
+transacción. Ante un fallo del backend, los borradores quedan abiertos.
+
+Inicio e historial consultan SQLite y mantienen una copia local de consulta.
+Las visitas terminadas se pueden recuperar desde el backend aunque se borren
+los datos del navegador. Los borradores de edición siguen siendo locales.
+Las visitas antiguas que solo están en el navegador se conservan, pero no se
+importan automáticamente; los ejemplos simulados tampoco se insertan.
+«Guardada» significa persistida en SQLite local, no sincronizada con una nube.
+
+API disponible en `/docs`:
+
+- `GET /hospitals`: catálogo persistido.
+- `PUT /visits/{id}`: guarda la visita y sus observaciones/equipos.
+- `GET /visits`: visitas finalizadas; acepta `hospital_id` como filtro.
+- `GET /visits/{id}`: detalle, incluida una visita en curso.
+
+Para probarlo: finalizar una visita, reiniciar FastAPI y volver al historial
+con «Mostrar visitas de ejemplo» desactivado. No es necesario iniciar MedPsy
+para consultar datos ya guardados.
+
+### Vista consolidada por hospital
+
+Abrir **Hospitales** en la navegación o `/hospitals`, seleccionar un hospital
+y consultar su resumen: visitas finalizadas, observaciones, registros de
+equipos y última visita. La tabla permite buscar por marca/modelo/estado y
+filtrar por área y tipo. Cada registro enlaza a su visita de origen y conserva
+la observación original. También se muestra el historial completo del hospital.
+
+La vista consulta `GET /hospitals/{id}/overview` y utiliza exclusivamente datos
+de SQLite de visitas finalizadas, sin incorporar los ejemplos del navegador.
+Un hospital sin visitas muestra totales cero. Las visitas abiertas quedan fuera.
+Los registros repetidos en visitas distintas se conservan: estos totales no
+afirman contar equipos físicos únicos mientras la deduplicación esté pendiente.
+
+### Dashboard
+
+Abrir **Dashboard** en el menú o `/dashboard`. Usa `GET /dashboard` para
+mostrar totales de visitas finalizadas, observaciones y registros de equipos
+por hospital, región y modalidad. Permite alternar las barras entre registros
+y visitas, consultar una tabla por hospital y abrir su vista consolidada.
+«Actualizar» vuelve a consultar SQLite. No se incluyen ejemplos del navegador
+ni visitas en curso. MRI/Resonador, CT/Tomógrafo y otros alias se agrupan.
+Un equipo registrado en visitas diferentes sigue siendo varios registros.
+
+Si guardar indica que el backend no reconoce la operación, hay una instancia
+antigua de FastAPI ejecutándose: detenerla y usar el comando con `--reload`
+indicado arriba. La API actual debe mostrar `/visits` y `/dashboard` en `/docs`.
+El frontend conserva el borrador ante errores y muestra el motivo del backend.
+
+### Pruebas automáticas
 
 Frontend: `npm.cmd test --prefix frontend`, `npm.cmd run build --prefix frontend`
 y `npm.cmd run lint --prefix frontend`. Las pruebas verifican petición,

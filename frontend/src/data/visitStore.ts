@@ -10,6 +10,7 @@ export type Observation = {
   capturedAt?: string; originalText: string; equipment: Equipment[]; photoName?: string | null; photoData?: string
 }
 export type Visit = {
+  hospitalId?: string
   id: string; hospital: string; area: string; region: string; date: string
   startedAt: string; completedAt: string; syncStatus: 'synced' | 'pending'; observations: Observation[]
 }
@@ -75,11 +76,11 @@ export function saveObservation() {
   writeStored('current-visit', updated)
   return updated
 }
-export function finishVisit() {
+export function finishVisit(confirmed?: Visit) {
   const current = saveObservation()
   const now = new Date().toISOString()
-  const visit: Visit = {
-    id: current.id, hospital: current.hospitalName, area: current.area || 'No informada', region: current.region || 'No informada',
+  const visit: Visit = confirmed ?? {
+    id: current.id, hospitalId: current.hospitalId, hospital: current.hospitalName, area: current.area || 'No informada', region: current.region || 'No informada',
     date: now, startedAt: current.startedAt || now, completedAt: now, syncStatus: 'pending', observations: current.observations,
   }
   const visits = readStored<Visit[]>('completed-visits', [])

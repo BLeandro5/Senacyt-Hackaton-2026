@@ -4,13 +4,14 @@ import { Building2, CalendarDays, ChevronRight, CircleCheck, Clock3, Cloud, Clou
 
 type SyncStatus = 'synced' | 'pending'
 
-import { getVisits } from '../../data/visits'
+import { useVisits } from '../../data/useVisits'
 import { displayDate } from '../../data/visitStore'
 function VisitsPage() {
   const navigate = useNavigate()
 
-  const [includeExamples, setIncludeExamples] = useState(true)
-  const demoVisits = useMemo(() => getVisits(includeExamples).map(v => ({ ...v, date: displayDate(v.date), equipmentCount: v.observations.reduce((n, o) => n + o.equipment.length, 0), observationCount: v.observations.length })), [includeExamples])
+  const [includeExamples, setIncludeExamples] = useState(false)
+  const { visits: storedVisits, error: storageError } = useVisits(includeExamples)
+  const demoVisits = useMemo(() => storedVisits.map(v => ({ ...v, date: displayDate(v.date), equipmentCount: v.observations.reduce((n, o) => n + o.equipment.length, 0), observationCount: v.observations.length })), [storedVisits])
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState<'all' | 'synced' | 'pending'>('all')
 
@@ -44,6 +45,7 @@ function VisitsPage() {
 
 
       <main className="mx-auto max-w-[1380px] px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-8">
+        {storageError && <p role="alert" className="storage-error">{storageError}</p>}
         {/* Intro */}
         <section className="mb-6">
           <h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
@@ -52,7 +54,7 @@ function VisitsPage() {
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
             Consulta las visitas realizadas y revisa qué información está
-            pendiente de sincronización.
+            pendiente de guardar.
           </p>
         </section>
 
@@ -86,7 +88,7 @@ function VisitsPage() {
             </p>
 
             <p className="mt-1 text-xs text-slate-500 sm:text-sm">
-              Sincronizadas
+              Guardadas
             </p>
           </div>
 
@@ -140,7 +142,7 @@ function VisitsPage() {
                 active={filter === 'synced'}
                 onClick={() => setFilter('synced')}
               >
-                Sincronizadas
+                Guardadas
               </FilterButton>
 
               <FilterButton
@@ -261,7 +263,7 @@ function SyncBadge({ status }: { status: SyncStatus }) {
     return (
       <span className="flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
         <Cloud size={13} />
-        Sincronizada
+        Guardada
       </span>
     )
   }

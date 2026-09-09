@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate, useRouteError } from 'react-router-dom'
-import { Building2, ClipboardList, Cloud, CloudOff, LogOut, Plus } from 'lucide-react'
+import { BarChart3, Building2, ClipboardList, Cloud, CloudOff, LogOut, Plus } from 'lucide-react'
 import { readStored, type Capture, type CurrentVisit, type Decision, type RecordDraft } from '../data/visitStore'
 
 export function AppLayout() {
@@ -35,6 +35,8 @@ export function AppLayout() {
         <nav className="desktop-nav" aria-label="Navegación principal">
           <NavLink to="/home"><Building2 size={18} />Inicio</NavLink>
           <NavLink to="/visits" end><ClipboardList size={18} />Mis visitas</NavLink>
+          <NavLink to="/hospitals"><Building2 size={18} />Hospitales</NavLink>
+          <NavLink to="/dashboard"><BarChart3 size={18} />Dashboard</NavLink>
         </nav>
         <div className="flex items-center gap-3">
           <span role="status" aria-label={online ? 'En línea' : 'Sin conexión'} className={`connection ${online ? 'online' : 'offline'}`}>{online ? <Cloud size={15} /> : <CloudOff size={15} />}<span>{online ? 'En línea' : 'Sin conexión'}</span></span>
@@ -43,12 +45,14 @@ export function AppLayout() {
         </div>
       </div>
     </header>
-    {!online && <p className="offline-notice" role="status">Sin conexión. Puedes seguir registrando en este dispositivo. La sincronización con el servidor aún no está disponible.</p>}
+    {!online && <p className="offline-notice" role="status">Sin Internet. Puedes usar MedPsy y SQLite localmente si sus servicios siguen iniciados.</p>}
     <div id="page-content" key={location.pathname}><Outlet /></div>
     <nav className="mobile-nav" aria-label="Navegación móvil">
       <NavLink to="/home"><Building2 size={21} />Inicio</NavLink>
       <NavLink to="/visits/new"><Plus size={23} />Nueva visita</NavLink>
       <NavLink to="/visits" end><ClipboardList size={21} />Mis visitas</NavLink>
+      <NavLink to="/hospitals"><Building2 size={21} />Hospitales</NavLink>
+      <NavLink to="/dashboard"><BarChart3 size={21} />Dashboard</NavLink>
     </nav>
   </div>
 }

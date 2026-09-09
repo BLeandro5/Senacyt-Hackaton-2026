@@ -1,5 +1,6 @@
+import { persistVisit } from '../../data/storageApi'
 import { useState } from 'react'
-import { readStored, saveObservation, finishVisit, clearObservation, type RecordDraft, type Decision } from '../../data/visitStore'
+import { readStored, clearObservation, type RecordDraft, type Decision } from '../../data/visitStore'
 import VisitContext from '../../components/VisitContext'
 import { useNavigate } from 'react-router-dom'
 import { Check, CheckCircle2, ChevronRight, Home, Plus, Sparkles } from 'lucide-react'
@@ -8,18 +9,23 @@ function SuccessPage() {
   const navigate = useNavigate()
 
   const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
   const record = readStored<RecordDraft>('current-structured-record', { hospitalName: '', originalObservation: '', equipment: [] })
   const equipment = record.equipment
   const decisions = readStored<{ decisions: Decision[] }>('match-result', { decisions: [] }).decisions
   const existingCount = decisions.filter(d => d.type === 'existing').length
   const newCount = decisions.filter(d => d.type === 'new').length
-  const handleAnotherObservation = () => {
-    try { saveObservation(); clearObservation(); navigate('/visits/new/capture') }
-    catch { setError('No se pudo guardar. Revisa el espacio disponible del navegador e intenta de nuevo. Tus datos siguen abiertos.') }
+  const handleAnotherObservation = async () => {
+    if (saving) return
+    setSaving(true)
+    try { await persistVisit(); clearObservation(); navigate('/visits/new/capture') }
+    catch (cause) { setSaving(false); setError(cause instanceof Error ? cause.message : 'No se pudo guardar en SQLite. Comprueba el backend y reintenta. Tus datos siguen abiertos.') }
   }
-  const handleFinishVisit = () => {
-    try { finishVisit(); navigate('/visits') }
-    catch { setError('No se pudo finalizar. Tus datos siguen abiertos; intenta de nuevo.') }
+  const handleFinishVisit = async () => {
+    if (saving) return
+    setSaving(true)
+    try { await persistVisit(true); navigate('/visits') }
+    catch (cause) { setSaving(false); setError(cause instanceof Error ? cause.message : 'No se pudo finalizar. Tus datos siguen abiertos; intenta de nuevo.') }
   }
 
   return (
@@ -123,6 +129,7 @@ function SuccessPage() {
           <section className="mt-8">
 
             <button
+              disabled={saving}
               onClick={handleAnotherObservation}
               className="group flex h-14 w-full items-center justify-center gap-3 rounded-2xl ai-gradient font-medium text-white shadow-lg shadow-[#3437B8]/20 transition hover:-translate-y-0.5"
             >
@@ -137,6 +144,7 @@ function SuccessPage() {
             </button>
 
             <button
+              disabled={saving}
               onClick={handleFinishVisit}
               className="mt-3 flex h-13 min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border border-[#E3E8EF] bg-white text-sm font-medium text-[#566276] transition hover:bg-[#F8F9FC]"
             >

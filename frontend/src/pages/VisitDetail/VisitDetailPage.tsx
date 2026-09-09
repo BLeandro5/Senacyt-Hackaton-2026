@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Building2, CalendarDays, CheckCircle2, Cloud, CloudOff, Clock3, MapPin, MessageSquareText, Monitor, Radio, ScanLine, Sparkles } from 'lucide-react'
 
-import { getVisits } from '../../data/visits'
+import { useVisits } from '../../data/useVisits'
 import { displayDate, observationTitle, type Equipment } from '../../data/visitStore'
 type SyncStatus = 'synced' | 'pending'
 type EquipmentResolution = 'existing' | 'new'
@@ -10,8 +10,10 @@ function VisitDetailPage() {
   const navigate = useNavigate()
   const { visitId } = useParams()
 
-  const visit = getVisits().find((item) => item.id === visitId)
+  const { visits, loading, error } = useVisits()
+  const visit = visits.find((item) => item.id === visitId)
 
+  if (!visit && loading) return <p role="status">Cargando visita...</p>
   if (!visit) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#F3F5F9] px-4">
@@ -25,7 +27,7 @@ function VisitDetailPage() {
           </h1>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            No pudimos encontrar la visita solicitada.
+            {error || 'No pudimos encontrar la visita solicitada.'}
           </p>
 
           <button
@@ -397,7 +399,7 @@ function SyncStatusBadge({
     return (
       <span className="flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
         <Cloud size={15} />
-        <span>Sincronizada</span>
+        <span>Guardada</span>
       </span>
     )
   }

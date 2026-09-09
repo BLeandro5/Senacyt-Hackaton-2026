@@ -1,13 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  ArrowRight,
-  Eye,
-  EyeOff,
-  LockKeyhole,
-  ShieldCheck,
-  User,
-} from 'lucide-react'
+import { ArrowRight, Eye, EyeOff, LockKeyhole, ShieldCheck, User } from 'lucide-react'
 
 import { users } from '../../data/users'
 
@@ -35,22 +28,21 @@ function LoginPage() {
 
     setError('')
 
-    localStorage.setItem(
-      'demo-user',
-      JSON.stringify(user)
-    )
+    try {
+      localStorage.setItem('demo-user', JSON.stringify({ id: user.id, username: user.username, name: user.name, role: user.role }))
+    } catch { setError('No se pudo guardar la sesión. Permite el almacenamiento del navegador e intenta de nuevo.'); return }
 
     navigate('/home')
   }
 
   return (
   <main className="min-h-screen bg-white md:bg-slate-100 md:p-6">
-    <div className="mx-auto min-h-screen max-w-[1500px] overflow-hidden bg-white md:min-h-[calc(100vh-48px)] md:rounded-[28px] md:shadow-xl">
+    <div className="mx-auto min-h-screen max-w-[1380px] overflow-hidden bg-white md:min-h-[calc(100vh-48px)] md:rounded-[28px] md:shadow-xl">
 
       <div className="grid min-h-screen md:min-h-[calc(100vh-48px)] lg:grid-cols-[1.05fr_0.95fr]">
 
         {/* Panel visual desktop */}
-        <section className="relative hidden overflow-hidden bg-gradient-to-br from-[#073b78] via-[#0751a3] to-[#1187d5] lg:flex">
+        <section className="relative hidden overflow-hidden bg-[#0B5ED7] lg:flex">
 
           <div className="absolute -right-24 -top-20 h-[500px] w-[500px] rounded-full border border-white/10" />
 
@@ -147,7 +139,7 @@ function LoginPage() {
                   />
 
                   <input
-                    id="username"
+                    id="username" autoComplete="username" required
                     value={username}
                     onChange={(event) =>
                       setUsername(event.target.value)
@@ -174,7 +166,7 @@ function LoginPage() {
                   />
 
                   <input
-                    id="password"
+                    id="password" autoComplete="current-password" required
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(event) =>
@@ -185,6 +177,7 @@ function LoginPage() {
                   />
 
                   <button
+                    aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                     type="button"
                     onClick={() =>
                       setShowPassword((current) => !current)
@@ -202,7 +195,7 @@ function LoginPage() {
 
               {/* Error */}
               {error && (
-                <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
+                <div role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
                   {error}
                 </div>
               )}
@@ -210,7 +203,7 @@ function LoginPage() {
               {/* CTA */}
               <button
                 type="submit"
-                className="group mt-1 flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-[#086be6] font-medium text-white shadow-lg shadow-blue-600/15 transition hover:bg-[#075ec9] active:scale-[0.99]"
+                className="group mt-1 flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-[#0B5ED7] font-medium text-white shadow-lg shadow-blue-600/15 transition hover:bg-[#075ec9] active:scale-[0.99]"
               >
                 Iniciar sesión
 
@@ -232,11 +225,11 @@ function LoginPage() {
 
                 <div>
                   <p className="text-sm font-medium text-slate-700">
-                    Acceso seguro
+                    Acceso de demostración
                   </p>
 
                   <p className="mt-1 text-sm leading-6 text-slate-400">
-                    Solo para usuarios autorizados.
+                    Prototipo para colaboradores de campo.
                   </p>
                 </div>
               </div>

@@ -19,7 +19,7 @@ npm.cmd run dev -- --port 5173 --strictPort
 
 Abrir el frontend, llegar a captura y escribir:
 “Dos resonadores Siemens y un tomógrafo Philips de siete años”.
-Al analizar deben aparecer tres equipos en la misma pantalla. La edad de
+Al analizar se abre revisión con los tres equipos de la respuesta real. La edad de
 los resonadores debe figurar como no indicada y la del tomógrafo como 7 años.
 El backend comprueba la asignación de edades contra el texto original.
 La evaluación ampliada pasa sus ocho casos de cantidad, modalidad, fabricante

@@ -1,4 +1,4 @@
-import { buildDemoExtraction, type EquipmentDraft } from '../../data/demoExtraction'
+import { toEquipmentDrafts, type EquipmentDraft } from '../../data/observationApi'
 import { readStored, writeStored, type Capture } from '../../data/visitStore'
 import VisitContext from '../../components/VisitContext'
 import { useEffect, useId, useMemo, useState } from 'react'
@@ -13,14 +13,14 @@ function ReviewPage() {
 
   const initialEquipment = useMemo(
     () =>
-      buildDemoExtraction(
-        observation.observation || ''
-      ),
-    [observation.observation]
+      observation.analysis?.original_text === observation.observation
+        ? toEquipmentDrafts(observation.analysis) : [],
+    [observation.analysis, observation.observation]
   )
 
   const [equipment, setEquipment] =
-    useState<EquipmentDraft[]>(() => readStored<EquipmentDraft[]>('review-draft', initialEquipment))
+    useState<EquipmentDraft[]>(() => observation.analysis?.original_text === observation.observation
+      ? readStored<EquipmentDraft[]>('review-draft', initialEquipment) : [])
   useEffect(() => {
     try { writeStored('review-draft', equipment) } catch { /* Report on confirm; keep edits in memory. */ }
   }, [equipment])
@@ -60,7 +60,6 @@ function ReviewPage() {
         configuration: '',
         estimatedAge: '',
         status: 'Desconocido',
-        confidence: 100,
       },
     ])
   }
@@ -108,7 +107,7 @@ function ReviewPage() {
 
               <div className="inline-flex items-center gap-2 rounded-full bg-[#EEEAFB] px-3 py-1.5 text-xs font-medium text-[#4B1F91]">
                 <Sparkles size={13} />
-                Extracción demo completada
+                {observation.analysis ? 'Extracción local con MedPsy' : 'Observación pendiente de análisis'}
               </div>
 
               <h1 className="mt-6 text-3xl font-semibold tracking-tight text-[#172033] sm:text-4xl">
@@ -308,7 +307,7 @@ function EquipmentCard({
               />
 
               <span className="text-xs text-[#756E9D]">
-                {item.id.startsWith('TEMP-') ? `${item.confidence}% confianza demo` : 'Añadido manualmente'}
+                {item.id.startsWith('MEDPSY-') ? 'Extraído por MedPsy · revisar' : 'Añadido manualmente'}
               </span>
 
             </div>

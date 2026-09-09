@@ -57,13 +57,21 @@ cd frontend
 npm.cmd run dev -- --port 5173 --strictPort
 ```
 
-Escribir una observación en captura y analizar. Los equipos aparecen en esa
-pantalla; `hospital_id: 1` sigue siendo fijo. Voz y fotos no tienen inferencia
+Escribir una observación en captura y analizar. La respuesta real de MedPsy
+se guarda con la observación y abre la pantalla de revisión, donde se pueden
+editar los equipos antes de continuar a coincidencias y guardar la visita.
+Las cantidades, marcas y edades provienen del backend; no se generan equipos
+demo ni porcentajes de confianza. Si el análisis falla, captura muestra el
+error y permite reintentar. `hospital_id: 1` sigue siendo fijo. Voz y fotos no tienen inferencia
 real todavía. Revisar los datos extraídos antes de utilizarlos: pueden contener
 errores. Esta herramienta organiza inventario; no diagnostica ni recomienda
 tratamientos.
 
 ### Evaluación reproducible
+
+Frontend: `npm.cmd test --prefix frontend`, `npm.cmd run build --prefix frontend`
+y `npm.cmd run lint --prefix frontend`. Las pruebas verifican petición,
+conversión de resultados y conservación de los equipos al guardar la visita.
 
 Desde `backend` y con el servicio SDK iniciado:
 

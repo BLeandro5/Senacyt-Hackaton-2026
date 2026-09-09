@@ -1,3 +1,5 @@
+import type { AnalysisResult } from './observationApi'
+
 export type Equipment = {
   id: string; type: string; brand: string; model: string
   configuration?: string; estimatedAge?: string; status?: string; confidence?: number
@@ -16,6 +18,7 @@ export type CurrentVisit = {
   startedAt?: string; observations?: Observation[]
 }
 export type Capture = CurrentVisit & {
+  analysis?: AnalysisResult
   id?: string; visitId?: string; observation: string; captureMode: 'chat' | 'voice'
   capturedAt: string; photoName?: string | null; photoData?: string
 }

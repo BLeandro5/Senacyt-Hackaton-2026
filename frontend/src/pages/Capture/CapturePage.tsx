@@ -5,6 +5,17 @@ import { useNavigate } from 'react-router-dom'
 import { Camera, Check, ChevronRight, FileText, Keyboard, Mic, MicOff, Send, Sparkles, X } from 'lucide-react'
 
 type CaptureMode = 'chat' | 'voice'
+type AnalysisResult = {
+  original_text: string
+  equipment: {
+    modality: string
+    manufacturer: string | null
+    model: string | null
+    estimated_age_years: number | null
+    condition: string | null
+  }[]
+}
+const apiUrl = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
 
 function CapturePage() {
   const navigate = useNavigate()
@@ -516,6 +527,38 @@ function CapturePage() {
               )}
 
             </section>
+
+            {error && (
+              <p role="alert" className="mt-5 rounded-2xl bg-red-50 p-4 text-sm text-red-700">
+                {error}
+              </p>
+            )}
+
+            {analysis && (
+              <section aria-live="polite" className="mt-5 rounded-2xl border border-[#E3E8EF] p-5">
+                <h2 className="text-lg font-semibold text-[#172033]">Resultado de MedPsy</h2>
+                <p className="mt-2 text-xs text-[#6F7A8A]">
+                  Revisa los datos extraídos antes de usarlos. El modelo puede cometer errores.
+                </p>
+                <p className="mt-2 text-sm text-[#6F7A8A]">{analysis.original_text}</p>
+                {analysis.equipment.length === 0 && (
+                  <p className="mt-4 text-sm">No se detectaron equipos en esta observación.</p>
+                )}
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {analysis.equipment.map((equipment, index) => (
+                    <article key={index} className="rounded-xl bg-[#F6F7FB] p-4 text-sm">
+                      <h3 className="font-semibold">Equipo {index + 1} · {equipment.modality}</h3>
+                      <dl className="mt-2 grid grid-cols-2 gap-2">
+                        <dt>Fabricante</dt><dd>{equipment.manufacturer ?? 'No indicado'}</dd>
+                        <dt>Modelo</dt><dd>{equipment.model ?? 'No indicado'}</dd>
+                        <dt>Antigüedad</dt><dd>{equipment.estimated_age_years === null ? 'No indicada' : `${equipment.estimated_age_years} años`}</dd>
+                        <dt>Estado</dt><dd>{equipment.condition ?? 'No indicado'}</dd>
+                      </dl>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* ANALIZAR */}
             <section className="mt-7">

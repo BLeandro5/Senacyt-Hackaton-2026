@@ -1,12 +1,8 @@
 {
   "serve": {
     "models": {
-      "gpt-oss-20b-inst-q4-k-m": {
-        "model": "GPT_OSS_20B_INST_Q4_K_M",
-        "preload": false
-      },
-      "medgemma-4b-it-q4-1": {
-        "model": "MEDGEMMA_4B_IT_Q4_1",
+      "medpsy-1.7b-q4-k-m": {
+        "model": "HEALTHCARE_1_7B_MEDICAL_Q4_K_M",
         "preload": true
       }
     }

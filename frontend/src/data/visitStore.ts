@@ -11,11 +11,13 @@ export type Observation = {
 }
 export type Visit = {
   hospitalId?: string
+  collaboratorId?: string
+  collaborator?: { id: string; firstName: string; lastName: string; name: string; cedula: string } | null
   id: string; hospital: string; area: string; region: string; date: string
   startedAt: string; completedAt: string; syncStatus: 'synced' | 'pending'; observations: Observation[]
 }
 export type CurrentVisit = {
-  id?: string; hospitalId?: string; hospitalName: string; area?: string; region?: string
+  id?: string; hospitalId?: string; collaboratorId?: string; hospitalName: string; area?: string; region?: string
   startedAt?: string; observations?: Observation[]
 }
 export type Capture = CurrentVisit & {

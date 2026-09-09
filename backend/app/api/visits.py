@@ -8,7 +8,9 @@ router = APIRouter(tags=['Storage'])
 
 
 def read_visit(db, visit_id):
-    row = db.execute('SELECT v.*, h.name, h.region FROM visits v JOIN hospitals h ON h.id=v.hospital_id WHERE v.id=?', (visit_id,)).fetchone()
+    row = db.execute('''SELECT v.*, h.name, h.region, u.first_name, u.last_name, u.cedula
+        FROM visits v JOIN hospitals h ON h.id=v.hospital_id
+        LEFT JOIN users u ON u.id=v.collaborator_id WHERE v.id=?''', (visit_id,)).fetchone()
     if row is None:
         raise HTTPException(404, 'Visita no encontrada')
     observations = []
@@ -20,9 +22,12 @@ def read_visit(db, visit_id):
         observations.append(dict(id=obs['id'], visitId=visit_id, title=obs['title'], captureMode=obs['capture_mode'],
                                  capturedAt=obs['captured_at'], originalText=obs['original_text'],
                                  photoName=obs['photo_name'], photoData=obs['photo_data'], equipment=equipment))
+    collaborator = None if row['collaborator_id'] is None else dict(id=row['collaborator_id'],
+        firstName=row['first_name'], lastName=row['last_name'], name=f"{row['first_name']} {row['last_name']}", cedula=row['cedula'])
     return dict(id=visit_id, hospitalId=row['hospital_id'], hospital=row['name'], region=row['region'],
                 area=row['area'], startedAt=row['started_at'], completedAt=row['completed_at'],
-                date=row['completed_at'] or row['started_at'], syncStatus='synced', observations=observations)
+                date=row['completed_at'] or row['started_at'], syncStatus='synced', collaboratorId=row['collaborator_id'],
+                collaborator=collaborator, observations=observations)
 
 
 @router.get('/hospitals')
@@ -116,11 +121,15 @@ def save_visit(visit_id: str, payload: VisitRecord, db=Depends(get_db)):
         raise HTTPException(409, 'La visita ya pertenece a otro hospital')
     if existing and existing['completed_at'] and not payload.completedAt:
         raise HTTPException(409, 'La visita ya está finalizada')
+    if payload.collaboratorId and db.execute('SELECT 1 FROM users WHERE id=?', (payload.collaboratorId,)).fetchone() is None:
+        raise HTTPException(422, 'El colaborador de la visita no existe')
     try:
         with db:
             db.execute('INSERT OR IGNORE INTO hospitals(id,name,region) VALUES (?,?,?)', (payload.hospitalId, payload.hospital, payload.region))
-            db.execute('INSERT INTO visits VALUES (?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET area=excluded.area, completed_at=excluded.completed_at',
-                       (visit_id, payload.hospitalId, payload.area, payload.startedAt, payload.completedAt))
+            db.execute('''INSERT INTO visits (id, hospital_id, area, started_at, completed_at, collaborator_id)
+                VALUES (?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET area=excluded.area,
+                completed_at=excluded.completed_at, collaborator_id=excluded.collaborator_id''',
+                       (visit_id, payload.hospitalId, payload.area, payload.startedAt, payload.completedAt, payload.collaboratorId))
             db.execute('DELETE FROM observations WHERE visit_id=?', (visit_id,))
             for i, obs in enumerate(payload.observations):
                 db.execute('INSERT INTO observations VALUES (?,?,?,?,?,?,?,?,?)',

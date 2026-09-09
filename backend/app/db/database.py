@@ -10,7 +10,14 @@ CREATE TABLE IF NOT EXISTS hospitals (
 );
 CREATE TABLE IF NOT EXISTS visits (
  id TEXT PRIMARY KEY, hospital_id TEXT NOT NULL REFERENCES hospitals(id),
- area TEXT NOT NULL, started_at TEXT NOT NULL, completed_at TEXT NOT NULL
+ area TEXT NOT NULL, started_at TEXT NOT NULL, completed_at TEXT NOT NULL,
+ collaborator_id TEXT REFERENCES users(id)
+);
+CREATE TABLE IF NOT EXISTS users (
+ id TEXT PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL,
+ cedula TEXT NOT NULL UNIQUE, email TEXT NOT NULL UNIQUE, phone TEXT NOT NULL,
+ password_hash TEXT NOT NULL, password_salt TEXT NOT NULL,
+ role TEXT NOT NULL DEFAULT 'field', created_at TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS observations (
  visit_id TEXT NOT NULL REFERENCES visits(id) ON DELETE CASCADE,
@@ -40,6 +47,10 @@ def connect():
     db.row_factory = sqlite3.Row
     db.execute('PRAGMA foreign_keys=ON')
     db.executescript(SCHEMA)
+    visit_columns = {row['name'] for row in db.execute('PRAGMA table_info(visits)')}
+    if 'collaborator_id' not in visit_columns:
+        db.execute('ALTER TABLE visits ADD COLUMN collaborator_id TEXT')
+    db.execute('CREATE INDEX IF NOT EXISTS visits_collaborator ON visits(collaborator_id)')
     catalog = json.loads(Path(__file__).with_name('hospitals.json').read_text(encoding='utf-8'))
     db.executemany('INSERT OR IGNORE INTO hospitals(id,name,region,city) VALUES (:id,:name,:region,:city)', catalog)
     db.commit()

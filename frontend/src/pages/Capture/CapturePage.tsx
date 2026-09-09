@@ -141,7 +141,8 @@ function CapturePage() {
       captureMode: mode, capturedAt: new Date().toISOString(),
     }
     try {
-      const analysis = await analyzeObservation(capture.observation,
+      if (!visit.hospitalId) throw new Error('No se identificó el hospital de la visita. Vuelve a seleccionarlo antes de analizar.')
+      const analysis = await analyzeObservation(visit.hospitalId, capture.observation,
         AbortSignal.any([controller.signal, AbortSignal.timeout(190_000)]))
       if (controller.signal.aborted) return
       const analyzed = { ...capture, analysis }

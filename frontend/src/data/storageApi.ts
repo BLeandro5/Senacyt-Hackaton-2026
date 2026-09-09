@@ -1,4 +1,5 @@
-import { finishVisit, saveObservation, writeStored, type Visit } from './visitStore.ts'
+import { finishVisit, readStored, saveObservation, writeStored, type Visit } from './visitStore.ts'
+import type { CurrentUser } from './userApi.ts'
 
 export async function storageRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
   const base = (import.meta.env?.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
@@ -24,10 +25,12 @@ export async function persistVisit(completed = false): Promise<Visit> {
     writeStored('current-visit', current)
   }
   const now = new Date().toISOString()
+  const user = readStored<CurrentUser | null>('demo-user', null)
+  if (!current.collaboratorId && user?.role === 'field') current.collaboratorId = user.id
   const payload = {
     id: current.id, hospitalId: current.hospitalId, hospital: current.hospitalName,
     area: current.area || '', region: current.region || '', startedAt: current.startedAt || now,
-    completedAt: completed ? now : '', observations: current.observations,
+    completedAt: completed ? now : '', collaboratorId: current.collaboratorId, observations: current.observations,
   }
   const saved = await storageRequest<Visit>(`/visits/${encodeURIComponent(current.id)}`, { method: 'PUT', body: JSON.stringify(payload) })
   if (completed) finishVisit(saved)

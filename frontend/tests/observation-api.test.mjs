@@ -7,9 +7,9 @@ const text = 'Dos resonadores Siemens y un CT Philips de siete años.'
 const response = {
   original_text: text,
   equipment: [
-    { modality: 'MRI', manufacturer: 'Siemens', model: null, estimated_age_years: null, condition: null },
-    { modality: 'MRI', manufacturer: 'Siemens', model: null, estimated_age_years: null, condition: null },
-    { modality: 'CT', manufacturer: 'Philips', model: null, estimated_age_years: 7, condition: null },
+    { modality: 'MRI', manufacturer: 'Siemens', model: null, configuration: null, estimated_age_years: null, condition: null },
+    { modality: 'MRI', manufacturer: 'Siemens', model: null, configuration: null, estimated_age_years: null, condition: null },
+    { modality: 'CT', manufacturer: 'Philips', model: null, configuration: '64 cortes', estimated_age_years: 7, condition: null },
   ],
 }
 
@@ -20,10 +20,10 @@ test('capture request, review mapping and saved visit preserve actual equipment'
     assert.equal(options.method, 'POST')
     assert.equal(options.headers['Content-Type'], 'application/json')
     assert.equal(options.signal, signal)
-    assert.deepEqual(JSON.parse(options.body), { hospital_id: 1, text })
+    assert.deepEqual(JSON.parse(options.body), { hospital_id: 'HOSP-001', text })
     return Response.json(response)
   })
-  const analysis = await analyzeObservation(text, signal)
+  const analysis = await analyzeObservation('HOSP-001', text, signal)
   const equipment = toEquipmentDrafts(analysis)
   assert.deepEqual(equipment.map(e => [e.type, e.brand, e.estimatedAge]), [
     ['Resonador', 'Siemens', ''], ['Resonador', 'Siemens', ''], ['Tomógrafo', 'Philips', '7 años'],
@@ -55,6 +55,6 @@ test('backend errors and malformed responses do not create demo data', async t =
     new Response('not JSON'),
   ]) {
     t.mock.method(globalThis, 'fetch', async () => result)
-    await assert.rejects(() => analyzeObservation(text, new AbortController().signal))
+    await assert.rejects(() => analyzeObservation('HOSP-001', text, new AbortController().signal))
   }
 })

@@ -33,6 +33,7 @@ class VisitRecord(BaseModel):
     region: str = ''
     startedAt: str = Field(min_length=1)
     completedAt: str = ''
+    collaboratorId: str | None = None
     observations: list[ObservationRecord] = Field(min_length=1, max_length=100)
 
     @model_validator(mode='after')

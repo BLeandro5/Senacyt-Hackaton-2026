@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { AppLayout, RouteError } from '../components/AppLayout'
 import SupervisorLayout from '../components/SupervisorLayout'
 import LoginPage from '../pages/Login/LoginPage'
+import RegisterPage from '../pages/Register/RegisterPage'
 import HomePage from '../pages/Home/HomePage'
 import NewVisitPage from '../pages/NewVisit/NewVisitPage'
 import CapturePage from '../pages/Capture/CapturePage'
@@ -19,6 +20,7 @@ import ReviewQueuePage from '../pages/ReviewQueue/ReviewQueuePage'
 export const router = createBrowserRouter([
   { path: '/', element: <LoginPage /> },
   { path: '/login', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
   {
     element: <AppLayout />,
     errorElement: <RouteError />,

@@ -7,7 +7,7 @@ from app.schemas.equipment import EquipmentExtracted
 
 class ObservationRequest(BaseModel):
     # Hospital donde se realizó la observación
-    hospital_id: int = Field(..., gt=0)
+    hospital_id: str = Field(..., min_length=1, max_length=80)
 
     # Texto libre escrito por el colaborador
     text: str = Field(..., min_length=3)

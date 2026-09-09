@@ -13,6 +13,8 @@ class EquipmentExtracted(BaseModel):
     # Modelo si fue mencionado
     model: Optional[str] = None
 
+    configuration: Optional[str] = None
+
     # Edad aproximada en años
     estimated_age_years: Optional[float] = None
 

@@ -1,14 +1,7 @@
+import { readStored, writeStored, resumePath, clearObservation, type CurrentVisit } from '../../data/visitStore'
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  ArrowLeft,
-  Building2,
-  Check,
-  ChevronDown,
-  ChevronRight,
-  MapPin,
-  Search,
-} from 'lucide-react'
+import { Building2, Check, ChevronRight, CircleCheck, Clock3, MapPin, Search, Sparkles } from 'lucide-react'
 
 import { hospitals } from '../../data/hospitals'
 
@@ -25,354 +18,453 @@ const areas = [
 function NewVisitPage() {
   const navigate = useNavigate()
 
+  const current = readStored<CurrentVisit | null>('current-visit', null)
+  const [error, setError] = useState('')
   const [search, setSearch] = useState('')
   const [selectedHospitalId, setSelectedHospitalId] = useState('')
-  const [selectedArea, setSelectedArea] = useState('')
+  const [area, setArea] = useState('')
 
   const filteredHospitals = useMemo(() => {
     const query = search.trim().toLowerCase()
 
     if (!query) {
-      return hospitals.slice(0, 4)
+      return hospitals
     }
 
-    return hospitals.filter((hospital) =>
-      `${hospital.name} ${hospital.region} ${hospital.city}`
-        .toLowerCase()
-        .includes(query)
-    )
+    return hospitals.filter((hospital) => {
+      return (
+        hospital.name.toLowerCase().includes(query) ||
+        hospital.region.toLowerCase().includes(query)
+      )
+    })
   }, [search])
 
   const selectedHospital = hospitals.find(
-    (hospital) => hospital.id === selectedHospitalId
+    (hospital) => hospital.id === selectedHospitalId,
   )
+
+  const canContinue = Boolean(selectedHospital)
 
   const handleContinue = () => {
     if (!selectedHospital) return
 
-    localStorage.setItem(
-      'current-visit',
-      JSON.stringify({
-        hospitalId: selectedHospital.id,
-        hospitalName: selectedHospital.name,
-        region: selectedHospital.region,
-        area: selectedArea || null,
-        startedAt: new Date().toISOString(),
-      })
-    )
+    if (current) { navigate(resumePath()); return }
+    const visit = {
+      id: crypto.randomUUID(),
+      observations: [],
+      hospitalId: selectedHospital.id,
+      hospitalName: selectedHospital.name,
+      region: selectedHospital.region,
+      area: area || '',
+      startedAt: new Date().toISOString(),
+    }
+
+    try { writeStored('current-visit', visit); clearObservation() }
+    catch { setError('No se pudo guardar la visita. Comprueba el espacio disponible e intenta de nuevo.'); return }
 
     navigate('/visits/new/capture')
   }
 
   return (
-    <main className="min-h-screen bg-[#F3F5F9] md:p-5">
-      <div className="mx-auto min-h-screen max-w-[980px] bg-white md:min-h-[calc(100vh-40px)] md:rounded-[28px] md:border md:border-[#E6EAF0] md:shadow-sm">
+    <div className="min-h-screen bg-[#F3F5F9] text-slate-950">
+      {/* Header */}
 
-        {/* HEADER */}
-        <header className="flex items-center justify-between px-5 pb-4 pt-5 sm:px-8 md:px-10 md:pt-8">
 
-          <button
-            onClick={() => navigate('/home')}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-[#6F7A8A] transition hover:bg-[#F2F4F8] hover:text-[#172033]"
-            aria-label="Volver"
-          >
-            <ArrowLeft size={20} />
-          </button>
+      <main className="mx-auto max-w-[1380px] px-4 pb-32 pt-7 sm:px-6 lg:px-8 lg:pb-10 lg:pt-9">
+        {error && <p role="alert" className="storage-error">{error}</p>}
+        {current && <section className="panel mb-6"><h2 className="font-semibold">Ya tienes una visita en progreso</h2><p className="my-3 text-sm">{current.hospitalName}. Continúa esta visita y finalízala antes de comenzar otra.</p><button className="rounded-xl bg-blue-700 px-4 py-3 text-white" onClick={() => navigate(resumePath())}>Continuar visita actual</button></section>}
+        {/* Progress */}
+        <div className="mb-8">
+          <div className="mb-3 flex items-center justify-between text-xs">
+            <span className="font-semibold text-[#0B5ED7]">
+              Ubicación de la visita
+            </span>
 
-          <div className="text-center">
-            <p className="text-sm font-bold tracking-tight text-[#0B5ED7]">
-              PHILIPS
-            </p>
-
-            <p className="mt-0.5 hidden text-[11px] text-[#8A96A6] sm:block">
-              Installed Base Intelligence
-            </p>
+            <span className="text-slate-400">
+              Siguiente: captura
+            </span>
           </div>
 
-          <div className="h-10 w-10" />
-
-        </header>
-
-        {/* CONTENIDO */}
-        <div className="px-6 pb-10 sm:px-8 md:px-10">
-
-          <div className="mx-auto max-w-[700px]">
-
-            {/* PASO */}
-            <section className="pt-4">
-
-              <div className="flex items-center justify-between">
-
-                <div className="inline-flex items-center gap-2 rounded-full bg-[#EEF0FF] px-3 py-1.5 text-xs font-medium text-[#3437B8]">
-                  Paso 1 de 2
-                </div>
-
-                <span className="text-xs text-[#9AA5B4]">
-                  Configurar visita
-                </span>
-
-              </div>
-
-              {/* Barra de progreso */}
-              <div className="mt-4 h-1 overflow-hidden rounded-full bg-[#EEF1F5]">
-                <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-[#0B5ED7] to-[#4B1F91]" />
-              </div>
-
-              <h1 className="mt-7 text-3xl font-semibold tracking-tight text-[#172033] sm:text-4xl">
-                ¿Dónde estás?
-              </h1>
-
-              <p className="mt-3 max-w-xl text-[15px] leading-6 text-[#6F7A8A]">
-                Selecciona el hospital antes de comenzar a registrar los equipos
-                que observes.
-              </p>
-
-            </section>
-
-            {/* BUSCADOR */}
-            <section className="mt-8">
-
-              <label
-                htmlFor="hospital-search"
-                className="text-sm font-semibold text-[#172033]"
-              >
-                Hospital
-              </label>
-
-              <div className="relative mt-2">
-
-                <Search
-                  size={19}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9AA5B4]"
-                />
-
-                <input
-                  id="hospital-search"
-                  type="text"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Buscar hospital..."
-                  className="h-14 w-full rounded-2xl border border-[#E2E7EE] bg-white pl-12 pr-4 text-[#172033] outline-none transition placeholder:text-[#A1ABB8] focus:border-[#0B5ED7] focus:ring-4 focus:ring-[#EAF2FF]"
-                />
-
-              </div>
-
-            </section>
-
-            {/* LISTA HOSPITALES */}
-            <section className="mt-4">
-
-              <div className="mb-3 flex items-center justify-between">
-
-                <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#8A96A6]">
-                  {search ? 'Resultados' : 'Hospitales recientes'}
-                </p>
-
-                <span className="text-xs text-[#A1ABB8]">
-                  {filteredHospitals.length} encontrados
-                </span>
-
-              </div>
-
-              <div className="overflow-hidden rounded-2xl border border-[#E5EAF0] bg-white">
-
-                {filteredHospitals.length > 0 ? (
-                  filteredHospitals.map((hospital, index) => {
-                    const isSelected =
-                      hospital.id === selectedHospitalId
-
-                    return (
-                      <button
-                        key={hospital.id}
-                        onClick={() =>
-                          setSelectedHospitalId(hospital.id)
-                        }
-                        className={`flex w-full items-center gap-4 px-4 py-4 text-left transition ${
-                          isSelected
-                            ? 'bg-[#F3F5FF]'
-                            : 'bg-white hover:bg-[#F8F9FC]'
-                        } ${
-                          index !== filteredHospitals.length - 1
-                            ? 'border-b border-[#E9EDF2]'
-                            : ''
-                        }`}
-                      >
-
-                        <div
-                          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition ${
-                            isSelected
-                              ? 'bg-gradient-to-br from-[#0B5ED7] to-[#4B1F91] text-white'
-                              : 'bg-[#EAF2FF] text-[#0B5ED7]'
-                          }`}
-                        >
-                          <Building2 size={20} />
-                        </div>
-
-                        <div className="min-w-0 flex-1">
-
-                          <p className="truncate text-sm font-semibold text-[#172033]">
-                            {hospital.name}
-                          </p>
-
-                          <div className="mt-1 flex items-center gap-1.5 text-xs text-[#8A96A6]">
-                            <MapPin size={12} />
-                            <span>{hospital.region}</span>
-                          </div>
-
-                        </div>
-
-                        <div
-                          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition ${
-                            isSelected
-                              ? 'border-[#3437B8] bg-[#3437B8] text-white'
-                              : 'border-[#DCE2EA] text-transparent'
-                          }`}
-                        >
-                          <Check size={14} />
-                        </div>
-
-                      </button>
-                    )
-                  })
-                ) : (
-                  <div className="px-6 py-10 text-center">
-
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F2F4F8] text-[#A1ABB8]">
-                      <Building2 size={22} />
-                    </div>
-
-                    <p className="mt-4 text-sm font-semibold text-[#172033]">
-                      No encontramos ese hospital
-                    </p>
-
-                    <p className="mt-1 text-sm text-[#8A96A6]">
-                      Intenta escribir otro nombre.
-                    </p>
-
-                  </div>
-                )}
-
-              </div>
-
-            </section>
-
-            {/* ÁREA */}
-            <section className="mt-7">
-
-              <div className="flex items-center gap-2">
-
-                <label
-                  htmlFor="area"
-                  className="text-sm font-semibold text-[#172033]"
-                >
-                  Área
-                </label>
-
-                <span className="rounded-full bg-[#F2F4F8] px-2 py-0.5 text-[11px] text-[#8A96A6]">
-                  Opcional
-                </span>
-
-              </div>
-
-              <p className="mt-1 text-xs text-[#8A96A6]">
-                Nos ayuda a ubicar mejor los equipos observados.
-              </p>
-
-              <div className="relative mt-3">
-
-                <select
-                  id="area"
-                  value={selectedArea}
-                  onChange={(event) =>
-                    setSelectedArea(event.target.value)
-                  }
-                  className="h-14 w-full appearance-none rounded-2xl border border-[#E2E7EE] bg-white px-4 pr-12 text-sm text-[#415065] outline-none transition focus:border-[#0B5ED7] focus:ring-4 focus:ring-[#EAF2FF]"
-                >
-                  <option value="">
-                    Seleccionar área
-                  </option>
-
-                  {areas.map((area) => (
-                    <option key={area} value={area}>
-                      {area}
-                    </option>
-                  ))}
-                </select>
-
-                <ChevronDown
-                  size={19}
-                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#9AA5B4]"
-                />
-
-              </div>
-
-            </section>
-
-            {/* RESUMEN SELECCIÓN */}
-            {selectedHospital && (
-              <section className="mt-6 rounded-2xl border border-[#E4E6FA] bg-[#F8F8FF] p-4">
-
-                <div className="flex items-center gap-3">
-
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EEF0FF] text-[#4B1F91]">
-                    <Check size={18} />
-                  </div>
-
-                  <div className="min-w-0">
-
-                    <p className="text-xs font-medium text-[#7E75A8]">
-                      Visita preparada
-                    </p>
-
-                    <p className="mt-0.5 truncate text-sm font-semibold text-[#172033]">
-                      {selectedHospital.name}
-                      {selectedArea ? ` · ${selectedArea}` : ''}
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </section>
-            )}
-
-            {/* CONTINUAR */}
-            <section className="mt-7">
-
-              <button
-                onClick={handleContinue}
-                disabled={!selectedHospital}
-                className={`group flex h-14 w-full items-center justify-center gap-3 rounded-2xl font-medium transition ${
-                  selectedHospital
-                    ? 'bg-gradient-to-r from-[#0B5ED7] via-[#3437B8] to-[#4B1F91] text-white shadow-lg shadow-[#3437B8]/20 hover:-translate-y-0.5 hover:shadow-xl active:scale-[0.99]'
-                    : 'cursor-not-allowed bg-[#EEF1F5] text-[#A1ABB8]'
-                }`}
-              >
-                Continuar a captura
-
-                <ChevronRight
-                  size={20}
-                  className={
-                    selectedHospital
-                      ? 'transition-transform group-hover:translate-x-1'
-                      : ''
-                  }
-                />
-
-              </button>
-
-              <p className="mt-3 text-center text-xs leading-5 text-[#9AA5B4]">
-                En el siguiente paso podrás describir lo que observas.
-              </p>
-
-            </section>
-
+          <div className="h-1.5 overflow-hidden rounded-full bg-slate-200">
+            <div className="h-full w-1/2 rounded-full bg-[#0B5ED7]" />
           </div>
-
         </div>
 
-      </div>
-    </main>
+        {/* Intro */}
+        <section className="mb-7">
+          <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-[#0B5ED7] lg:hidden">
+            <MapPin size={21} />
+          </div>
+
+          <p className="hidden text-sm font-semibold text-[#0B5ED7] lg:block">
+            Comienza una nueva visita
+          </p>
+
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
+            ¿Dónde estás?
+          </h1>
+
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            Selecciona el hospital que estás visitando. Esta información
+            ayudará a asociar correctamente los equipos que registres.
+          </p>
+        </section>
+
+        {/* Desktop grid */}
+        <section className="grid gap-5 lg:grid-cols-12 lg:items-start">
+          {/* Hospital selector */}
+          <div className="rounded-[26px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6 lg:col-span-8">
+            <div className="flex items-start justify-between gap-5">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-950">
+                  Selecciona un hospital
+                </h2>
+
+                <p className="mt-1 text-sm text-slate-400">
+                  Busca por nombre o revisa los centros recientes.
+                </p>
+              </div>
+
+              <div className="hidden h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-[#0B5ED7] sm:flex">
+                <Building2 size={19} />
+              </div>
+            </div>
+
+            {/* Search */}
+            <div className="relative mt-5">
+              <Search
+                size={19}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+
+              <input
+                aria-label="Buscar hospital"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Buscar hospital..."
+                className="h-13 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#0B5ED7] focus:bg-white focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+
+            {/* Recent label */}
+            <div className="mb-3 mt-6 flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+                {search ? 'Resultados' : 'Hospitales recientes'}
+              </p>
+
+              <span className="text-xs text-slate-400">
+                {filteredHospitals.length}{' '}
+                {filteredHospitals.length === 1
+                  ? 'hospital'
+                  : 'hospitales'}
+              </span>
+            </div>
+
+            {/* Hospitals */}
+            <div className="overflow-hidden rounded-2xl border border-slate-200">
+              {filteredHospitals.length > 0 ? (
+                filteredHospitals.map((hospital, index) => {
+                  const selected =
+                    selectedHospitalId === hospital.id
+
+                  return (
+                    <button
+                      key={hospital.id}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() =>
+                        setSelectedHospitalId(hospital.id)
+                      }
+                      className={`group flex w-full items-center gap-4 px-4 py-4 text-left transition sm:px-5 ${
+                        selected
+                          ? 'bg-blue-50/70'
+                          : 'bg-white hover:bg-slate-50'
+                      } ${
+                        index !== filteredHospitals.length - 1
+                          ? 'border-b border-slate-100'
+                          : ''
+                      }`}
+                    >
+                      <div
+                        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition ${
+                          selected
+                            ? 'bg-[#0B5ED7] text-white'
+                            : 'bg-slate-100 text-slate-500 group-hover:bg-blue-50 group-hover:text-[#0B5ED7]'
+                        }`}
+                      >
+                        <Building2 size={19} />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <p
+                          className={`truncate text-sm font-semibold ${
+                            selected
+                              ? 'text-[#0B5ED7]'
+                              : 'text-slate-950'
+                          }`}
+                        >
+                          {hospital.name}
+                        </p>
+
+                        <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-400">
+                          <MapPin size={13} />
+                          {hospital.region}
+                        </p>
+                      </div>
+
+                      <div
+                        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition ${
+                          selected
+                            ? 'border-[#0B5ED7] bg-[#0B5ED7] text-white'
+                            : 'border-slate-300 bg-white'
+                        }`}
+                      >
+                        {selected && <Check size={14} />}
+                      </div>
+                    </button>
+                  )
+                })
+              ) : (
+                <div className="px-5 py-12 text-center">
+                  <Search
+                    size={30}
+                    className="mx-auto text-slate-300"
+                  />
+
+                  <p className="mt-4 text-sm font-semibold text-slate-700">
+                    No encontramos hospitales
+                  </p>
+
+                  <p className="mt-1 text-xs text-slate-400">
+                    Intenta con otro nombre.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Desktop visit summary */}
+          <aside className="hidden lg:col-span-4 lg:block">
+            <div className="sticky top-6 overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-sm">
+              <div
+                className="relative overflow-hidden px-6 py-6 text-white"
+                style={{
+                  background:
+                    '#0B5ED7',
+                }}
+              >
+                <div className="absolute -right-10 -top-14 h-44 w-44 rounded-full border border-white/10" />
+
+                <div className="relative">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
+                    <Sparkles size={20} />
+                  </div>
+
+                  <p className="mt-5 text-xs font-medium uppercase tracking-[0.15em] text-white/70">
+                    Resumen de la visita
+                  </p>
+
+                  <h2 className="mt-1 text-xl font-semibold">
+                    {selectedHospital
+                      ? 'Ubicación seleccionada'
+                      : 'Prepara tu visita'}
+                  </h2>
+                </div>
+              </div>
+
+              <div className="p-6">
+                {/* Selected hospital */}
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                    Hospital
+                  </p>
+
+                  {selectedHospital ? (
+                    <div className="mt-3 flex items-center gap-3 rounded-2xl bg-blue-50 p-4">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#0B5ED7] shadow-sm">
+                        <Building2 size={18} />
+                      </div>
+
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-slate-950">
+                          {selectedHospital.name}
+                        </p>
+
+                        <p className="mt-1 flex items-center gap-1 text-xs text-slate-500">
+                          <MapPin size={12} />
+                          {selectedHospital.region}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mt-3 rounded-2xl border border-dashed border-slate-300 px-4 py-5 text-center">
+                      <Building2
+                        size={24}
+                        className="mx-auto text-slate-300"
+                      />
+
+                      <p className="mt-2 text-xs leading-5 text-slate-400">
+                        Selecciona un hospital para continuar.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Area */}
+                <div className="mt-6">
+                  <label
+                    htmlFor="visit-area"
+                    className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400"
+                  >
+                    Área
+                    <span className="ml-1 normal-case tracking-normal text-slate-300">
+                      opcional
+                    </span>
+                  </label>
+
+                  <select
+                    id="visit-area"
+                    value={area}
+                    onChange={(event) =>
+                      setArea(event.target.value)
+                    }
+                    className="mt-3 h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-[#0B5ED7] focus:bg-white focus:ring-4 focus:ring-blue-100"
+                  >
+                    <option value="">
+                      Seleccionar área
+                    </option>
+
+                    {areas.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Info */}
+                <div className="mt-6 flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                  <Clock3
+                    size={18}
+                    className="mt-0.5 shrink-0 text-slate-400"
+                  />
+
+                  <p className="text-xs leading-5 text-slate-500">
+                    La visita comenzará cuando continúes. Podrás
+                    registrar varias observaciones dentro del mismo
+                    hospital.
+                  </p>
+                </div>
+
+                {/* CTA */}
+                <button
+                  type="button"
+                  disabled={!canContinue}
+                  onClick={handleContinue}
+                  className={`mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold transition ${
+                    canContinue
+                      ? 'bg-[#0B5ED7] text-white shadow-sm hover:bg-[#0954C4]'
+                      : 'cursor-not-allowed bg-slate-100 text-slate-400'
+                  }`}
+                >
+                  Continuar
+                  <ChevronRight size={18} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/home')}
+                  className="mt-2 w-full py-2 text-xs font-medium text-slate-400 transition hover:text-slate-700"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        {/* Mobile area */}
+        <section className="mt-5 rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm lg:hidden">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+              <MapPin size={18} />
+            </div>
+
+            <div>
+              <h2 className="text-sm font-semibold text-slate-950">
+                Área del hospital
+              </h2>
+
+              <p className="mt-0.5 text-xs text-slate-400">
+                Opcional
+              </p>
+            </div>
+          </div>
+
+          <select
+            aria-label="Área del hospital (opcional)"
+            value={area}
+            onChange={(event) => setArea(event.target.value)}
+            className="mt-4 h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none focus:border-[#0B5ED7] focus:bg-white focus:ring-4 focus:ring-blue-100"
+          >
+            <option value="">Seleccionar área</option>
+
+            {areas.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </section>
+
+        {/* Mobile selected status */}
+        {selectedHospital && (
+          <div className="mt-4 flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50 p-4 lg:hidden">
+            <CircleCheck
+              size={20}
+              className="shrink-0 text-[#0B5ED7]"
+            />
+
+            <div className="min-w-0">
+              <p className="text-xs text-blue-600">
+                Hospital seleccionado
+              </p>
+
+              <p className="mt-0.5 truncate text-sm font-semibold text-slate-950">
+                {selectedHospital.name}
+              </p>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Mobile actions */}
+      <footer className="fixed bottom-0 left-0 right-0 z-30 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-lg items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate('/home')}
+            className="h-12 flex-1 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-600"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="button"
+            disabled={!canContinue}
+            onClick={handleContinue}
+            className={`flex h-12 flex-[1.5] items-center justify-center gap-2 rounded-xl text-sm font-semibold transition ${
+              canContinue
+                ? 'bg-[#0B5ED7] text-white shadow-sm'
+                : 'cursor-not-allowed bg-slate-100 text-slate-400'
+            }`}
+          >
+            Continuar
+            <ChevronRight size={18} />
+          </button>
+        </div>
+      </footer>
+    </div>
   )
 }
 

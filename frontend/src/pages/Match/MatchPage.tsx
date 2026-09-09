@@ -1,24 +1,8 @@
-import { useMemo, useState } from 'react'
+import { readStored, writeStored, saveObservation, type RecordDraft } from '../../data/visitStore'
+import VisitContext from '../../components/VisitContext'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  ArrowLeft,
-  Check,
-  ChevronRight,
-  CirclePlus,
-  SearchCheck,
-  Sparkles,
-} from 'lucide-react'
-
-type Equipment = {
-  id: string
-  type: string
-  brand: string
-  model: string
-  configuration: string
-  estimatedAge: string
-  status: string
-  confidence: number
-}
+import { Check, ChevronRight, CirclePlus, SearchCheck, Sparkles } from 'lucide-react'
 
 type Decision = {
   equipmentId: string
@@ -30,52 +14,9 @@ type Decision = {
 function MatchPage() {
   const navigate = useNavigate()
 
-  const storedRecord = localStorage.getItem(
-    'current-structured-record'
-  )
-
-  const record = storedRecord
-    ? JSON.parse(storedRecord)
-    : {
-        hospitalName: 'Hospital DemoCare Pacific',
-        area: 'Radiología',
-
-        equipment: [
-          {
-            id: 'TEMP-001',
-            type: 'Resonador',
-            brand: '',
-            model: '',
-            configuration: '',
-            estimatedAge: '8 años',
-            status: 'Desconocido',
-            confidence: 88,
-          },
-          {
-            id: 'TEMP-002',
-            type: 'Resonador',
-            brand: '',
-            model: '',
-            configuration: '',
-            estimatedAge: '',
-            status: 'Desconocido',
-            confidence: 76,
-          },
-          {
-            id: 'TEMP-003',
-            type: 'Tomógrafo',
-            brand: '',
-            model: '',
-            configuration: '',
-            estimatedAge: '',
-            status: 'Desconocido',
-            confidence: 84,
-          },
-        ],
-      }
-
-  const equipment: Equipment[] =
-    record.equipment || []
+  const [error, setError] = useState('')
+  const record = readStored<RecordDraft>('current-structured-record', { hospitalName: '', originalObservation: '', equipment: [] })
+  const equipment = record.equipment
 
   /*
     DEMO:
@@ -84,8 +25,7 @@ function MatchPage() {
     Después esto vendrá del algoritmo real
     de deduplicación.
   */
-  const candidates = useMemo(() => {
-    return equipment.map((item, index) => {
+  const candidates = equipment.map((item, index) => {
       if (index === 0 && item.type === 'Resonador') {
         return {
           equipmentId: item.id,
@@ -121,18 +61,20 @@ function MatchPage() {
         match: null,
       }
     })
-  }, [equipment, record.area])
 
   const [decisions, setDecisions] = useState<
     Decision[]
-  >(() =>
+  >(() => readStored<Decision[]>('match-draft',
     candidates
       .filter((candidate) => !candidate.match)
       .map((candidate) => ({
         equipmentId: candidate.equipmentId,
         type: 'new',
-      }))
+      })))
   )
+  useEffect(() => {
+    try { writeStored('match-draft', decisions) } catch { /* Confirm reports failures. */ }
+  }, [decisions])
 
   const setDecision = (
     equipmentId: string,
@@ -153,56 +95,39 @@ function MatchPage() {
         decision.equipmentId === equipmentId
     )
 
-  const allResolved = equipment.every((item) =>
+  const allResolved = equipment.length > 0 && equipment.every((item) =>
     isResolved(item.id)
   )
 
   const handleContinue = () => {
     if (!allResolved) return
 
-    localStorage.setItem(
-      'match-result',
-      JSON.stringify({
-        decisions,
-      })
-    )
+    try {
+      writeStored('match-result', { decisions })
+      saveObservation()
+    } catch { setError('No se pudo guardar. Tus decisiones siguen en pantalla; intenta de nuevo.'); return }
 
     navigate('/visits/new/success')
   }
 
   return (
-    <main className="min-h-screen bg-[#F3F5F9] md:p-5">
+    <main className="flow-page flow-match">
 
-      <div className="mx-auto min-h-screen max-w-[980px] bg-white md:min-h-[calc(100vh-40px)] md:rounded-[28px] md:border md:border-[#E6EAF0] md:shadow-sm">
+      <div className="flow-container">
 
-        <header className="flex items-center justify-between px-5 pb-4 pt-5 sm:px-8 md:px-10 md:pt-8">
 
-          <button
-            onClick={() =>
-              navigate('/visits/new/review')
-            }
-            className="flex h-10 w-10 items-center justify-center rounded-full text-[#6F7A8A] hover:bg-[#F2F4F8]"
-          >
-            <ArrowLeft size={20} />
-          </button>
 
-          <p className="text-sm font-bold text-[#0B5ED7]">
-            PHILIPS
-          </p>
+        <div className="flow-layout">
+          <VisitContext />
 
-          <div className="h-10 w-10" />
-
-        </header>
-
-        <div className="px-6 pb-10 sm:px-8 md:px-10">
-
-          <div className="mx-auto max-w-[760px]">
+          <div className="flow-content">
+            <button className="back-action" onClick={() => navigate('/visits/new/review')}>← Volver a la revisión</button>
 
             <section className="pt-4">
 
               <div className="inline-flex items-center gap-2 rounded-full bg-[#EEEAFB] px-3 py-1.5 text-xs font-medium text-[#4B1F91]">
                 <SearchCheck size={14} />
-                Verificación
+                Verificación demo
               </div>
 
               <h1 className="mt-6 text-3xl font-semibold tracking-tight text-[#172033] sm:text-4xl">
@@ -235,11 +160,11 @@ function MatchPage() {
                 return (
                   <div
                     key={item.id}
-                    className="rounded-[22px] border border-[#E5EAF0] bg-white p-5"
+                    className="comparison rounded-[22px] border border-[#E5EAF0] bg-white p-5"
                   >
 
-                    {/* Equipo */}
-                    <div className="flex items-start justify-between gap-4">
+                    {/* Equipo observado */}
+                    <div><p className="eyebrow mb-4">Equipo observado</p><div className="flex items-start justify-between gap-4">
 
                       <div className="flex items-center gap-3">
 
@@ -274,6 +199,13 @@ function MatchPage() {
 
                     </div>
 
+                    <div className="mt-5 grid grid-cols-2 gap-4">
+                      <Info label="Marca" value={item.brand || 'Desconocida'} />
+                      <Info label="Modelo" value={item.model || 'Desconocido'} />
+                      <Info label="Configuración" value={item.configuration || 'No informada'} />
+                      <Info label="Edad estimada" value={item.estimatedAge || 'Desconocida'} />
+                      <Info label="Estado" value={item.status || 'No informado'} />
+                    </div></div>
                     {/* Candidato */}
                     {match ? (
                       <div className="mt-5 rounded-2xl border border-[#E3E0F4] bg-[#FAF9FF] p-4">
@@ -294,13 +226,15 @@ function MatchPage() {
                           </div>
 
                           <span className="text-lg font-semibold text-[#4B1F91]">
-                            {match.similarity}%
+                            {match.similarity}%<span className="block text-[10px] font-normal">Similitud demo</span>
                           </span>
 
                         </div>
 
                         <div className="mt-4 grid gap-3 sm:grid-cols-2">
 
+                          <Info label="Marca" value={match.brand} />
+                          <Info label="Modelo" value={match.model} />
                           <Info
                             label="Registro"
                             value={match.id}
@@ -329,6 +263,7 @@ function MatchPage() {
                         <div className="mt-5 grid gap-2 sm:grid-cols-2">
 
                           <button
+                            aria-pressed={decision?.type === 'existing'}
                             onClick={() =>
                               setDecision(item.id, {
                                 equipmentId:
@@ -343,14 +278,15 @@ function MatchPage() {
                             className={`rounded-xl px-4 py-3 text-sm font-medium transition ${
                               decision?.type ===
                               'existing'
-                                ? 'bg-gradient-to-r from-[#0B5ED7] to-[#4B1F91] text-white'
+                                ? 'bg-[#0B5ED7] text-white'
                                 : 'border border-[#DDE3EA] bg-white text-[#566276]'
                             }`}
                           >
-                            Es el mismo
+                            Es el mismo equipo
                           </button>
 
                           <button
+                            aria-pressed={decision?.type === 'new'}
                             onClick={() =>
                               setDecision(item.id, {
                                 equipmentId:
@@ -365,7 +301,7 @@ function MatchPage() {
                                 : 'border border-[#DDE3EA] bg-white text-[#566276]'
                             }`}
                           >
-                            Es otro equipo
+                            Es diferente / nuevo
                           </button>
 
                         </div>
@@ -381,7 +317,7 @@ function MatchPage() {
                         <div>
 
                           <p className="text-sm font-semibold text-[#172033]">
-                            Sin coincidencia clara
+                            No encontramos una coincidencia probable
                           </p>
 
                           <p className="mt-1 text-sm leading-6 text-[#7D8998]">
@@ -400,6 +336,7 @@ function MatchPage() {
 
             </section>
 
+            {error && <p role="alert" className="storage-error">{error}</p>}
             {/* CONTINUAR */}
             <section className="mt-7">
 
@@ -408,7 +345,7 @@ function MatchPage() {
                 disabled={!allResolved}
                 className={`group flex h-14 w-full items-center justify-center gap-3 rounded-2xl font-medium transition ${
                   allResolved
-                    ? 'bg-gradient-to-r from-[#0B5ED7] via-[#3437B8] to-[#4B1F91] text-white shadow-lg shadow-[#3437B8]/20'
+                    ? 'ai-gradient text-white shadow-lg shadow-[#3437B8]/20'
                     : 'cursor-not-allowed bg-[#EEF1F5] text-[#A1ABB8]'
                 }`}
               >

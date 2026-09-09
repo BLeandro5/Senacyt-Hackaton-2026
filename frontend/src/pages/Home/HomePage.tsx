@@ -1,37 +1,33 @@
-import { useEffect, useState } from 'react'
+import { getVisits } from '../../data/visits'
+import { readStored, displayDate, resumePath, clearObservation } from '../../data/visitStore'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Activity,
-  ChevronRight,
-  ClipboardList,
-  Cloud,
-  CloudOff,
-  LogOut,
-  Monitor,
-  Plus,
-  ScanLine,
-  Sparkles,
-  UserRound,
-} from 'lucide-react'
+import { Activity, Building2, CalendarDays, CheckCircle2, ChevronRight, ClipboardList, Cloud, CloudOff, Clock3, Lightbulb, Monitor, Plus, ScanLine, Sparkles, Wifi } from 'lucide-react'
+
+type DemoUser = {
+  name: string
+  role?: string
+}
+
+type CurrentVisit = {
+  hospitalId?: string
+  hospitalName: string
+  region?: string
+  area?: string
+  startedAt?: string
+}
 
 function HomePage() {
   const navigate = useNavigate()
 
-  const [isOnline, setIsOnline] = useState(
-    typeof navigator !== 'undefined'
-      ? navigator.onLine
-      : true
-  )
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
 
-  const storedUser = localStorage.getItem('demo-user')
-
-  const user = storedUser
-    ? JSON.parse(storedUser)
-    : {
-        name: 'Ana Rodríguez',
-        role: 'field',
-      }
-
+  const [user] = useState<DemoUser>(() => readStored('demo-user', { name: 'Colaborador' }))
+  const [currentVisit, setCurrentVisit] = useState<CurrentVisit | null>(() => readStored('current-visit', null))
+  const [allVisits] = useState(getVisits)
+  const recentVisits = allVisits.slice(0, 4).map(v => ({ ...v, date: displayDate(v.date), equipmentCount: v.observations.reduce((n,o) => n + o.equipment.length, 0) }))
+  const todayVisits = allVisits.filter(v => v.completedAt.includes('T') && new Date(v.completedAt).toDateString() === new Date().toDateString())
+  const pendingCount = allVisits.filter(v => v.syncStatus === 'pending').length
   useEffect(() => {
     const handleOnline = () => setIsOnline(true)
     const handleOffline = () => setIsOnline(false)
@@ -45,452 +41,482 @@ function HomePage() {
     }
   }, [])
 
-  const recentVisits = [
-    {
-      id: 1,
-      hospital: 'Hospital Santo Tomás',
-      area: 'Radiología',
-      date: 'Hoy · 15:20',
-      equipment: 3,
-    },
-    {
-      id: 2,
-      hospital: 'Hospital Nacional',
-      area: 'Imagenología',
-      date: 'Ayer · 10:42',
-      equipment: 2,
-    },
-  ]
+  const firstName = useMemo(() => {
+    return user.name?.split(' ')[0] || 'Ana'
+  }, [user.name])
 
-  const firstName =
-    user.name?.split(' ')[0] || 'Usuario'
+  const todayEquipment = todayVisits.reduce((n,v) => n + v.observations.reduce((m,o) => m + o.equipment.length, 0), 0)
 
-  const handleLogout = () => {
-    localStorage.removeItem('demo-user')
-    navigate('/login')
+  const discardCurrentVisit = () => {
+    if (!window.confirm('¿Descartar esta visita y su borrador? Las visitas finalizadas se conservan.')) return
+    clearObservation()
+    localStorage.removeItem('current-visit')
+    localStorage.removeItem('current-observation')
+    localStorage.removeItem('current-structured-record')
+    localStorage.removeItem('match-result')
+    setCurrentVisit(null)
   }
 
   return (
-    <main className="min-h-screen bg-[#F3F5F9] md:p-5">
+    <div className="min-h-screen bg-[#F3F5F9] text-slate-950">
+      {/* Desktop header */}
 
-      <div className="mx-auto min-h-screen max-w-[1180px] bg-white md:min-h-[calc(100vh-40px)] md:rounded-[28px] md:border md:border-[#E6EAF0] md:shadow-sm">
 
-        {/* HEADER */}
-        <header className="flex items-center justify-between px-6 pb-4 pt-6 sm:px-8 md:px-10 md:pb-3 md:pt-8">
+      <main className="mx-auto max-w-[1380px] px-4 pb-28 pt-7 sm:px-6 lg:px-8 lg:pb-10 lg:pt-9">
+        {/* Greeting */}
+        <section className="mb-6">
+          <p className="text-sm font-semibold text-[#0B5ED7]">
+            Buen día
+          </p>
 
-          {/* Marca */}
-          <div>
-            <p className="text-xl font-bold tracking-tight text-[#0B5ED7]">
-              PHILIPS
-            </p>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Hola, {firstName}
+          </h1>
 
-            <p className="mt-0.5 text-xs text-[#8490A0]">
-              Installed Base Intelligence
-            </p>
-          </div>
+          <p className="mt-1.5 text-sm text-slate-500 sm:text-base">
+            ¿Listo para tu próxima visita?
+          </p>
+        </section>
 
-          {/* Acciones */}
-          <div className="flex items-center gap-3">
+        {/* Top desktop grid */}
+        <section className="grid gap-4 lg:grid-cols-12 lg:gap-5">
+          {/* Main CTA */}
+          <button
+            onClick={() => navigate('/visits/new')}
+            className="group relative min-h-[175px] overflow-hidden rounded-[26px] text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl lg:col-span-8 lg:min-h-[210px]"
+            style={{
+              background:
+                'linear-gradient(115deg, #4A0982 0%, #351D8E 24%, #19379D 50%, #0455A8 73%, #208E94 100%)',
+            }}
+          >
+            {/* Decoration */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div className="absolute -right-16 -top-20 h-64 w-64 rounded-full border border-white/10" />
 
-            {/* Estado online */}
-            <div
-              className={`flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium ${
-                isOnline
-                  ? 'bg-[#E8F7F1] text-[#157A5A]'
-                  : 'bg-[#FFF4E1] text-[#A66C16]'
-              }`}
-            >
-              {isOnline ? (
-                <Cloud size={15} />
-              ) : (
-                <CloudOff size={15} />
-              )}
+              <div className="absolute -right-5 -top-4 h-40 w-40 rounded-full bg-white/[0.04]" />
 
-              <span className="hidden sm:inline">
-                {isOnline
-                  ? 'En línea'
-                  : 'Sin conexión'}
+              <ScanLine
+                size={65}
+                strokeWidth={1.2}
+                className="absolute right-[34%] top-[35%] hidden text-white/[0.10] lg:block"
+              />
+
+              <Monitor
+                size={52}
+                strokeWidth={1.2}
+                className="absolute right-[23%] top-[39%] hidden text-white/[0.10] lg:block"
+              />
+
+              <Activity
+                size={50}
+                strokeWidth={1.2}
+                className="absolute right-[13%] top-[39%] hidden text-white/[0.10] lg:block"
+              />
+            </div>
+
+            <div className="relative flex h-full items-center justify-between gap-5 p-6 sm:p-7 lg:p-8">
+              <div>
+                <div className="mb-5 flex items-center gap-2">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
+                    <Plus size={24} />
+                  </span>
+
+                  <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur">
+                    <Sparkles size={13} />
+                    Captura inteligente
+                  </span>
+                </div>
+
+                <h2 className="text-2xl font-semibold sm:text-3xl">
+                  Nueva visita
+                </h2>
+
+                <p className="mt-2 max-w-md text-sm leading-6 text-white/80 sm:text-base">
+                  Selecciona un hospital y registra lo que observas.
+                </p>
+              </div>
+
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/15 backdrop-blur transition group-hover:translate-x-1 group-hover:bg-white/20 sm:h-14 sm:w-14">
+                <ChevronRight size={25} />
+              </span>
+            </div>
+          </button>
+
+          {/* Today's summary */}
+          <div className="hidden rounded-[26px] border border-slate-200 bg-white p-6 shadow-sm lg:col-span-4 lg:block">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-[#0B5ED7]">
+                  <CalendarDays size={19} />
+                </div>
+
+                <h2 className="font-semibold text-slate-950">
+                  Resumen de hoy
+                </h2>
+              </div>
+
+              <span className="text-xs text-slate-400">
+                {new Date().toLocaleDateString('es-PA', { day: 'numeric', month: 'long' })}
               </span>
             </div>
 
-            {/* Usuario desktop */}
-            <div className="hidden items-center gap-3 border-l border-[#E6EAF0] pl-4 md:flex">
+            <div className="mt-7 grid grid-cols-3 divide-x divide-slate-100">
+              <SummaryMetric
+                value={todayVisits.length}
+                label="Visitas"
+                icon={<ClipboardList size={17} />}
+              />
 
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#EAF2FF] text-[#0B5ED7]">
-                <UserRound size={17} />
-              </div>
+              <SummaryMetric
+                value={todayEquipment}
+                label="Equipos"
+                icon={<Monitor size={17} />}
+              />
 
-              <div className="leading-tight">
-                <p className="text-sm font-medium text-[#172033]">
-                  {user.name}
-                </p>
+              <SummaryMetric
+                value={todayVisits.filter(v => v.syncStatus === 'pending').length}
+                label="Pendientes"
+                icon={<CheckCircle2 size={17} />}
+                success
+              />
+            </div>
 
-                <p className="mt-0.5 text-xs text-[#8490A0]">
-                  Colaborador de campo
+            <div className="mt-6 border-t border-slate-100 pt-5">
+              <p className="text-center text-xs italic leading-5 text-slate-400">
+                La información capturada hoy está disponible para consulta.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Main content */}
+        <section className="mt-5 grid gap-5 lg:grid-cols-12">
+          {/* Recent visits */}
+          <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6 lg:col-span-6">
+            <div className="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-950">
+                  Visitas recientes
+                </h2>
+
+                <p className="mt-1 text-sm text-slate-400">
+                  Actividad reciente · incluye visitas de ejemplo
                 </p>
               </div>
 
               <button
-                onClick={handleLogout}
-                className="ml-1 flex h-9 w-9 items-center justify-center rounded-full text-[#94A0AF] transition hover:bg-[#F2F4F8] hover:text-[#172033]"
-                title="Cerrar sesión"
+                onClick={() => navigate('/visits')}
+                className="flex items-center gap-1 text-sm font-semibold text-[#0B5ED7] transition hover:gap-2"
               >
-                <LogOut size={17} />
+                Ver todas
+                <ChevronRight size={16} />
               </button>
-
             </div>
 
-            {/* Logout mobile */}
-            <button
-              onClick={handleLogout}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-[#94A0AF] transition hover:bg-[#F2F4F8] hover:text-[#172033] md:hidden"
-              title="Cerrar sesión"
-            >
-              <LogOut size={18} />
-            </button>
-
-          </div>
-
-        </header>
-
-        {/* CONTENIDO */}
-        <div className="px-6 pb-28 sm:px-8 md:px-10 md:pb-10">
-
-          {/* Bienvenida */}
-          <section className="pt-4 md:pt-3">
-
-            <p className="text-sm font-medium text-[#0B5ED7]">
-              Buen día
-            </p>
-
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight text-[#172033] sm:text-4xl">
-              Hola, {firstName}
-            </h1>
-
-            <p className="mt-2 text-[15px] leading-6 text-[#6F7A8A]">
-              ¿Listo para tu próxima visita?
-            </p>
-
-          </section>
-
-          {/* CTA NUEVA VISITA */}
-          <section className="mt-7">
-
-            <button
-              onClick={() =>
-                navigate('/visits/new')
-              }
-              className="group relative w-full overflow-hidden rounded-[24px] px-6 py-6 text-left text-white shadow-lg shadow-[#1D3F96]/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl md:px-7 md:py-5"
-              style={{
-                background:
-                  'linear-gradient(115deg, #4A0982 0%, #351D8E 24%, #19379D 50%, #0455A8 73%, #208E94 100%)',
-              }}
-            >
-
-              {/* Iconografía decorativa */}
-              <div className="pointer-events-none absolute inset-y-0 right-[90px] hidden items-center gap-8 sm:flex lg:right-[120px] lg:gap-12">
-
-                {/* Scan */}
-                <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full border border-white/[0.07] text-white/[0.13] lg:h-[86px] lg:w-[86px]">
-                  <ScanLine
-                    className="h-10 w-10 lg:h-12 lg:w-12"
-                    strokeWidth={1.25}
-                  />
-                </div>
-
-                {/* Monitor */}
-                <div className="flex h-[66px] w-[66px] items-center justify-center text-white/[0.11] lg:h-[78px] lg:w-[78px]">
-                  <Monitor
-                    className="h-10 w-10 lg:h-12 lg:w-12"
-                    strokeWidth={1.25}
-                  />
-                </div>
-
-                {/* Señal */}
-                <div className="hidden h-[60px] w-[60px] items-center justify-center text-white/[0.09] lg:flex">
-                  <Activity
-                    className="h-10 w-10"
-                    strokeWidth={1.2}
-                  />
-                </div>
-
-              </div>
-
-              {/* Elementos de fondo */}
-              <div className="pointer-events-none absolute -right-20 -top-24 h-60 w-60 rounded-full border border-white/[0.10]" />
-
-              <div className="pointer-events-none absolute -right-5 -top-6 h-32 w-32 rounded-full bg-white/[0.04]" />
-
-              <div className="pointer-events-none absolute right-[32%] top-[-70px] hidden h-40 w-40 rounded-full border border-white/[0.05] lg:block" />
-
-              {/* Contenido */}
-              <div className="relative z-10 flex items-center justify-between gap-5">
-
-                <div className="min-w-0">
-
-                  {/* Fila superior */}
-                  <div className="mb-4 flex items-center gap-3 md:mb-3">
-
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 md:h-10 md:w-10">
-                      <Plus size={23} />
-                    </div>
-
-                    <div className="hidden items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white/90 sm:flex">
-
-                      <Sparkles size={14} />
-
-                      Captura inteligente
-
-                    </div>
-
+            <div className="overflow-hidden rounded-2xl border border-slate-200">
+              {recentVisits.length === 0 && <p className="p-5 text-sm text-slate-500">Aún no hay visitas. Comienza una nueva visita para registrar equipos.</p>}
+              {recentVisits.map((visit, index) => (
+                <button
+                  key={visit.id}
+                  onClick={() => navigate(`/visits/${visit.id}`)}
+                  className={`group flex w-full items-center gap-4 bg-white px-4 py-4 text-left transition hover:bg-slate-50 ${
+                    index !== recentVisits.length - 1
+                      ? 'border-b border-slate-100'
+                      : ''
+                  }`}
+                >
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#233EA5] text-white">
+                    <ClipboardList size={19} />
                   </div>
 
-                  <h2 className="text-xl font-semibold">
-                    Nueva visita
-                  </h2>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-slate-950">
+                      {visit.hospital}
+                    </p>
 
-                  <p className="mt-1 max-w-[300px] text-sm leading-6 text-white/80 md:max-w-[360px]">
-                    Selecciona un hospital y registra
-                    lo que observas.
-                  </p>
+                    <p className="mt-1 text-xs text-slate-400">
+                      {visit.area} · {visit.date}
+                    </p>
+                  </div>
 
-                </div>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-slate-950">
+                      {visit.equipmentCount}
+                    </p>
 
-                {/* Arrow */}
-                <div className="relative z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 transition duration-200 group-hover:translate-x-1 group-hover:bg-white/15">
-                  <ChevronRight size={22} />
-                </div>
+                    <p className="text-[11px] text-slate-400">
+                      equipos
+                    </p>
+                  </div>
 
+                  <ChevronRight
+                    size={18}
+                    className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-[#0B5ED7]"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Continue visit */}
+          <div className="hidden rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6 lg:col-span-3 lg:block">
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                <Clock3 size={19} />
               </div>
 
-            </button>
+              <div>
+                <h2 className="font-semibold text-slate-950">
+                  Continuar visita
+                </h2>
 
-          </section>
+                <p className="mt-1 text-xs leading-5 text-slate-400">
+                  {currentVisit
+                    ? 'Tienes una visita en progreso'
+                    : 'No tienes visitas pendientes'}
+                </p>
+              </div>
+            </div>
 
-          {/* PARTE INFERIOR */}
-          <div className="mt-9 grid gap-8 lg:grid-cols-[1.6fr_0.8fr]">
-
-            {/* VISITAS RECIENTES */}
-            <section>
-
-              <div className="mb-4 flex items-end justify-between gap-4">
-
-                <div>
-
-                  <h2 className="text-base font-semibold text-[#172033]">
-                    Visitas recientes
-                  </h2>
-
-                  <p className="mt-1 text-sm text-[#8A96A6]">
-                    Tu actividad más reciente
-                  </p>
-
-                </div>
-
+            {currentVisit ? (
+              <>
                 <button
-                  onClick={() =>
-                    navigate('/visits')
-                  }
-                  className="shrink-0 text-sm font-medium text-[#0B5ED7] transition hover:text-[#19379D]"
+                  onClick={() => navigate(resumePath())}
+                  className="group mt-5 w-full rounded-2xl border border-blue-100 bg-blue-50/70 p-4 text-left transition hover:border-blue-200 hover:bg-blue-50"
                 >
-                  Ver todas
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#0B5ED7] shadow-sm">
+                      <Building2 size={18} />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-slate-950">
+                        {currentVisit.hospitalName}
+                      </p>
+
+                      <p className="mt-1 truncate text-xs text-slate-500">
+                        {currentVisit.area || 'Área no especificada'}
+                      </p>
+                    </div>
+
+                    <ChevronRight
+                      size={18}
+                      className="text-[#0B5ED7] transition group-hover:translate-x-1"
+                    />
+                  </div>
                 </button>
 
+                <button
+                  onClick={() => navigate(resumePath())}
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0B5ED7] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0954C4]"
+                >
+                  Continuar visita
+                  <ChevronRight size={17} />
+                </button>
+
+                <button
+                  onClick={discardCurrentVisit}
+                  className="mt-2 w-full py-2 text-xs font-medium text-slate-400 transition hover:text-rose-500"
+                >
+                  Descartar borrador
+                </button>
+              </>
+            ) : (
+              <div className="mt-5 rounded-2xl bg-slate-50 px-4 py-6 text-center">
+                <CheckCircle2
+                  size={26}
+                  className="mx-auto text-slate-300"
+                />
+
+                <p className="mt-3 text-xs leading-5 text-slate-400">
+                  Cuando dejes una visita abierta podrás continuarla desde aquí.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Sync */}
+          <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6 lg:col-span-3">
+            <div className="flex items-start gap-3">
+              <div
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+                  isOnline && pendingCount === 0
+                    ? 'bg-emerald-50 text-emerald-600'
+                    : 'bg-amber-50 text-amber-600'
+                }`}
+              >
+                {isOnline ? <Cloud size={19} /> : <CloudOff size={19} />}
               </div>
 
-              {/* Lista */}
-              <div className="overflow-hidden rounded-2xl border border-[#E5EAF0] bg-white">
-
-                {recentVisits.map(
-                  (visit, index) => (
-                    <button
-                      key={visit.id}
-                      className={`flex w-full items-center gap-4 px-4 py-4 text-left transition hover:bg-[#F8F9FC] ${
-                        index !==
-                        recentVisits.length - 1
-                          ? 'border-b border-[#E9EDF2]'
-                          : ''
-                      }`}
-                    >
-
-                      {/* Icono visita */}
-                      <div
-                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white"
-                        style={{
-                          background:
-                            'linear-gradient(135deg, #351D8E 0%, #0455A8 100%)',
-                        }}
-                      >
-                        <ClipboardList size={20} />
-                      </div>
-
-                      {/* Datos */}
-                      <div className="min-w-0 flex-1">
-
-                        <p className="truncate text-sm font-semibold text-[#172033]">
-                          {visit.hospital}
-                        </p>
-
-                        <p className="mt-1 truncate text-xs text-[#8A96A6]">
-                          {visit.area} ·{' '}
-                          {visit.date}
-                        </p>
-
-                      </div>
-
-                      {/* Cantidad */}
-                      <div className="flex items-center gap-3">
-
-                        <div className="hidden text-right sm:block">
-
-                          <p className="text-sm font-medium text-[#415065]">
-                            {visit.equipment}
-                          </p>
-
-                          <p className="text-[11px] text-[#9AA5B4]">
-                            equipos
-                          </p>
-
-                        </div>
-
-                        <ChevronRight
-                          size={18}
-                          className="text-[#B7C0CC]"
-                        />
-
-                      </div>
-
-                    </button>
-                  )
-                )}
-
-              </div>
-
-            </section>
-
-            {/* SINCRONIZACIÓN */}
-            <section>
-
-              <div className="mb-4">
-
-                <h2 className="text-base font-semibold text-[#172033]">
+              <div>
+                <h2 className="font-semibold text-slate-950">
                   Sincronización
                 </h2>
 
-                <p className="mt-1 text-sm text-[#8A96A6]">
+                <p className="mt-1 text-xs text-slate-400">
                   Estado de tus registros
                 </p>
-
               </div>
+            </div>
 
-              <div className="rounded-2xl border border-[#E5EAF0] bg-[#F7F9FC] p-5">
-
-                <div className="flex items-start gap-3">
-
-                  <div
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
-                      isOnline
-                        ? 'bg-[#E8F7F1] text-[#159B72]'
-                        : 'bg-[#FFF4E1] text-[#D49A31]'
-                    }`}
-                  >
-                    {isOnline ? (
-                      <Cloud size={20} />
-                    ) : (
-                      <CloudOff size={20} />
-                    )}
-                  </div>
-
-                  <div>
-
-                    <p className="text-sm font-semibold text-[#172033]">
-                      {isOnline
-                        ? 'Todo sincronizado'
-                        : 'Trabajando sin conexión'}
-                    </p>
-
-                    <p className="mt-1 text-sm leading-6 text-[#8A96A6]">
-                      {isOnline
-                        ? 'No tienes registros pendientes.'
-                        : 'Tus visitas se guardarán localmente.'}
-                    </p>
-
-                  </div>
-
+            <div
+              className={`mt-5 rounded-2xl p-4 ${
+                isOnline && pendingCount === 0 ? 'bg-emerald-50' : 'bg-amber-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`flex h-9 w-9 items-center justify-center rounded-full ${
+                    isOnline && pendingCount === 0
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-amber-500 text-white'
+                  }`}
+                >
+                  {isOnline ? (
+                    <CheckCircle2 size={18} />
+                  ) : (
+                    <CloudOff size={18} />
+                  )}
                 </div>
 
+                <div>
+                  <p
+                    className={`text-sm font-semibold ${
+                      isOnline && pendingCount === 0 ? 'text-emerald-950' : 'text-amber-950'
+                    }`}
+                  >
+                    {isOnline
+                      ? `${pendingCount} visitas pendientes`
+                      : 'Trabajando sin conexión'}
+                  </p>
+
+                  <p
+                    className={`mt-0.5 text-xs ${
+                      isOnline && pendingCount === 0 ? 'text-emerald-700' : 'text-amber-700'
+                    }`}
+                  >
+                    {isOnline
+                      ? 'Guardadas localmente. Sin envío al servidor.'
+                      : 'Tus registros se guardarán localmente.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 grid grid-cols-2 divide-x divide-slate-100 border-t border-slate-100 pt-4">
+              <div className="pr-4">
+                <p className="text-[11px] text-slate-400">
+                  Última sincronización
+                </p>
+
+                <p className="mt-1 text-xs font-medium text-slate-700">
+                  No disponible en el prototipo
+                </p>
               </div>
 
-            </section>
+              <div className="pl-4">
+                <p className="text-[11px] text-slate-400">
+                  Modo actual
+                </p>
 
+                <p className="mt-1 flex items-center gap-1.5 text-xs font-medium text-slate-700">
+                  <Wifi size={13} />
+                  {isOnline ? 'En línea' : 'Offline'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Mobile current visit */}
+        {currentVisit && (
+          <section className="mt-5 lg:hidden">
+            <button
+              onClick={() => navigate(resumePath())}
+              className="flex w-full items-center gap-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-left"
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-[#0B5ED7] shadow-sm">
+                <Clock3 size={19} />
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-medium text-[#0B5ED7]">
+                  Visita en progreso
+                </p>
+
+                <p className="mt-0.5 truncate text-sm font-semibold text-slate-950">
+                  {currentVisit.hospitalName}
+                </p>
+              </div>
+
+              <ChevronRight size={19} className="text-[#0B5ED7]" />
+            </button>
+          </section>
+        )}
+
+        {/* Desktop tip */}
+        <section className="mt-5 hidden items-center justify-between gap-6 rounded-[22px] border border-blue-100 bg-blue-50 px-6 py-5 lg:flex">
+          <div className="flex items-center gap-4">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#0B5ED7] shadow-sm">
+              <Lightbulb size={20} />
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-[#0B5ED7]">
+                Consejo para tus visitas
+              </p>
+
+              <p className="mt-1 text-xs text-slate-500">
+                Usa la captura por voz para registrar observaciones mientras te
+                desplazas por el hospital.
+              </p>
+            </div>
           </div>
 
-          {/* Nota inferior */}
-          <div className="mt-8 hidden items-center gap-2 text-xs text-[#64589D] md:flex">
-
+          <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
             <Sparkles size={14} />
-
-            Captura estructurada y asistencia
-            inteligente durante tus visitas
-
+            Captura estructurada y asistencia inteligente
           </div>
+        </section>
+      </main>
 
-        </div>
+      {/* Mobile navigation */}
 
-        {/* NAVEGACIÓN MOBILE */}
-        <nav className="fixed bottom-0 left-0 right-0 z-20 border-t border-[#E5EAF0] bg-white/95 px-6 pb-[max(12px,env(safe-area-inset-bottom))] pt-3 backdrop-blur md:hidden">
+    </div>
+  )
+}
 
-          <div className="mx-auto flex max-w-md items-center justify-around">
-
-            {/* Inicio */}
-            <button className="flex min-w-[72px] flex-col items-center gap-1 text-[#0B5ED7]">
-
-              <UserRound size={21} />
-
-              <span className="text-[11px] font-medium">
-                Inicio
-              </span>
-
-            </button>
-
-            {/* Nueva visita */}
-            <button
-              onClick={() =>
-                navigate('/visits/new')
-              }
-              className="-mt-7 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg shadow-[#19379D]/25 transition active:scale-95"
-              style={{
-                background:
-                  'linear-gradient(135deg, #4A0982 0%, #19379D 50%, #208E94 100%)',
-              }}
-              aria-label="Nueva visita"
-            >
-              <Plus size={26} />
-            </button>
-
-            {/* Mis visitas */}
-            <button
-              onClick={() =>
-                navigate('/visits')
-              }
-              className="flex min-w-[72px] flex-col items-center gap-1 text-[#8A96A6]"
-            >
-
-              <ClipboardList size={21} />
-
-              <span className="text-[11px] font-medium">
-                Mis visitas
-              </span>
-
-            </button>
-
-          </div>
-
-        </nav>
-
+function SummaryMetric({
+  value,
+  label,
+  icon,
+  success = false,
+}: {
+  value: number
+  label: string
+  icon: React.ReactNode
+  success?: boolean
+}) {
+  return (
+    <div className="px-3 text-center">
+      <div
+        className={`mx-auto flex h-9 w-9 items-center justify-center rounded-xl ${
+          success
+            ? 'bg-emerald-50 text-emerald-600'
+            : 'bg-blue-50 text-[#0B5ED7]'
+        }`}
+      >
+        {icon}
       </div>
 
-    </main>
+      <p className="mt-2 text-xl font-semibold text-slate-950">
+        {value}
+      </p>
+
+      <p className="mt-1 text-[11px] leading-4 text-slate-400">
+        {label}
+      </p>
+    </div>
   )
 }
 

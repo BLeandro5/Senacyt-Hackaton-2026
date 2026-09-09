@@ -1,3 +1,4 @@
+import { AppLayout, RouteError } from '../components/AppLayout'
 import { createBrowserRouter } from 'react-router-dom'
 
 import LoginPage from '../pages/Login/LoginPage'
@@ -7,6 +8,8 @@ import CapturePage from '../pages/Capture/CapturePage'
 import ReviewPage from '../pages/Review/ReviewPage'
 import MatchPage from '../pages/Match/MatchPage'
 import SuccessPage from '../pages/Success/SuccessPage'
+import VisitsPage from '../pages/Visits/VisitsPage'
+import VisitDetailPage from '../pages/VisitDetail/VisitDetailPage'
 
 export const router = createBrowserRouter([
   {
@@ -17,9 +20,14 @@ export const router = createBrowserRouter([
     path: '/login',
     element: <LoginPage />,
   },
+  { element: <AppLayout />, errorElement: <RouteError />, children: [
   {
     path: '/home',
     element: <HomePage />,
+  },
+  {
+    path: '/visits',
+    element: <VisitsPage />,
   },
   {
     path: '/visits/new',
@@ -41,4 +49,10 @@ export const router = createBrowserRouter([
     path: '/visits/new/success',
     element: <SuccessPage />,
   },
+  {
+  path: '/visits/:visitId',
+  element: <VisitDetailPage />,
+},
+  ] },
+  { path: "*", element: <RouteError /> },
 ])

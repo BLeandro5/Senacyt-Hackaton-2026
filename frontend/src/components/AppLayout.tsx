@@ -45,7 +45,7 @@ export function AppLayout() {
         </div>
       </div>
     </header>
-    {!online && <p className="offline-notice" role="status">Sin conexión. Puedes seguir registrando en este dispositivo. La sincronización con el servidor aún no está disponible.</p>}
+    {!online && <p className="offline-notice" role="status">Sin Internet. Puedes usar MedPsy y SQLite localmente si sus servicios siguen iniciados.</p>}
     <div id="page-content" className="page-enter" key={location.pathname}><Outlet /></div>
     <nav className="mobile-nav" aria-label="Navegación móvil">
       <NavLink to="/home"><Building2 size={21} />Inicio</NavLink>

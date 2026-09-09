@@ -31,6 +31,7 @@ yarn-error.log*
 *.db
 *.sqlite
 *.sqlite3
+backend/data/
 
 # =========================
 # QVAC / local model caches

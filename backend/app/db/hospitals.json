@@ -1,0 +1,32 @@
+[
+  {
+    "id": "HOSP-001",
+    "name": "Hospital Santo Tomás",
+    "region": "Panamá Metro",
+    "city": "Ciudad de Panamá"
+  },
+  {
+    "id": "HOSP-002",
+    "name": "Hospital Nacional",
+    "region": "Panamá Metro",
+    "city": "Ciudad de Panamá"
+  },
+  {
+    "id": "HOSP-003",
+    "name": "Hospital Paitilla",
+    "region": "Panamá Metro",
+    "city": "Ciudad de Panamá"
+  },
+  {
+    "id": "HOSP-004",
+    "name": "Hospital San Fernando",
+    "region": "Panamá Metro",
+    "city": "Ciudad de Panamá"
+  },
+  {
+    "id": "HOSP-005",
+    "name": "Hospital Punta Pacífica",
+    "region": "Panamá Metro",
+    "city": "Ciudad de Panamá"
+  }
+]

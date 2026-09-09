@@ -1,4 +1,5 @@
-import { readStored, writeStored, saveObservation, type RecordDraft } from '../../data/visitStore'
+import { persistVisit } from '../../data/storageApi'
+import { readStored, writeStored, type RecordDraft } from '../../data/visitStore'
 import VisitContext from '../../components/VisitContext'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -15,6 +16,7 @@ function MatchPage() {
   const navigate = useNavigate()
 
   const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
   const record = readStored<RecordDraft>('current-structured-record', { hospitalName: '', originalObservation: '', equipment: [] })
   const equipment = record.equipment
 
@@ -99,13 +101,15 @@ function MatchPage() {
     isResolved(item.id)
   )
 
-  const handleContinue = () => {
-    if (!allResolved) return
+  const handleContinue = async () => {
+    if (!allResolved || saving) return
+    setSaving(true)
+    setError('')
 
     try {
       writeStored('match-result', { decisions })
-      saveObservation()
-    } catch { setError('No se pudo guardar. Tus decisiones siguen en pantalla; intenta de nuevo.'); return }
+      await persistVisit()
+    } catch (cause) { setSaving(false); setError(cause instanceof Error ? cause.message : 'No se pudo guardar. Tus decisiones siguen en pantalla.'); return }
 
     navigate('/visits/new/success')
   }
@@ -342,7 +346,7 @@ function MatchPage() {
 
               <button
                 onClick={handleContinue}
-                disabled={!allResolved}
+                disabled={!allResolved || saving}
                 className={`group flex h-14 w-full items-center justify-center gap-3 rounded-2xl font-medium transition ${
                   allResolved
                     ? 'ai-gradient text-white shadow-lg shadow-[#3437B8]/20'

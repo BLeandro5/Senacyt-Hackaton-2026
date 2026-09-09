@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Camera, Check, ChevronRight, FileText, Keyboard, Mic, MicOff, Send, Sparkles, X } from 'lucide-react'
 
 type CaptureMode = 'chat' | 'voice'
+import { analyzeObservation, toEquipmentDrafts } from '../../data/observationApi'
 
 function CapturePage() {
   const navigate = useNavigate()
@@ -18,13 +19,13 @@ function CapturePage() {
   const [photoName, setPhotoName] = useState(draft.photoName || '')
   const [photoData, setPhotoData] = useState(draft.photoData || '')
   const [error, setError] = useState('')
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const request = useRef<AbortController | null>(null)
   const visit = readStored<CurrentVisit>('current-visit', { hospitalName: '' })
   useEffect(() => {
     try { writeStored('capture-draft', { ...draft, observation, captureMode: mode, photoName, photoData }) }
     catch { /* The submit action reports storage failures without losing the editable text. */ }
   }, [draft, observation, mode, photoName, photoData])
-  useEffect(() => () => { if (timer.current) clearTimeout(timer.current) }, [])
+  useEffect(() => () => request.current?.abort(), [])
 
   /*
     Por ahora estas sugerencias son simuladas.
@@ -128,34 +129,41 @@ function CapturePage() {
     reader.readAsDataURL(file)
   }
 
-  const handleAnalyze = () => {
-    if (!observation.trim() || isProcessing || isListening) return
-
-    const capture = {
-      ...visit,
-      id: draft.id || crypto.randomUUID(),
-      visitId: visit.id,
-      photoData,
-      observation: observation.trim(),
-      photoName: photoName || null,
-      captureMode: mode,
-      capturedAt: new Date().toISOString(),
+  const handleAnalyze = async () => {
+    if (observation.trim().length < 3 || isProcessing || isListening) return
+    const controller = new AbortController()
+    request.current = controller
+    setIsProcessing(true)
+    setError('')
+    const capture: Capture = {
+      ...visit, id: draft.id || crypto.randomUUID(), visitId: visit.id,
+      photoData, observation: observation.trim(), photoName: photoName || null,
+      captureMode: mode, capturedAt: new Date().toISOString(),
     }
-
     try {
-      writeStored('current-observation', capture)
-      writeStored('capture-draft', capture)
+      const analysis = await analyzeObservation(capture.observation,
+        AbortSignal.any([controller.signal, AbortSignal.timeout(190_000)]))
+      if (controller.signal.aborted) return
+      const analyzed = { ...capture, analysis }
+      writeStored('current-observation', analyzed)
+      writeStored('capture-draft', analyzed)
+      writeStored('review-draft', toEquipmentDrafts(analysis))
       localStorage.removeItem('current-structured-record')
-      localStorage.removeItem('review-draft')
       localStorage.removeItem('match-result')
       localStorage.removeItem('match-draft')
-    } catch { setError('No se pudo guardar la observación. Prueba quitando la foto o libera espacio y reintenta.'); return }
-
-    setIsProcessing(true)
-
-    timer.current = setTimeout(() => {
       navigate('/visits/new/review')
-    }, 1200)
+    } catch (cause) {
+      if (controller.signal.aborted) return
+      setError(cause instanceof TypeError
+        ? 'No se pudo conectar con el backend. Comprueba que FastAPI y MedPsy estén iniciados.'
+        : cause instanceof DOMException && cause.name === 'TimeoutError'
+          ? 'El análisis tardó demasiado. Puedes reintentar; tu texto sigue en la captura.'
+          : cause instanceof DOMException && cause.name === 'QuotaExceededError'
+            ? 'No hay espacio para guardar el resultado. Quita la foto y reintenta.'
+            : cause instanceof Error ? cause.message : 'No se pudo analizar la observación.')
+    } finally {
+      if (!controller.signal.aborted) setIsProcessing(false)
+    }
   }
 
   return (
@@ -288,6 +296,7 @@ function CapturePage() {
 
                       <textarea
                         aria-label="Texto de la observación"
+                        disabled={isProcessing}
                         value={observation}
                         onChange={(event) =>
                           setObservation(event.target.value)
@@ -423,7 +432,8 @@ function CapturePage() {
                           </p>
                         </div>
 
-                        <textarea aria-label="Transcripción editable" className="mt-3 w-full rounded-xl border border-slate-200 p-4 text-sm" rows={5} value={observation} onChange={e => setObservation(e.target.value)} />
+                        <textarea aria-label="Transcripción editable" className="mt-3 w-full rounded-xl border border-slate-200 p-4 text-sm" rows={5} disabled={isProcessing}
+                        value={observation} onChange={e => setObservation(e.target.value)} />
 
                       </div>
                     )}
@@ -517,12 +527,18 @@ function CapturePage() {
 
             </section>
 
+            {error && (
+              <p role="alert" className="mt-5 rounded-2xl bg-red-50 p-4 text-sm text-red-700">
+                {error}
+              </p>
+            )}
+
             {/* ANALIZAR */}
             <section className="mt-7">
 
               <button
                 onClick={handleAnalyze}
-                disabled={!observation.trim() || isProcessing || isListening}
+                disabled={observation.trim().length < 3 || isProcessing || isListening}
                 className={`group flex h-14 w-full items-center justify-center gap-3 rounded-2xl font-medium transition ${
                   observation.trim() && !isProcessing
                     ? 'ai-gradient text-white shadow-lg shadow-[#3437B8]/20 hover:-translate-y-0.5 hover:shadow-xl'
@@ -536,7 +552,7 @@ function CapturePage() {
                       size={19}
                       className="animate-pulse"
                     />
-                    Procesando observación demo...
+                    Analizando con MedPsy local...
                   </>
                 ) : (
                   <>
@@ -561,7 +577,7 @@ function CapturePage() {
                   size={13}
                   className="text-[#756EAD]"
                 />
-                Análisis demo · sin envío al servidor
+                Análisis local con MedPsy · revisa los datos antes de guardar
               </div>
 
             </section>

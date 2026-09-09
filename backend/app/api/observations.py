@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+import httpx
+from fastapi import APIRouter, HTTPException
 
 from app.schemas.observation import (
     ObservationAnalysisResponse,
@@ -21,8 +22,17 @@ def analyze_observation_endpoint(
     observation: ObservationRequest,
 ):
     """
-    Recibe una observación de campo y devuelve
+    Recibe una observaciÃ³n de campo y devuelve
     los equipos detectados de forma estructurada.
     """
 
-    return analyze_observation(observation.text)
+    try:
+        return analyze_observation(observation.text)
+    except httpx.TimeoutException as exc:
+        raise HTTPException(504, "QVAC tardó demasiado. Intenta nuevamente.") from exc
+    except httpx.RequestError as exc:
+        raise HTTPException(503, "No se pudo conectar con QVAC. Comprueba que esté iniciado.") from exc
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(502, "QVAC devolvió un error al procesar la observación.") from exc
+    except (ValueError, KeyError, TypeError) as exc:
+        raise HTTPException(502, "QVAC no devolvió una respuesta estructurada válida. Intenta nuevamente.") from exc

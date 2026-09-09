@@ -1,9 +1,10 @@
 import { readStored, writeStored, resumePath, clearObservation, type CurrentVisit } from '../../data/visitStore'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Building2, Check, ChevronRight, CircleCheck, Clock3, MapPin, Search, Sparkles } from 'lucide-react'
 
-import { hospitals } from '../../data/hospitals'
+import { hospitals as cachedHospitals } from '../../data/hospitals'
+import { storageRequest } from '../../data/storageApi'
 
 const areas = [
   'Radiología',
@@ -20,6 +21,13 @@ function NewVisitPage() {
 
   const current = readStored<CurrentVisit | null>('current-visit', null)
   const [error, setError] = useState('')
+  const [hospitals, setHospitals] = useState(cachedHospitals)
+  useEffect(() => {
+    let active = true
+    storageRequest<typeof cachedHospitals>('/hospitals').then(data => { if (active) setHospitals(data) })
+      .catch(() => { if (active) setError('No se pudo cargar el catálogo de SQLite. Mostrando hospitales locales; comprueba el backend antes de guardar.') })
+    return () => { active = false }
+  }, [])
   const [search, setSearch] = useState('')
   const [selectedHospitalId, setSelectedHospitalId] = useState('')
   const [area, setArea] = useState('')
@@ -37,7 +45,7 @@ function NewVisitPage() {
         hospital.region.toLowerCase().includes(query)
       )
     })
-  }, [search])
+  }, [search, hospitals])
 
   const selectedHospital = hospitals.find(
     (hospital) => hospital.id === selectedHospitalId,

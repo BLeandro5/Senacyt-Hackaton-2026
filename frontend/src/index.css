@@ -23,7 +23,7 @@ textarea, input, select { font: inherit; }
 .offline { color: #92400e; background: #fffbeb; }
 .offline-notice { padding: 12px 20px; background: #fffbeb; color: #92400e; text-align: center; font-size: 13px; }
 .mobile-nav { position: fixed; bottom: 0; inset-inline: 0; z-index: 40; background: #fffffff5; backdrop-filter: blur(12px); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 8px 12px max(8px,env(safe-area-inset-bottom)); }
-.mobile-nav a { min-height: 48px; min-width: 80px; display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; color: #64748b; font-size: 11px; font-weight: 600; border-radius: 12px; }
+.mobile-nav a { min-height: 48px; min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; color: #64748b; font-size: 11px; font-weight: 600; border-radius: 12px; }
 .mobile-nav a.active { color: #0B5ED7; background: #eff6ff; }
 .skip-link { position: fixed; left: 12px; top: 12px; z-index: 100; background: white; padding: 12px; clip-path: inset(100%); }
 .skip-link:focus { clip-path: none; }

@@ -1,159 +1,15 @@
-import { useMemo, useState } from 'react'
+import { buildDemoExtraction, type EquipmentDraft } from '../../data/demoExtraction'
+import { readStored, writeStored, type Capture } from '../../data/visitStore'
+import VisitContext from '../../components/VisitContext'
+import { useEffect, useId, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  ArrowLeft,
-  Check,
-  ChevronRight,
-  CirclePlus,
-  Pencil,
-  Sparkles,
-  Trash2,
-} from 'lucide-react'
-
-type EquipmentDraft = {
-  id: string
-  type: string
-  brand: string
-  model: string
-  configuration: string
-  estimatedAge: string
-  status: string
-  confidence: number
-}
-
-function buildDemoExtraction(text: string): EquipmentDraft[] {
-  const normalized = text.toLowerCase()
-
-  const extracted: EquipmentDraft[] = []
-
-  const ageMatch = normalized.match(/(\d+)\s*(años|anos)/)
-  const detectedAge = ageMatch ? `${ageMatch[1]} años` : ''
-
-  /*
-    DEMO:
-    Simulación de extracción.
-
-    Después esta función será reemplazada por
-    la salida real del modelo local.
-  */
-
-  if (
-    normalized.includes('dos resonadores') ||
-    normalized.includes('2 resonadores')
-  ) {
-    extracted.push({
-      id: 'TEMP-001',
-      type: 'Resonador',
-      brand: '',
-      model: '',
-      configuration: '',
-      estimatedAge: detectedAge,
-      status: 'Desconocido',
-      confidence: detectedAge ? 88 : 80,
-    })
-
-    extracted.push({
-      id: 'TEMP-002',
-      type: 'Resonador',
-      brand: '',
-      model: '',
-      configuration: '',
-      estimatedAge: '',
-      status: 'Desconocido',
-      confidence: 76,
-    })
-  } else if (
-    normalized.includes('resonador') ||
-    normalized.includes('resonancia')
-  ) {
-    extracted.push({
-      id: 'TEMP-001',
-      type: 'Resonador',
-      brand: normalized.includes('philips')
-        ? 'Philips'
-        : normalized.includes('siemens')
-          ? 'Siemens'
-          : '',
-      model: normalized.includes('ingenia') ? 'Ingenia' : '',
-      configuration: '',
-      estimatedAge: detectedAge,
-      status: normalized.includes('operativo')
-        ? 'Operativo'
-        : 'Desconocido',
-      confidence: 87,
-    })
-  }
-
-  if (
-    normalized.includes('tomógrafo') ||
-    normalized.includes('tomografo')
-  ) {
-    extracted.push({
-      id: `TEMP-${String(extracted.length + 1).padStart(3, '0')}`,
-      type: 'Tomógrafo',
-      brand: normalized.includes('siemens') ? 'Siemens' : '',
-      model: normalized.includes('somatom') ? 'Somatom' : '',
-      configuration: normalized.includes('64 cortes')
-        ? '64 cortes'
-        : '',
-      estimatedAge:
-        extracted.length === 0 ? detectedAge : '',
-      status: normalized.includes('operativo')
-        ? 'Operativo'
-        : 'Desconocido',
-      confidence: 84,
-    })
-  }
-
-  if (normalized.includes('ultrasonido')) {
-    extracted.push({
-      id: `TEMP-${String(extracted.length + 1).padStart(3, '0')}`,
-      type: 'Ultrasonido',
-      brand: normalized.includes('ge') ? 'GE' : '',
-      model: normalized.includes('logiq') ? 'LOGIQ' : '',
-      configuration: '',
-      estimatedAge: '',
-      status: normalized.includes('operativo')
-        ? 'Operativo'
-        : 'Desconocido',
-      confidence: 82,
-    })
-  }
-
-  /*
-    Fallback para nuestra demo anterior.
-  */
-  if (extracted.length === 0) {
-    extracted.push({
-      id: 'TEMP-001',
-      type: 'Tomógrafo',
-      brand: 'Siemens',
-      model: 'Somatom',
-      configuration: '64 cortes',
-      estimatedAge: '8 años',
-      status: 'Operativo',
-      confidence: 92,
-    })
-  }
-
-  return extracted
-}
+import { Check, ChevronRight, CirclePlus, Pencil, Sparkles, Trash2 } from 'lucide-react'
 
 function ReviewPage() {
   const navigate = useNavigate()
 
-  const storedObservation = localStorage.getItem(
-    'current-observation'
-  )
-
-  const observation = storedObservation
-    ? JSON.parse(storedObservation)
-    : {
-        hospitalName: 'Hospital DemoCare Pacific',
-        area: 'Radiología',
-        observation:
-          'Estoy en Hospital DemoCare Pacific, en Panamá. Tienen dos resonadores y un tomógrafo. Uno de los resonadores parece de unos ocho años.',
-      }
+  const [error, setError] = useState('')
+  const observation = readStored<Capture>('current-observation', { hospitalName: '', observation: '', captureMode: 'chat', capturedAt: '' })
 
   const initialEquipment = useMemo(
     () =>
@@ -164,7 +20,10 @@ function ReviewPage() {
   )
 
   const [equipment, setEquipment] =
-    useState<EquipmentDraft[]>(initialEquipment)
+    useState<EquipmentDraft[]>(() => readStored<EquipmentDraft[]>('review-draft', initialEquipment))
+  useEffect(() => {
+    try { writeStored('review-draft', equipment) } catch { /* Report on confirm; keep edits in memory. */ }
+  }, [equipment])
 
   const updateEquipment = (
     id: string,
@@ -190,12 +49,11 @@ function ReviewPage() {
   }
 
   const addEquipment = () => {
-    const nextNumber = equipment.length + 1
 
     setEquipment((current) => [
       ...current,
       {
-        id: `TEMP-MANUAL-${nextNumber}`,
+        id: crypto.randomUUID(),
         type: '',
         brand: '',
         model: '',
@@ -211,6 +69,7 @@ function ReviewPage() {
     if (equipment.length === 0) return
 
     const structuredRecord = {
+      observationId: observation.id,
       hospitalName: observation.hospitalName,
       hospitalId: observation.hospitalId,
       area: observation.area,
@@ -222,58 +81,38 @@ function ReviewPage() {
       reviewedAt: new Date().toISOString(),
     }
 
-    localStorage.setItem(
-      'current-structured-record',
-      JSON.stringify(structuredRecord)
-    )
+    try {
+      writeStored('current-structured-record', structuredRecord)
+      localStorage.removeItem('match-result')
+      localStorage.removeItem('match-draft')
+    } catch { setError('No se pudo guardar la revisión. Tus cambios siguen en pantalla; libera espacio y reintenta.'); return }
 
     navigate('/visits/new/match')
   }
 
   return (
-    <main className="min-h-screen bg-[#F3F5F9] md:p-5">
-      <div className="mx-auto min-h-screen max-w-[980px] bg-white md:min-h-[calc(100vh-40px)] md:rounded-[28px] md:border md:border-[#E6EAF0] md:shadow-sm">
+    <main className="flow-page flow-review">
+      <div className="flow-container">
 
         {/* HEADER */}
-        <header className="flex items-center justify-between px-5 pb-4 pt-5 sm:px-8 md:px-10 md:pt-8">
 
-          <button
-            onClick={() =>
-              navigate('/visits/new/capture')
-            }
-            className="flex h-10 w-10 items-center justify-center rounded-full text-[#6F7A8A] transition hover:bg-[#F2F4F8]"
-          >
-            <ArrowLeft size={20} />
-          </button>
 
-          <div className="text-center">
-            <p className="text-sm font-bold text-[#0B5ED7]">
-              PHILIPS
-            </p>
+        <div className="flow-layout">
+          <VisitContext />
 
-            <p className="mt-0.5 hidden text-[11px] text-[#8A96A6] sm:block">
-              Installed Base Intelligence
-            </p>
-          </div>
-
-          <div className="h-10 w-10" />
-
-        </header>
-
-        <div className="px-6 pb-10 sm:px-8 md:px-10">
-
-          <div className="mx-auto max-w-[760px]">
+          <div className="flow-content">
+            <button className="back-action" onClick={() => navigate('/visits/new/capture')}>← Volver a la captura</button>
 
             {/* INTRO */}
             <section className="pt-4">
 
               <div className="inline-flex items-center gap-2 rounded-full bg-[#EEEAFB] px-3 py-1.5 text-xs font-medium text-[#4B1F91]">
                 <Sparkles size={13} />
-                Extracción completada
+                Extracción demo completada
               </div>
 
               <h1 className="mt-6 text-3xl font-semibold tracking-tight text-[#172033] sm:text-4xl">
-                {equipment.length} equipos detectados
+                La IA detectó {equipment.length} {equipment.length === 1 ? 'equipo' : 'equipos'}
               </h1>
 
               <p className="mt-3 max-w-xl text-[15px] leading-6 text-[#6F7A8A]">
@@ -323,7 +162,7 @@ function ReviewPage() {
 
               </div>
 
-              <div className="mt-4 space-y-4">
+              <div className="mt-4 equipment-grid">
 
                 {equipment.map((item, index) => (
                   <EquipmentCard
@@ -381,6 +220,7 @@ function ReviewPage() {
 
             </section>
 
+            {error && <p role="alert" className="storage-error">{error}</p>}
             {/* CONFIRMAR */}
             <section className="mt-7">
 
@@ -389,7 +229,7 @@ function ReviewPage() {
                 disabled={equipment.length === 0}
                 className={`group flex h-14 w-full items-center justify-center gap-3 rounded-2xl font-medium transition ${
                   equipment.length > 0
-                    ? 'bg-gradient-to-r from-[#0B5ED7] via-[#3437B8] to-[#4B1F91] text-white shadow-lg shadow-[#3437B8]/20 hover:-translate-y-0.5'
+                    ? 'ai-gradient text-white shadow-lg shadow-[#3437B8]/20 hover:-translate-y-0.5'
                     : 'cursor-not-allowed bg-[#EEF1F5] text-[#A1ABB8]'
                 }`}
               >
@@ -468,7 +308,7 @@ function EquipmentCard({
               />
 
               <span className="text-xs text-[#756E9D]">
-                {item.confidence}% confianza
+                {item.id.startsWith('TEMP-') ? `${item.confidence}% confianza demo` : 'Añadido manualmente'}
               </span>
 
             </div>
@@ -479,6 +319,7 @@ function EquipmentCard({
         <button
           onClick={() => onRemove(item.id)}
           className="flex h-9 w-9 items-center justify-center rounded-full text-[#A1ABB8] transition hover:bg-red-50 hover:text-red-500"
+          aria-label={`Eliminar equipo ${index + 1}`}
           title="Eliminar equipo"
         >
           <Trash2 size={17} />
@@ -548,6 +389,7 @@ function EquipmentCard({
           </label>
 
           <select
+            aria-label={`Estado del equipo ${index + 1}`}
             value={item.status}
             onChange={(event) =>
               onChange(
@@ -584,16 +426,18 @@ function Field({
   placeholder,
   onChange,
 }: FieldProps) {
+  const fieldId = useId()
   return (
     <div>
 
-      <label className="text-xs font-medium text-[#7D8998]">
+      <label htmlFor={fieldId} className="text-xs font-medium text-[#7D8998]">
         {label}
       </label>
 
       <div className="relative mt-2">
 
         <input
+          id={fieldId}
           value={value}
           onChange={(event) =>
             onChange(event.target.value)

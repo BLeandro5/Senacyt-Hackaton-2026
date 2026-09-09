@@ -1,206 +1,16 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import {
-  ArrowLeft,
-  Building2,
-  CalendarDays,
-  CheckCircle2,
-  ChevronLeft,
-  Cloud,
-  CloudOff,
-  Clock3,
-  MapPin,
-  MessageSquareText,
-  Monitor,
-  Radio,
-  ScanLine,
-  Sparkles,
-} from 'lucide-react'
+import { ArrowLeft, Building2, CalendarDays, CheckCircle2, Cloud, CloudOff, Clock3, MapPin, MessageSquareText, Monitor, Radio, ScanLine, Sparkles } from 'lucide-react'
 
+import { getVisits } from '../../data/visits'
+import { displayDate, observationTitle, type Equipment } from '../../data/visitStore'
 type SyncStatus = 'synced' | 'pending'
 type EquipmentResolution = 'existing' | 'new'
-
-type Equipment = {
-  id: string
-  type: string
-  brand: string
-  model: string
-  configuration?: string
-  estimatedAge?: string
-  status?: string
-  resolution: EquipmentResolution
-  matchedEquipmentId?: string
-}
-
-type Observation = {
-  id: string
-  captureMode: 'chat' | 'voice'
-  originalText: string
-  equipment: Equipment[]
-}
-
-type Visit = {
-  id: string
-  hospital: string
-  area: string
-  region: string
-  date: string
-  startedAt: string
-  completedAt: string
-  syncStatus: SyncStatus
-  observations: Observation[]
-}
-
-const demoVisits: Visit[] = [
-  {
-    id: 'VIS-001',
-    hospital: 'Hospital Santo Tomás',
-    area: 'Imagenología',
-    region: 'Panamá Metro',
-    date: '9 sep 2026',
-    startedAt: '9:42 a. m.',
-    completedAt: '10:06 a. m.',
-    syncStatus: 'synced',
-    observations: [
-      {
-        id: 'OBS-001',
-        captureMode: 'voice',
-        originalText:
-          'Tienen dos resonadores y un tomógrafo. Uno de los resonadores parece de unos ocho años.',
-        equipment: [
-          {
-            id: 'EQ-OBS-001',
-            type: 'Resonador magnético',
-            brand: 'Philips',
-            model: 'Ingenia',
-            configuration: '1.5T',
-            estimatedAge: '8 años',
-            status: 'Operativo',
-            resolution: 'existing',
-            matchedEquipmentId: 'EQ-00421',
-          },
-          {
-            id: 'EQ-OBS-002',
-            type: 'Resonador magnético',
-            brand: 'Desconocida',
-            model: 'Desconocido',
-            estimatedAge: 'Desconocida',
-            status: 'No informado',
-            resolution: 'new',
-          },
-          {
-            id: 'EQ-OBS-003',
-            type: 'Tomógrafo',
-            brand: 'Siemens',
-            model: 'Somatom',
-            configuration: '64 cortes',
-            estimatedAge: 'Desconocida',
-            status: 'Operativo',
-            resolution: 'existing',
-            matchedEquipmentId: 'EQ-00128',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'VIS-002',
-    hospital: 'Hospital Nacional',
-    area: 'Radiología',
-    region: 'Panamá Metro',
-    date: '8 sep 2026',
-    startedAt: '3:18 p. m.',
-    completedAt: '3:51 p. m.',
-    syncStatus: 'synced',
-    observations: [
-      {
-        id: 'OBS-002',
-        captureMode: 'chat',
-        originalText:
-          'En radiología hay un tomógrafo de 64 cortes que se encuentra operativo.',
-        equipment: [
-          {
-            id: 'EQ-OBS-004',
-            type: 'Tomógrafo',
-            brand: 'Siemens',
-            model: 'Somatom',
-            configuration: '64 cortes',
-            status: 'Operativo',
-            resolution: 'existing',
-            matchedEquipmentId: 'EQ-00311',
-          },
-        ],
-      },
-      {
-        id: 'OBS-003',
-        captureMode: 'voice',
-        originalText:
-          'También observé dos equipos de ultrasonido, uno de ellos portátil.',
-        equipment: [
-          {
-            id: 'EQ-OBS-005',
-            type: 'Ultrasonido',
-            brand: 'GE',
-            model: 'LOGIQ',
-            configuration: 'Portátil',
-            status: 'En uso',
-            resolution: 'new',
-          },
-          {
-            id: 'EQ-OBS-006',
-            type: 'Ultrasonido',
-            brand: 'Desconocida',
-            model: 'Desconocido',
-            status: 'No informado',
-            resolution: 'new',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'VIS-003',
-    hospital: 'Hospital Punta Pacífica',
-    area: 'Urgencias',
-    region: 'Panamá Metro',
-    date: '8 sep 2026',
-    startedAt: '11:05 a. m.',
-    completedAt: '11:24 a. m.',
-    syncStatus: 'pending',
-    observations: [
-      {
-        id: 'OBS-004',
-        captureMode: 'voice',
-        originalText:
-          'Hay un equipo de rayos X móvil y un ultrasonido en el área de urgencias.',
-        equipment: [
-          {
-            id: 'EQ-OBS-007',
-            type: 'Rayos X móvil',
-            brand: 'Philips',
-            model: 'Desconocido',
-            status: 'Operativo',
-            resolution: 'existing',
-            matchedEquipmentId: 'EQ-00540',
-          },
-          {
-            id: 'EQ-OBS-008',
-            type: 'Ultrasonido',
-            brand: 'Desconocida',
-            model: 'Desconocido',
-            status: 'No informado',
-            resolution: 'new',
-          },
-        ],
-      },
-    ],
-  },
-]
 
 function VisitDetailPage() {
   const navigate = useNavigate()
   const { visitId } = useParams()
 
-  const visit = demoVisits.find((item) => item.id === visitId)
+  const visit = getVisits().find((item) => item.id === visitId)
 
   if (!visit) {
     return (
@@ -245,40 +55,17 @@ function VisitDetailPage() {
   return (
     <div className="min-h-screen bg-[#F3F5F9] text-slate-900">
       {/* Header */}
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-[1180px] items-center justify-between px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate('/visits')}
-              className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-600 transition hover:bg-slate-100"
-              aria-label="Volver a mis visitas"
-            >
-              <ChevronLeft size={22} />
-            </button>
 
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B5ED7]">
-                Philips
-              </p>
 
-              <h1 className="text-lg font-semibold text-slate-950 sm:text-xl">
-                Detalle de visita
-              </h1>
-            </div>
-          </div>
-
-          <SyncStatusBadge status={visit.syncStatus} />
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-[1180px] px-4 pb-10 pt-6 sm:px-6 sm:pt-8">
+      <main className="mx-auto max-w-[1380px] px-4 pb-10 pt-6 sm:px-6 sm:pt-8">
+        <div className="mb-4 flex items-center justify-between gap-4"><h1 className="text-xl font-semibold">Detalle de visita</h1><SyncStatusBadge status={visit.syncStatus} /></div>
         {/* Hospital */}
         <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
           <div
             className="px-5 py-6 text-white sm:px-7"
             style={{
               background:
-                'linear-gradient(115deg, #4A0982 0%, #351D8E 24%, #19379D 50%, #0455A8 73%, #208E94 100%)',
+                '#0B5ED7',
             }}
           >
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
@@ -304,7 +91,7 @@ function VisitDetailPage() {
 
                     <span className="flex items-center gap-1.5">
                       <CalendarDays size={15} />
-                      {visit.date}
+                      {displayDate(visit.date)}
                     </span>
                   </div>
                 </div>
@@ -317,7 +104,7 @@ function VisitDetailPage() {
 
                 <div className="mt-1 flex items-center gap-2 text-sm font-semibold">
                   <Clock3 size={16} />
-                  {visit.startedAt} – {visit.completedAt}
+                  {displayDate(visit.startedAt, true)} – {displayDate(visit.completedAt, true)}
                 </div>
               </div>
             </div>
@@ -357,9 +144,9 @@ function VisitDetailPage() {
             </p>
 
             <div className="mt-4 space-y-3 text-sm">
-              <InfoRow label="Fecha" value={visit.date} />
-              <InfoRow label="Inicio" value={visit.startedAt} />
-              <InfoRow label="Finalización" value={visit.completedAt} />
+              <InfoRow label="Fecha" value={displayDate(visit.date)} />
+              <InfoRow label="Inicio" value={displayDate(visit.startedAt, true)} />
+              <InfoRow label="Finalización" value={displayDate(visit.completedAt, true)} />
             </div>
           </div>
         </section>
@@ -386,7 +173,8 @@ function VisitDetailPage() {
           </div>
 
           <div className="space-y-5">
-            {visit.observations.map((observation, observationIndex) => (
+            {visit.observations.length === 0 && <p className="panel">Esta visita no tiene observaciones registradas.</p>}
+            {visit.observations.map((observation) => (
               <article
                 key={observation.id}
                 className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
@@ -404,21 +192,21 @@ function VisitDetailPage() {
 
                       <div>
                         <p className="font-semibold text-slate-950">
-                          Observación {observationIndex + 1}
+                          {observation.title || observationTitle(observation.equipment)}
                         </p>
 
                         <p className="mt-1 text-xs text-slate-500">
                           Capturada por{' '}
                           {observation.captureMode === 'voice'
                             ? 'voz'
-                            : 'chat'}
+                            : 'chat'} · {observation.capturedAt ? displayDate(observation.capturedAt, true) : 'Hora no informada'}
                         </p>
                       </div>
                     </div>
 
                     <span className="flex w-fit items-center gap-1.5 rounded-lg bg-violet-50 px-2.5 py-1.5 text-xs font-semibold text-violet-700">
                       <Sparkles size={13} />
-                      Procesada con IA
+                      Registro de observación
                     </span>
                   </div>
 
@@ -430,6 +218,7 @@ function VisitDetailPage() {
                     <p className="text-sm leading-6 text-slate-700">
                       “{observation.originalText}”
                     </p>
+                    {observation.photoData && <img src={observation.photoData} alt="Fotografía de la observación" className="mt-4 max-h-64 rounded-xl" />}
                   </div>
                 </div>
 
@@ -471,7 +260,7 @@ function SummaryItem({
 }) {
   return (
     <div className="px-4 py-5 text-center">
-      <p className="text-2xl font-semibold text-slate-950">{value}</p>
+      <p className="text-2xl font-semibold text-slate-950">{value || 'Desconocido'}</p>
       <p className="mt-1 text-xs text-slate-500 sm:text-sm">{label}</p>
     </div>
   )
@@ -511,7 +300,7 @@ function EquipmentCard({
 
           <div>
             <h4 className="font-semibold text-slate-950">
-              {equipment.type}
+              {equipment.type || 'Equipo no informado'}
             </h4>
 
             <p className="mt-0.5 text-xs text-slate-400">
@@ -521,7 +310,7 @@ function EquipmentCard({
         </div>
 
         <ResolutionBadge
-          resolution={equipment.resolution}
+          resolution={equipment.resolution || 'new'}
         />
       </div>
 
@@ -572,7 +361,7 @@ function EquipmentField({
   return (
     <div>
       <p className="text-xs text-slate-400">{label}</p>
-      <p className="mt-1 font-medium text-slate-700">{value}</p>
+      <p className="mt-1 font-medium text-slate-700">{value || 'Desconocido'}</p>
     </div>
   )
 }
@@ -608,7 +397,7 @@ function SyncStatusBadge({
     return (
       <span className="flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
         <Cloud size={15} />
-        <span className="hidden sm:inline">Sincronizada</span>
+        <span>Sincronizada</span>
       </span>
     )
   }
@@ -616,7 +405,7 @@ function SyncStatusBadge({
   return (
     <span className="flex items-center gap-1.5 rounded-xl bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700">
       <CloudOff size={15} />
-      <span className="hidden sm:inline">Pendiente</span>
+      <span>Pendiente</span>
     </span>
   )
 }

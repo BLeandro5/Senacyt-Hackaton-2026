@@ -1,65 +1,16 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Building2,
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  CircleCheck,
-  Clock3,
-  Cloud,
-  CloudOff,
-  MapPin,
-  Plus,
-  Search,
-  SlidersHorizontal,
-} from 'lucide-react'
+import { Building2, CalendarDays, ChevronRight, CircleCheck, Clock3, Cloud, CloudOff, MapPin, Search, SlidersHorizontal } from 'lucide-react'
 
 type SyncStatus = 'synced' | 'pending'
 
-type Visit = {
-  id: string
-  hospital: string
-  area: string
-  date: string
-  equipmentCount: number
-  observationCount: number
-  syncStatus: SyncStatus
-}
-
-const demoVisits: Visit[] = [
-  {
-    id: 'VIS-001',
-    hospital: 'Hospital Santo Tomás',
-    area: 'Imagenología',
-    date: '9 sep 2026 · 9:42 a. m.',
-    equipmentCount: 3,
-    observationCount: 1,
-    syncStatus: 'synced',
-  },
-  {
-    id: 'VIS-002',
-    hospital: 'Hospital Nacional',
-    area: 'Radiología',
-    date: '8 sep 2026 · 3:18 p. m.',
-    equipmentCount: 5,
-    observationCount: 2,
-    syncStatus: 'synced',
-  },
-  {
-    id: 'VIS-003',
-    hospital: 'Hospital Punta Pacífica',
-    area: 'Urgencias',
-    date: '8 sep 2026 · 11:05 a. m.',
-    equipmentCount: 2,
-    observationCount: 1,
-    syncStatus: 'pending',
-  },
-]
-
+import { getVisits } from '../../data/visits'
+import { displayDate } from '../../data/visitStore'
 function VisitsPage() {
   const navigate = useNavigate()
 
+  const [includeExamples, setIncludeExamples] = useState(true)
+  const demoVisits = useMemo(() => getVisits(includeExamples).map(v => ({ ...v, date: displayDate(v.date), equipmentCount: v.observations.reduce((n, o) => n + o.equipment.length, 0), observationCount: v.observations.length })), [includeExamples])
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState<'all' | 'synced' | 'pending'>('all')
 
@@ -81,7 +32,7 @@ function VisitsPage() {
     }
 
     return result
-  }, [search, filter])
+  }, [search, filter, demoVisits])
 
   const pendingCount = demoVisits.filter(
     (visit) => visit.syncStatus === 'pending',
@@ -90,39 +41,9 @@ function VisitsPage() {
   return (
     <div className="min-h-screen bg-[#F3F5F9] text-slate-900">
       {/* Header */}
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-[1180px] items-center justify-between px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate('/home')}
-              className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-600 transition hover:bg-slate-100"
-              aria-label="Volver al inicio"
-            >
-              <ChevronLeft size={22} />
-            </button>
 
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B5ED7]">
-                Philips
-              </p>
 
-              <h1 className="text-lg font-semibold text-slate-900 sm:text-xl">
-                Mis visitas
-              </h1>
-            </div>
-          </div>
-
-          <button
-            onClick={() => navigate('/visits/new')}
-            className="hidden items-center gap-2 rounded-xl bg-[#0B5ED7] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0954C4] sm:flex"
-          >
-            <Plus size={18} />
-            Nueva visita
-          </button>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-[1180px] px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-8">
+      <main className="mx-auto max-w-[1380px] px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-8">
         {/* Intro */}
         <section className="mb-6">
           <h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
@@ -136,6 +57,7 @@ function VisitsPage() {
         </section>
 
         {/* Summary */}
+        <label className="mb-5 flex w-fit cursor-pointer items-center gap-3 text-sm text-slate-600"><input type="checkbox" checked={includeExamples} onChange={e => setIncludeExamples(e.target.checked)} />Mostrar visitas de ejemplo (datos simulados)</label>
         <section className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-[#0B5ED7]">
@@ -193,6 +115,7 @@ function VisitsPage() {
               />
 
               <input
+                aria-label="Buscar hospital o Área"
                 type="text"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
@@ -231,7 +154,7 @@ function VisitsPage() {
         </section>
 
         {/* Visit list */}
-        <section className="space-y-3">
+        <section className="grid items-start gap-4 lg:grid-cols-2">
           {visits.length > 0 ? (
             visits.map((visit) => (
               <button
@@ -298,7 +221,7 @@ function VisitsPage() {
               </h3>
 
               <p className="mx-auto mt-2 max-w-sm text-sm text-slate-500">
-                Prueba con otro hospital, área o cambia los filtros.
+                {demoVisits.length ? 'Prueba con otro hospital, área o cambia los filtros.' : 'Todavía no tienes visitas finalizadas. Comienza una nueva visita desde la navegación.'}
               </p>
             </div>
           )}
@@ -306,39 +229,7 @@ function VisitsPage() {
       </main>
 
       {/* Mobile navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white/95 px-6 py-2 backdrop-blur sm:hidden">
-        <div className="mx-auto grid max-w-md grid-cols-3 items-end">
-          <button
-            onClick={() => navigate('/home')}
-            className="flex flex-col items-center gap-1 py-1 text-xs font-medium text-slate-400"
-          >
-            <Building2 size={20} />
-            Inicio
-          </button>
 
-          <button
-            onClick={() => navigate('/visits/new')}
-            className="flex flex-col items-center gap-1 text-xs font-medium text-[#0B5ED7]"
-          >
-            <span
-              className="flex h-12 w-12 -translate-y-3 items-center justify-center rounded-2xl text-white shadow-lg"
-              style={{
-                background:
-                  'linear-gradient(115deg, #4A0982 0%, #351D8E 24%, #19379D 50%, #0455A8 73%, #208E94 100%)',
-              }}
-            >
-              <Plus size={23} />
-            </span>
-
-            <span className="-mt-2">Nueva visita</span>
-          </button>
-
-          <button className="flex flex-col items-center gap-1 py-1 text-xs font-semibold text-[#0B5ED7]">
-            <CalendarDays size={20} />
-            Mis visitas
-          </button>
-        </div>
-      </nav>
     </div>
   )
 }
@@ -352,6 +243,7 @@ type FilterButtonProps = {
 function FilterButton({ active, onClick, children }: FilterButtonProps) {
   return (
     <button
+      aria-pressed={active}
       onClick={onClick}
       className={`whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
         active

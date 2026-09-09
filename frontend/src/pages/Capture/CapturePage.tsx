@@ -1,18 +1,8 @@
-import { useMemo, useRef, useState } from 'react'
+import { readStored, writeStored, type Capture, type CurrentVisit } from '../../data/visitStore'
+import VisitContext from '../../components/VisitContext'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  ArrowLeft,
-  Camera,
-  Check,
-  ChevronRight,
-  FileText,
-  Keyboard,
-  Mic,
-  MicOff,
-  Send,
-  Sparkles,
-  X,
-} from 'lucide-react'
+import { Camera, Check, ChevronRight, FileText, Keyboard, Mic, MicOff, Send, Sparkles, X } from 'lucide-react'
 
 type CaptureMode = 'chat' | 'voice'
 
@@ -20,20 +10,21 @@ function CapturePage() {
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const [mode, setMode] = useState<CaptureMode>('chat')
-  const [observation, setObservation] = useState('')
+  const [draft] = useState(() => readStored<Partial<Capture>>('capture-draft', readStored<Partial<Capture>>('current-observation', {})))
+  const [mode, setMode] = useState<CaptureMode>(draft.captureMode || 'chat')
+  const [observation, setObservation] = useState(draft.observation || '')
   const [isListening, setIsListening] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
-  const [photoName, setPhotoName] = useState('')
-
-  const storedVisit = localStorage.getItem('current-visit')
-
-  const visit = storedVisit
-    ? JSON.parse(storedVisit)
-    : {
-        hospitalName: 'Hospital Santo Tomás',
-        area: 'Radiología',
-      }
+  const [photoName, setPhotoName] = useState(draft.photoName || '')
+  const [photoData, setPhotoData] = useState(draft.photoData || '')
+  const [error, setError] = useState('')
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const visit = readStored<CurrentVisit>('current-visit', { hospitalName: '' })
+  useEffect(() => {
+    try { writeStored('capture-draft', { ...draft, observation, captureMode: mode, photoName, photoData }) }
+    catch { /* The submit action reports storage failures without losing the editable text. */ }
+  }, [draft, observation, mode, photoName, photoData])
+  useEffect(() => () => { if (timer.current) clearTimeout(timer.current) }, [])
 
   /*
     Por ahora estas sugerencias son simuladas.
@@ -129,66 +120,61 @@ function CapturePage() {
 
     if (!file) return
 
-    setPhotoName(file.name)
+    if (!file.type.startsWith('image/')) { setError('Selecciona una imagen.'); return }
+    if (file.size > 2 * 1024 * 1024) { setError('La foto debe pesar menos de 2 MB para guardarla en este dispositivo.'); return }
+    const reader = new FileReader()
+    reader.onload = () => { setPhotoName(file.name); setPhotoData(String(reader.result)); setError('') }
+    reader.onerror = () => setError('No pudimos leer la imagen. Intenta con otra.')
+    reader.readAsDataURL(file)
   }
 
   const handleAnalyze = () => {
-    if (!observation.trim()) return
+    if (!observation.trim() || isProcessing || isListening) return
 
     const capture = {
       ...visit,
+      id: draft.id || crypto.randomUUID(),
+      visitId: visit.id,
+      photoData,
       observation: observation.trim(),
       photoName: photoName || null,
       captureMode: mode,
       capturedAt: new Date().toISOString(),
     }
 
-    localStorage.setItem(
-      'current-observation',
-      JSON.stringify(capture)
-    )
+    try {
+      writeStored('current-observation', capture)
+      writeStored('capture-draft', capture)
+      localStorage.removeItem('current-structured-record')
+      localStorage.removeItem('review-draft')
+      localStorage.removeItem('match-result')
+      localStorage.removeItem('match-draft')
+    } catch { setError('No se pudo guardar la observación. Prueba quitando la foto o libera espacio y reintenta.'); return }
 
     setIsProcessing(true)
 
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       navigate('/visits/new/review')
     }, 1200)
   }
 
   return (
-    <main className="min-h-screen bg-[#F3F5F9] md:p-5">
+    <main className="flow-page flow-capture">
 
-      <div className="mx-auto min-h-screen max-w-[980px] bg-white md:min-h-[calc(100vh-40px)] md:rounded-[28px] md:border md:border-[#E6EAF0] md:shadow-sm">
+      <div className="flow-container">
 
         {/* HEADER */}
-        <header className="flex items-center justify-between px-5 pb-4 pt-5 sm:px-8 md:px-10 md:pt-8">
 
-          <button
-            onClick={() => navigate('/visits/new')}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-[#6F7A8A] transition hover:bg-[#F2F4F8] hover:text-[#172033]"
-            aria-label="Volver"
-          >
-            <ArrowLeft size={20} />
-          </button>
-
-          <div className="text-center">
-            <p className="text-sm font-bold tracking-tight text-[#0B5ED7]">
-              PHILIPS
-            </p>
-
-            <p className="mt-0.5 hidden text-[11px] text-[#8A96A6] sm:block">
-              Installed Base Intelligence
-            </p>
-          </div>
-
-          <div className="h-10 w-10" />
-
-        </header>
 
         {/* CONTENIDO */}
-        <div className="px-6 pb-10 sm:px-8 md:px-10">
+        <div className="flow-layout">
+          <VisitContext />
 
-          <div className="mx-auto max-w-[720px]">
+          <div className="flow-content">
+            <button className="back-action" onClick={() => {
+              try { writeStored('capture-draft', { ...draft, observation, captureMode: mode, photoName, photoData }); navigate('/home') }
+              catch { setError('No se pudo guardar el borrador. Mantén esta pantalla abierta e intenta de nuevo.') }
+            }}>← Guardar borrador y volver al inicio</button>
 
             {/* CONTEXTO */}
             <section className="pt-4">
@@ -197,7 +183,7 @@ function CapturePage() {
 
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#EEF0FF] px-3 py-1.5 text-xs font-medium text-[#3437B8]">
                   <Sparkles size={13} />
-                  Paso 2 de 2
+                  Captura
                 </div>
 
                 <span className="text-xs text-[#9AA5B4]">
@@ -207,7 +193,7 @@ function CapturePage() {
               </div>
 
               <div className="mt-4 h-1 overflow-hidden rounded-full bg-[#EEF1F5]">
-                <div className="h-full w-full rounded-full bg-gradient-to-r from-[#0B5ED7] via-[#3437B8] to-[#4B1F91]" />
+                <div className="h-full w-full rounded-full ai-gradient" />
               </div>
 
               <div className="mt-7">
@@ -229,7 +215,7 @@ function CapturePage() {
               </h1>
 
               <p className="mt-3 max-w-xl text-[15px] leading-6 text-[#6F7A8A]">
-                Describe el equipo de forma natural. Puedes escribir o
+                Describe uno o varios equipos de forma natural. Puedes escribir o
                 hablar; ambas opciones generan la misma observación.
               </p>
 
@@ -241,7 +227,8 @@ function CapturePage() {
               <div className="grid grid-cols-2 rounded-2xl bg-[#F1F3F7] p-1.5">
 
                 <button
-                  onClick={() => setMode('chat')}
+                  aria-pressed={mode === 'chat'}
+                  onClick={() => { setMode('chat'); setIsListening(false) }}
                   className={`flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-medium transition ${
                     mode === 'chat'
                       ? 'bg-white text-[#0B5ED7] shadow-sm'
@@ -253,6 +240,7 @@ function CapturePage() {
                 </button>
 
                 <button
+                  aria-pressed={mode === 'voice'}
                   onClick={() => setMode('voice')}
                   className={`flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-medium transition ${
                     mode === 'voice'
@@ -299,6 +287,7 @@ function CapturePage() {
                     <div className="mt-5">
 
                       <textarea
+                        aria-label="Texto de la observación"
                         value={observation}
                         onChange={(event) =>
                           setObservation(event.target.value)
@@ -377,6 +366,7 @@ function CapturePage() {
                         : 'La voz se convertirá en texto y podrás revisarla antes de analizar.'}
                     </p>
 
+                    <p className="mt-3 text-xs text-amber-700" role="status">Voz demo: al detener se añade una transcripción de ejemplo. No se usa el micrófono.</p>
                     {/* Onda visual */}
                     {isListening && (
                       <div className="mt-6 flex h-8 items-center justify-center gap-1">
@@ -433,9 +423,7 @@ function CapturePage() {
                           </p>
                         </div>
 
-                        <p className="mt-3 text-sm leading-6 text-[#455166]">
-                          {observation}
-                        </p>
+                        <textarea aria-label="Transcripción editable" className="mt-3 w-full rounded-xl border border-slate-200 p-4 text-sm" rows={5} value={observation} onChange={e => setObservation(e.target.value)} />
 
                       </div>
                     )}
@@ -447,6 +435,8 @@ function CapturePage() {
 
             </section>
 
+            {error && <p role="alert" className="storage-error">{error}</p>}
+            {photoData && <img src={photoData} alt="Fotografía adjunta" className="mt-5 max-h-48 rounded-xl" />}
             {/* FOTO OPCIONAL */}
             <section className="mt-5">
 
@@ -515,7 +505,8 @@ function CapturePage() {
                   </div>
 
                   <button
-                    onClick={() => setPhotoName('')}
+                    aria-label="Quitar fotografía"
+                    onClick={() => { setPhotoName(''); setPhotoData(''); if (fileInputRef.current) fileInputRef.current.value = '' }}
                     className="flex h-9 w-9 items-center justify-center rounded-full text-[#8A96A6] hover:bg-white"
                   >
                     <X size={17} />
@@ -531,10 +522,10 @@ function CapturePage() {
 
               <button
                 onClick={handleAnalyze}
-                disabled={!observation.trim() || isProcessing}
+                disabled={!observation.trim() || isProcessing || isListening}
                 className={`group flex h-14 w-full items-center justify-center gap-3 rounded-2xl font-medium transition ${
                   observation.trim() && !isProcessing
-                    ? 'bg-gradient-to-r from-[#0B5ED7] via-[#3437B8] to-[#4B1F91] text-white shadow-lg shadow-[#3437B8]/20 hover:-translate-y-0.5 hover:shadow-xl'
+                    ? 'ai-gradient text-white shadow-lg shadow-[#3437B8]/20 hover:-translate-y-0.5 hover:shadow-xl'
                     : 'cursor-not-allowed bg-[#EEF1F5] text-[#A1ABB8]'
                 }`}
               >
@@ -545,7 +536,7 @@ function CapturePage() {
                       size={19}
                       className="animate-pulse"
                     />
-                    Analizando en el dispositivo...
+                    Procesando observación demo...
                   </>
                 ) : (
                   <>
@@ -570,7 +561,7 @@ function CapturePage() {
                   size={13}
                   className="text-[#756EAD]"
                 />
-                Procesamiento diseñado para ejecutarse localmente
+                Análisis demo · sin envío al servidor
               </div>
 
             </section>

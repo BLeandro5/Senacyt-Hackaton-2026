@@ -1,109 +1,33 @@
+import { useState } from 'react'
+import { readStored, saveObservation, finishVisit, clearObservation, type RecordDraft, type Decision } from '../../data/visitStore'
+import VisitContext from '../../components/VisitContext'
 import { useNavigate } from 'react-router-dom'
-import {
-  Check,
-  CheckCircle2,
-  ChevronRight,
-  Home,
-  Plus,
-  Sparkles,
-} from 'lucide-react'
+import { Check, CheckCircle2, ChevronRight, Home, Plus, Sparkles } from 'lucide-react'
 
 function SuccessPage() {
   const navigate = useNavigate()
 
-  const storedRecord = localStorage.getItem(
-    'current-structured-record'
-  )
-
-  const storedMatch = localStorage.getItem(
-    'match-result'
-  )
-
-  const record = storedRecord
-    ? JSON.parse(storedRecord)
-    : {
-        hospitalName: 'Hospital DemoCare Pacific',
-        area: 'Radiología',
-        equipment: [],
-      }
-
-  const match = storedMatch
-    ? JSON.parse(storedMatch)
-    : {
-        decisions: [],
-      }
-
-  const equipment = record.equipment || []
-  const decisions = match.decisions || []
-
-  const existingCount = decisions.filter(
-    (decision: any) =>
-      decision.type === 'existing'
-  ).length
-
-  const newCount = decisions.filter(
-    (decision: any) => decision.type === 'new'
-  ).length
-
+  const [error, setError] = useState('')
+  const record = readStored<RecordDraft>('current-structured-record', { hospitalName: '', originalObservation: '', equipment: [] })
+  const equipment = record.equipment
+  const decisions = readStored<{ decisions: Decision[] }>('match-result', { decisions: [] }).decisions
+  const existingCount = decisions.filter(d => d.type === 'existing').length
+  const newCount = decisions.filter(d => d.type === 'new').length
   const handleAnotherObservation = () => {
-    /*
-      Conservamos current-visit porque seguimos
-      dentro del mismo hospital/área.
-    */
-
-    localStorage.removeItem(
-      'current-observation'
-    )
-
-    localStorage.removeItem(
-      'current-structured-record'
-    )
-
-    localStorage.removeItem('match-result')
-
-    navigate('/visits/new/capture')
+    try { saveObservation(); clearObservation(); navigate('/visits/new/capture') }
+    catch { setError('No se pudo guardar. Revisa el espacio disponible del navegador e intenta de nuevo. Tus datos siguen abiertos.') }
   }
-
   const handleFinishVisit = () => {
-    const currentVisit = localStorage.getItem(
-      'current-visit'
-    )
-
-    localStorage.setItem(
-      'last-completed-visit',
-      JSON.stringify({
-        visit: currentVisit
-          ? JSON.parse(currentVisit)
-          : null,
-
-        equipmentProcessed: equipment.length,
-
-        existingEquipment: existingCount,
-
-        newEquipment: newCount,
-
-        completedAt: new Date().toISOString(),
-      })
-    )
-
-    localStorage.removeItem('current-visit')
-    localStorage.removeItem(
-      'current-observation'
-    )
-    localStorage.removeItem(
-      'current-structured-record'
-    )
-    localStorage.removeItem('match-result')
-
-    navigate('/home')
+    try { finishVisit(); navigate('/visits') }
+    catch { setError('No se pudo finalizar. Tus datos siguen abiertos; intenta de nuevo.') }
   }
 
   return (
-    <main className="min-h-screen bg-[#F3F5F9] md:p-5">
+    <main className="flow-page flow-success">
 
-      <div className="mx-auto min-h-screen max-w-[900px] bg-white md:min-h-[calc(100vh-40px)] md:rounded-[28px] md:border md:border-[#E6EAF0]">
+      <div className="flow-container">
 
-        <div className="mx-auto max-w-[600px] px-6 pb-12 pt-14 text-center sm:px-8 md:pt-20">
+        <div className="flow-layout"><VisitContext /><div className="flow-content success-content text-center">
 
           {/* ÉXITO */}
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#E8F7F1] text-[#159B72]">
@@ -118,11 +42,10 @@ function SuccessPage() {
           <h1 className="mt-5 text-3xl font-semibold tracking-tight text-[#172033]">
             Observación guardada
           </h1>
+          <p className="mt-3 text-sm font-medium text-blue-700">{record.hospitalName} · {record.area || 'Área no informada'}</p>
 
           <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#8A96A6]">
-            Los equipos fueron estructurados y
-            comparados con la base instalada del
-            hospital.
+            La observación está revisada. Guárdala y continúa en el mismo hospital, o finaliza la visita para verla en Mis visitas.
           </p>
 
           {/* RESUMEN */}
@@ -157,7 +80,7 @@ function SuccessPage() {
           <section className="mt-5 overflow-hidden rounded-[22px] border border-[#E5EAF0] text-left">
 
             {equipment.map(
-              (item: any, index: number) => (
+              (item, index) => (
                 <div
                   key={item.id}
                   className={`flex items-center gap-3 px-4 py-4 ${
@@ -195,12 +118,13 @@ function SuccessPage() {
 
           </section>
 
+          {error && <p role="alert" className="storage-error">{error}</p>}
           {/* CONTINUAR VISITA */}
           <section className="mt-8">
 
             <button
               onClick={handleAnotherObservation}
-              className="group flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-[#0B5ED7] via-[#3437B8] to-[#4B1F91] font-medium text-white shadow-lg shadow-[#3437B8]/20 transition hover:-translate-y-0.5"
+              className="group flex h-14 w-full items-center justify-center gap-3 rounded-2xl ai-gradient font-medium text-white shadow-lg shadow-[#3437B8]/20 transition hover:-translate-y-0.5"
             >
               <Plus size={19} />
 
@@ -232,7 +156,7 @@ function SuccessPage() {
 
       </div>
 
-    </main>
+    </div></main>
   )
 }
 

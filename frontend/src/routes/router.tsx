@@ -8,6 +8,7 @@ import ReviewPage from '../pages/Review/ReviewPage'
 import MatchPage from '../pages/Match/MatchPage'
 import SuccessPage from '../pages/Success/SuccessPage'
 import VisitsPage from '../pages/Visits/VisitsPage'
+import VisitDetailPage from '../pages/VisitDetail/VisitDetailPage'
 
 export const router = createBrowserRouter([
   {
@@ -46,4 +47,8 @@ export const router = createBrowserRouter([
     path: '/visits/new/success',
     element: <SuccessPage />,
   },
+  {
+  path: '/visits/:visitId',
+  element: <VisitDetailPage />,
+},
 ])

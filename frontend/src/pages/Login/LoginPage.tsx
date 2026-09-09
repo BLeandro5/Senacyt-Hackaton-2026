@@ -32,7 +32,11 @@ function LoginPage() {
       localStorage.setItem('demo-user', JSON.stringify({ id: user.id, username: user.username, name: user.name, role: user.role }))
     } catch { setError('No se pudo guardar la sesión. Permite el almacenamiento del navegador e intenta de nuevo.'); return }
 
-    navigate('/home')
+    if (user.role === 'supervisor') {
+      navigate('/supervisor')
+    } else {
+      navigate('/home')
+    }
   }
 
   return (

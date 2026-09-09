@@ -10,7 +10,10 @@ import MatchPage from '../pages/Match/MatchPage'
 import SuccessPage from '../pages/Success/SuccessPage'
 import VisitsPage from '../pages/Visits/VisitsPage'
 import VisitDetailPage from '../pages/VisitDetail/VisitDetailPage'
-
+import SupervisorLayout from '../components/SupervisorLayout'
+import SupervisorDashboardPage from '../pages/SupervisorDashboard/SupervisorDashboardPage'
+import HospitalDetailPage from '../pages/HospitalDetail/HospitalDetailPage'
+import HospitalsPage from '../pages/Hospitals/HospitalsPage'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -50,9 +53,27 @@ export const router = createBrowserRouter([
     element: <SuccessPage />,
   },
   {
+  element: <SupervisorLayout />,
+  children: [
+    {
+      path: '/supervisor',
+      element: <SupervisorDashboardPage />,
+    },
+    {
+      path: '/supervisor/hospitals',
+      element: <HospitalsPage />,
+    },
+    {
+      path: '/supervisor/hospitals/:hospitalId',
+      element: <HospitalDetailPage />,
+    },
+  ],
+},
+  {
   path: '/visits/:visitId',
   element: <VisitDetailPage />,
 },
   ] },
   { path: "*", element: <RouteError /> },
 ])
+

@@ -8,6 +8,27 @@ from app.schemas.equipment import EquipmentExtracted
 
 
 class ExtractionRegressions(unittest.TestCase):
+    def test_narrative_subgroup_is_not_total_for_modality(self):
+        text = Path(__file__).with_name('fixtures').joinpath('uncertain_inventory_es.txt').read_text(encoding='utf-8')
+        items = [EquipmentExtracted(modality='CT', manufacturer=brand)
+                 for brand in ('Philips', 'Siemens', None)]
+        self.assertEqual(ground_counts(text, items), items)
+        mris = [EquipmentExtracted(modality='MRI', manufacturer='Siemens', configuration=config)
+                for config in (None, '3T')]
+        self.assertEqual(ground_counts(text, mris), mris)
+
+    @patch('app.ai.extractor.generate_with_qvac')
+    def test_long_narrative_does_not_fail_or_keep_invented_modalities(self, generate):
+        import json
+        text = Path(__file__).with_name('fixtures').joinpath('uncertain_inventory_es.txt').read_text(encoding='utf-8')
+        generate.return_value = json.dumps({'equipment': [
+            {'modality': modality, 'manufacturer': brand}
+            for modality, brand in [('CT','Philips'), ('CT','Siemens'), ('CT',None),
+                                     ('MRI','GE'), ('MRI',None), ('MRI','Siemens'),
+                                     ('X-ray','Siemens'), ('Mammography','Philips')]]})
+        items = extract_equipment(text)
+        self.assertEqual([item.modality for item in items], ['CT'] * 3 + ['MRI'] * 3)
+
     def test_short_multilingual_notes_ground_counts_brands_models_and_absence(self):
         cases = {
             'Two MRI systems from Siemens and one Philips CT aged seven years.': [('MRI', 'Siemens', None), ('MRI', 'Siemens', None), ('CT', 'Philips', None)],

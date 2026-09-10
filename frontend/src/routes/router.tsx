@@ -18,6 +18,9 @@ import DashboardPage from '../pages/Dashboard/DashboardPage'
 import MapPage from '../pages/Map/MapPage'
 import InstalledBaseMapPage from '../pages/Map/InstalledBaseMapPage'
 import Customer360Page from '../pages/Customer360/Customer360Page'
+import HospitalsPage from '../pages/Hospitals/HospitalsPage'
+import AnalyticsPage from '../pages/Analytics/AnalyticsPage'
+import OpportunitiesPage from '../pages/Opportunities/OpportunitiesPage'
 
 export const router = createBrowserRouter([
   { path: '/', element: <LoginPage /> },
@@ -30,12 +33,12 @@ export const router = createBrowserRouter([
       { path: '/home', element: <HomePage /> },
       { path: '/capture/quick', element: <QuickCapturePage /> },
       { path: '/settings', element: <SettingsPage /> },
-      { path: '/hospitals', element: <InstalledBasePage /> },
+      { path: '/hospitals', element: <HospitalsPage /> },
       { path: '/hospitals/:hospitalId', element: <Customer360Page /> },
       { path: '/equipment/:assetId', element: <InstalledBasePage /> },
       { path: '/review', element: <InstalledBasePage /> },
-      { path: '/opportunities', element: <InstalledBasePage /> },
-      { path: '/analytics', element: <InstalledBasePage /> },
+      { path: '/opportunities', element: <OpportunitiesPage /> },
+      { path: '/analytics', element: <AnalyticsPage /> },
       { path: '/dashboard', element: <DashboardPage /> },
       { path: '/map', element: <InstalledBaseMapPage /> },
       { path: '/map/activity', element: <MapPage /> },

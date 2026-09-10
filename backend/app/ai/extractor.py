@@ -9,6 +9,7 @@ from app.ai.qvac_client import generate_with_qvac
 from app.ai.age_grounding import ground_ages, normalize, MENTION
 from app.ai.count_grounding import complete_explicit_mentions, ground_counts
 from app.ai.language import detect_language
+from app.ai.narrative_grounding import ground_narrative
 from app.schemas.equipment import EquipmentExtracted
 from app.schemas.follow_up import FollowUpCandidate
 from pydantic import Field
@@ -276,8 +277,15 @@ Observation JSON string:
         result.equipment = equipment
         return result
     ground_ages(text, equipment)
+    # Discard known modalities that the model added without any mention in
+    # the note. Preserve unsupported types for review instead of guessing.
+    mentioned = {'X-ray' if m.lastgroup == 'Xray' else m.lastgroup
+                 for m in MENTION.finditer(source)}
+    supported = {'CT', 'MRI', 'Ultrasound', 'Mammography', 'X-ray'}
+    equipment = [item for item in equipment
+                 if item.modality not in supported or item.modality in mentioned]
     grounded = ground_counts(text, equipment)
-    result.equipment = complete_explicit_mentions(text, grounded) if grounded else grounded
+    result.equipment = ground_narrative(text, complete_explicit_mentions(text, grounded)) if grounded else grounded
     return result
 
 

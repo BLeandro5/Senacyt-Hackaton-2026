@@ -8,6 +8,17 @@ from app.main import app
 
 
 class AnalysisTests(unittest.TestCase):
+    @patch('app.api.observations.analyze_observation')
+    def test_format_and_quantity_failures_have_distinct_safe_codes(self, analyze):
+        from app.ai.count_grounding import EquipmentQuantityError
+        analyze.side_effect = EquipmentQuantityError('private input')
+        response = self.analyze()
+        self.assertIn('EQUIPMENT_QUANTITY', response.json()['detail'])
+        analyze.side_effect = ValueError('private input')
+        response = self.analyze()
+        self.assertIn('EXTRACTION_FORMAT/', response.json()['detail'])
+        self.assertNotIn('private input', response.text)
+
     def setUp(self):
         self.client = TestClient(app)
 

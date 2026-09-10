@@ -11,6 +11,10 @@ MAX_EQUIPMENT = 50
 KNOWN_BRANDS = ('Philips', 'Siemens', 'GE', 'Mindray', 'Hologic', 'Canon', 'Fujifilm', 'Samsung', 'Esaote', 'Carestream', 'Shimadzu', 'Hitachi', 'Toshiba')
 
 
+class EquipmentQuantityError(ValueError):
+    """Valid model JSON has an unresolved or excessive device count."""
+
+
 def ground_counts(text: str, equipment: list[EquipmentExtracted]) -> list[EquipmentExtracted]:
     source = normalize(text)
     mentions = list(MENTION.finditer(source))
@@ -26,11 +30,22 @@ def ground_counts(text: str, equipment: list[EquipmentExtracted]) -> list[Equipm
             continue
         count = int(age_value(quantity['count']))
         if count > MAX_EQUIPMENT:
-            raise ValueError('Too many devices; split this observation into smaller groups')
+            raise EquipmentQuantityError('Too many devices; split this observation into smaller groups')
         modality = 'X-ray' if mention.lastgroup == 'Xray' else mention.lastgroup
         matching = [i for i, item in enumerate(result) if item.modality == modality]
         same_type = [m for m in mentions if m.lastgroup == mention.lastgroup]
         if len(same_type) > 1:
+            if count == 1:
+                # An additional single mention is not a request to collapse
+                # all earlier same-brand devices into this one.
+                continue
+            # A narrative count can describe a subset (two inspected devices,
+            # then a third reportedly removed). It is not a global total.
+            # Only compact, explicitly brand-scoped groups can be expanded.
+            immediate = source[mention.end():]
+            if not any(re.match(r'\s+' + re.escape(normalize(brand)) + r'\b', immediate)
+                       for brand in KNOWN_BRANDS):
+                continue
             # A brand must uniquely identify the phrase if its modality repeats.
             phrases = [source[m.end():mentions[j + 1].start() if j + 1 < len(mentions) else len(source)]
                        for j, m in enumerate(mentions) if m.lastgroup == mention.lastgroup]
@@ -48,12 +63,12 @@ def ground_counts(text: str, equipment: list[EquipmentExtracted]) -> list[Equipm
         # cannot safely be collapsed or copied into additional physical devices.
         template = result[matching[0]]
         if any(result[i] != template for i in matching):
-            raise ValueError('Ambiguous equipment quantity; separate devices with different attributes')
+            raise EquipmentQuantityError('Ambiguous equipment quantity; separate devices with different attributes')
         insert_at = matching[0]
         result = [item for i, item in enumerate(result) if i not in matching]
         result[insert_at:insert_at] = [template.model_copy(deep=True) for _ in range(count)]
     if len(result) > MAX_EQUIPMENT:
-        raise ValueError('Too many devices; split this observation into smaller groups')
+        raise EquipmentQuantityError('Too many devices; split this observation into smaller groups')
     return result
 
 

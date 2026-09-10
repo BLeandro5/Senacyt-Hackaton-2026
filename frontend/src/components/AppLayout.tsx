@@ -3,8 +3,11 @@ import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate, useRouteErro
 import { Building2, ClipboardList, Cloud, CloudOff, LogOut, Map, Plus } from 'lucide-react'
 import { readStored, type Capture, type CurrentVisit, type Decision, type RecordDraft } from '../data/visitStore'
 import LocalStatus from './LocalStatus'
+import { useUiLanguage } from '../data/uiLanguage'
+import { analyticsCopy } from '../data/analyticsCopy'
 
 export function AppLayout() {
+  const { language } = useUiLanguage()
   const location = useLocation()
   const navigate = useNavigate()
   const user = readStored<{ name: string; role?: string } | null>('demo-user', null)
@@ -47,7 +50,7 @@ export function AppLayout() {
       </div>
     </header>
     <nav aria-label="Inteligencia de inventario" className="flex gap-2 overflow-x-auto border-b border-slate-200 bg-white px-4 py-3 text-sm">
-      {[['/hospitals','Hospitales / Customer 360'],['/dashboard','Dashboard'],['/map','Mapa / geografía'],['/review','Por revisar'],['/opportunities','Oportunidades'],['/analytics','Analytics'],['/settings','Configuración']].map(([path,label]) => <NavLink key={path} to={path!} className={({ isActive }) => `shrink-0 rounded-xl px-3 py-2 ${isActive ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:bg-blue-50'}`}>{label}</NavLink>)}
+      {[['/hospitals','Hospitales / Customer 360'],['/dashboard','Dashboard'],['/map','Mapa / geografía'],['/review','Por revisar'],['/opportunities','Oportunidades'],['/analytics',analyticsCopy[language].nav],['/settings','Configuración']].map(([path,label]) => <NavLink data-ui-localized={path === '/analytics' ? 'true' : undefined} key={path} to={path!} className={({ isActive }) => `shrink-0 rounded-xl px-3 py-2 ${isActive ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:bg-blue-50'}`}>{label}</NavLink>)}
     </nav>
     {!online && <p className="offline-notice" role="status">Sin Internet. Puedes usar MedPsy y SQLite localmente si sus servicios siguen iniciados.</p>}
     <LocalStatus />

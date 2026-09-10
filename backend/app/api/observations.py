@@ -1,5 +1,8 @@
 import httpx
+import logging
+from uuid import uuid4
 from fastapi import APIRouter, HTTPException
+from app.ai.count_grounding import EquipmentQuantityError
 
 from app.schemas.observation import (
     ObservationAnalysisResponse,
@@ -36,5 +39,11 @@ def analyze_observation_endpoint(
         if exc.response.status_code == 503:
             raise HTTPException(503, 'MedPsy está ocupado con otro análisis. Espera a que termine y reintenta; tu nota se conserva.') from exc
         raise HTTPException(502, "QVAC devolvió un error al procesar la observación.") from exc
+    except EquipmentQuantityError as exc:
+        raise HTTPException(502, 'No se pudo conciliar la cantidad de equipos con la observación. Revisa los grupos descritos y reintenta. Código: EQUIPMENT_QUANTITY.') from exc
     except (ValueError, KeyError, TypeError) as exc:
-        raise HTTPException(502, "QVAC no devolvió una respuesta estructurada válida. Intenta nuevamente.") from exc
+        reference = uuid4().hex[:8]
+        # Never log the validation exception itself: it may include the note
+        # or the model output. A reference and exception class are sufficient.
+        logging.getLogger(__name__).warning('Extraction validation failed reference=%s type=%s', reference, type(exc).__name__)
+        raise HTTPException(502, f'QVAC no devolvió una respuesta estructurada válida. Intenta nuevamente. Código: EXTRACTION_FORMAT/{reference}.') from exc

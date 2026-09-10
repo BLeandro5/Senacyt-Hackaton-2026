@@ -249,7 +249,7 @@ function HospitalsPage() {
                 type="button"
                 key={hospital.id}
                 onClick={() =>
-                  navigate(`/supervisor/hospitals/${hospital.id}`)
+                  navigate(`/hospitals/${hospital.id}`)
                 }
                 className={`group grid w-full grid-cols-[minmax(280px,1.5fr)_0.8fr_0.65fr_0.65fr_0.8fr_48px] items-center gap-4 px-6 py-5 text-left transition hover:bg-slate-50 ${
                   index !== filteredHospitals.length - 1
@@ -362,7 +362,7 @@ function HospitalsPage() {
                 type="button"
                 key={hospital.id}
                 onClick={() =>
-                  navigate(`/supervisor/hospitals/${hospital.id}`)
+                  navigate(`/hospitals/${hospital.id}`)
                 }
                 className="group rounded-[22px] border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:border-blue-200 hover:shadow-md"
               >

@@ -1,0 +1,108 @@
+{
+  "inference": "real local QVAC / MedPsy",
+  "database": "temporary",
+  "checks": [
+    {
+      "name": "register_0",
+      "passed": true
+    },
+    {
+      "name": "login_0",
+      "passed": true
+    },
+    {
+      "name": "register_1",
+      "passed": true
+    },
+    {
+      "name": "login_1",
+      "passed": true
+    },
+    {
+      "name": "register_2",
+      "passed": true
+    },
+    {
+      "name": "login_2",
+      "passed": true
+    },
+    {
+      "name": "real_extraction_http",
+      "passed": true
+    },
+    {
+      "name": "real_extraction_values",
+      "passed": true
+    },
+    {
+      "name": "no_invented_location",
+      "passed": true
+    },
+    {
+      "name": "review_match_save",
+      "passed": true
+    },
+    {
+      "name": "idempotent_retry",
+      "passed": true
+    },
+    {
+      "name": "three_canonical_assets",
+      "passed": true
+    },
+    {
+      "name": "corroboration_save",
+      "passed": true
+    },
+    {
+      "name": "corroboration_increases_score",
+      "passed": true
+    },
+    {
+      "name": "conflict_save",
+      "passed": true
+    },
+    {
+      "name": "conflict_no_overwrite",
+      "passed": true
+    },
+    {
+      "name": "my_visits",
+      "passed": true
+    },
+    {
+      "name": "original_note_preserved",
+      "passed": true
+    },
+    {
+      "name": "customer_360",
+      "passed": true
+    },
+    {
+      "name": "real_analytics_http",
+      "passed": true
+    },
+    {
+      "name": "real_analytics_filters",
+      "passed": true
+    },
+    {
+      "name": "real_analytics_results",
+      "passed": true
+    }
+  ],
+  "analytics_filters": {
+    "country": null,
+    "city": null,
+    "hospital_id": null,
+    "modality": "MRI",
+    "manufacturer": null,
+    "min_age": 7.0,
+    "max_age": null,
+    "manufacturer_unknown": null,
+    "reliability_level": null,
+    "freshness": null,
+    "has_conflict": null
+  },
+  "elapsed_seconds": 56.02
+}

@@ -1,5 +1,5 @@
 Prueba local de captura
-======================
+-----------------------
 
 Iniciar primero `npm.cmd run qvac:start` desde la raíz: utiliza el SDK y
 MedPsy instalado en `127.0.0.1:11500`. Para descargar los pesos por primera vez,

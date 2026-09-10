@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, Eye, EyeOff, LockKeyhole, ShieldCheck, User } from 'lucide-react'
 
-import { users } from '../../data/users'
+import { loginUser } from '../../data/userApi'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -12,28 +12,16 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    const user = users.find(
-      (item) =>
-        item.username === username.trim() &&
-        item.password === password
-    )
-
-    if (!user) {
-      setError('Usuario o contraseña incorrectos.')
-      return
-    }
-
     setError('')
-
     try {
-      localStorage.setItem('demo-user', JSON.stringify({ id: user.id, username: user.username, name: user.name, role: user.role }))
-    } catch { setError('No se pudo guardar la sesión. Permite el almacenamiento del navegador e intenta de nuevo.'); return }
-
-    navigate('/home')
+      const user = await loginUser(username, password)
+      localStorage.setItem('demo-user', JSON.stringify(user))
+      navigate('/home')
+    } catch (cause) { setError(cause instanceof Error ? cause.message : 'No se pudo iniciar sesión.') }
   }
+
 
   return (
   <main className="min-h-screen bg-white md:bg-slate-100 md:p-6">
@@ -129,7 +117,7 @@ function LoginPage() {
                   htmlFor="username"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  Usuario
+                  Correo o cédula
                 </label>
 
                 <div className="relative">
@@ -144,7 +132,7 @@ function LoginPage() {
                     onChange={(event) =>
                       setUsername(event.target.value)
                     }
-                    placeholder="Ingresa tu usuario"
+                    placeholder="correo@ejemplo.com o cédula"
                     className="h-14 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1674ea] focus:ring-4 focus:ring-blue-100"
                   />
                 </div>
@@ -215,6 +203,10 @@ function LoginPage() {
 
             </form>
 
+            <Link to="/register" onClick={() => localStorage.removeItem('demo-user')} className="mt-5 flex h-12 w-full items-center justify-center rounded-2xl border border-blue-200 text-sm font-semibold text-[#0B5ED7]">
+              Crear cuenta de colaborador
+            </Link>
+
             {/* Seguridad */}
             <div className="mt-8 rounded-2xl border border-slate-100 bg-slate-50/70 px-4 py-4">
 
@@ -225,7 +217,7 @@ function LoginPage() {
 
                 <div>
                   <p className="text-sm font-medium text-slate-700">
-                    Acceso de demostración
+                    Acceso local de colaboradores
                   </p>
 
                   <p className="mt-1 text-sm leading-6 text-slate-400">

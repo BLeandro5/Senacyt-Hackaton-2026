@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.observations import router as observations_router
 from app.api.visits import router as visits_router
+from app.api.users import router as users_router
+from app.api.intelligence import router as intelligence_router
 
 
 # AplicaciÃ³n principal del backend
@@ -22,6 +24,8 @@ app.add_middleware(
 
 app.include_router(observations_router)
 app.include_router(visits_router)
+app.include_router(users_router)
+app.include_router(intelligence_router)
 
 
 @app.get("/")

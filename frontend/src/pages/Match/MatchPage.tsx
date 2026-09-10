@@ -1,13 +1,14 @@
-import { persistVisit } from '../../data/storageApi'
+import { persistVisit, storageRequest } from '../../data/storageApi'
 import { readStored, writeStored, type RecordDraft } from '../../data/visitStore'
 import VisitContext from '../../components/VisitContext'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ChevronRight, CirclePlus, SearchCheck, Sparkles } from 'lucide-react'
+import { rankCandidates, type AssetCandidate } from '../../data/equipmentMatching'
 
 type Decision = {
   equipmentId: string
-  type: 'existing' | 'new'
+  type: 'existing' | 'new' | 'review'
   matchedEquipmentId?: string
   similarity?: number
 }
@@ -20,60 +21,27 @@ function MatchPage() {
   const record = readStored<RecordDraft>('current-structured-record', { hospitalName: '', originalObservation: '', equipment: [] })
   const equipment = record.equipment
 
-  /*
-    DEMO:
-    Generamos candidatos simulados.
-
-    Después esto vendrá del algoritmo real
-    de deduplicación.
-  */
-  const candidates = equipment.map((item, index) => {
-      if (index === 0 && item.type === 'Resonador') {
-        return {
-          equipmentId: item.id,
-          match: {
-            id: 'EQ-00421',
-            type: 'Resonador',
-            brand: 'Desconocida',
-            model: 'Desconocido',
-            area: record.area,
-            lastSeen: '12 mayo 2026',
-            similarity: 82,
-          },
-        }
-      }
-
-      if (item.type === 'Tomógrafo') {
-        return {
-          equipmentId: item.id,
-          match: {
-            id: 'EQ-00128',
-            type: 'Tomógrafo',
-            brand: 'Desconocida',
-            model: 'Desconocido',
-            area: record.area,
-            lastSeen: '14 junio 2026',
-            similarity: 88,
-          },
-        }
-      }
-
-      return {
-        equipmentId: item.id,
-        match: null,
-      }
-    })
-
-  const [decisions, setDecisions] = useState<
-    Decision[]
-  >(() => readStored<Decision[]>('match-draft',
-    candidates
-      .filter((candidate) => !candidate.match)
-      .map((candidate) => ({
-        equipmentId: candidate.equipmentId,
-        type: 'new',
-      })))
-  )
+  const [available, setAvailable] = useState<AssetCandidate[]>([])
+  const [candidates, setCandidates] = useState<{ equipmentId: string; match: { id: string; type: string; brand: string; model: string; area?: string; lastSeen: string; similarity: number } | null }[]>([])
+  const [loading, setLoading] = useState(true)
+  const [attempt, setAttempt] = useState(0)
+  const [decisions, setDecisions] = useState<Decision[]>(() => readStored('match-draft', []))
+  const hospitalId = record.hospitalId
+  useEffect(() => {
+    let active = true
+    storageRequest<AssetCandidate[]>(`/installed-equipment?hospital_id=${encodeURIComponent(hospitalId || '')}`).then(rows => {
+      if (!active) return
+      setAvailable(rows)
+      setCandidates(equipment.map(item => {
+        const asset = rankCandidates(rows, hospitalId || '', item).find(a => (!item.brand || !a.manufacturer || a.manufacturer.toLowerCase() === item.brand.toLowerCase()) && (!item.model || !a.model || a.model.toLowerCase() === item.model.toLowerCase()))
+        return { equipmentId: item.id, match: asset ? { id: asset.id, type: asset.modality, brand: asset.manufacturer || '', model: asset.model || '', lastSeen: asset.lastObservedAt, similarity: 0 } : null }
+      }))
+    }).catch(cause => { if (active) setError(cause.message) })
+      .finally(() => { if (active) setLoading(false) })
+    return () => { active = false }
+  // The stored review is fixed for this screen.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hospitalId, attempt])
   useEffect(() => {
     try { writeStored('match-draft', decisions) } catch { /* Confirm reports failures. */ }
   }, [decisions])
@@ -102,7 +70,7 @@ function MatchPage() {
   )
 
   const handleContinue = async () => {
-    if (!allResolved || saving) return
+    if (!allResolved || saving || loading) return
     setSaving(true)
     setError('')
 
@@ -131,7 +99,7 @@ function MatchPage() {
 
               <div className="inline-flex items-center gap-2 rounded-full bg-[#EEEAFB] px-3 py-1.5 text-xs font-medium text-[#4B1F91]">
                 <SearchCheck size={14} />
-                Verificación demo
+                Verificación de base instalada
               </div>
 
               <h1 className="mt-6 text-3xl font-semibold tracking-tight text-[#172033] sm:text-4xl">
@@ -211,6 +179,14 @@ function MatchPage() {
                       <Info label="Estado" value={item.status || 'No informado'} />
                     </div></div>
                     {/* Candidato */}
+                    {rankCandidates(available, hospitalId || '', item).length > 0 && <label className="mt-4 block text-sm">Revisar otro candidato del mismo hospital y modalidad
+                      <select aria-label={`Candidato para equipo ${index + 1}`} value={match?.id || ''} className="mt-2 w-full rounded-xl border p-3" onChange={event => {
+                        const asset = available.find(a => a.id === event.target.value)
+                        setCandidates(current => current.map(c => c.equipmentId !== item.id ? c : { equipmentId: item.id, match: asset ? { id: asset.id, type: asset.modality, brand: asset.manufacturer || '', model: asset.model || '', lastSeen: asset.lastObservedAt, similarity: 0 } : null }))
+                        setDecisions(current => current.filter(d => d.equipmentId !== item.id))
+                      }}><option value="">Sin candidato seleccionado</option>{rankCandidates(available, hospitalId || '', item).map(a => <option key={a.id} value={a.id}>{a.manufacturer || 'Marca no informada'} · {a.model || 'Modelo no informado'} · {a.id.slice(0, 8)}</option>)}</select>
+                      <p className="mt-1 text-xs text-slate-500">La selección no fusiona equipos. Si los datos difieren, confirma solo si sabes que es el mismo activo; el conflicto quedará visible.</p>
+                    </label>}
                     {match ? (
                       <div className="mt-5 rounded-2xl border border-[#E3E0F4] bg-[#FAF9FF] p-4">
 
@@ -230,7 +206,7 @@ function MatchPage() {
                           </div>
 
                           <span className="text-lg font-semibold text-[#4B1F91]">
-                            {match.similarity}%<span className="block text-[10px] font-normal">Similitud demo</span>
+                            <span className="block text-xs font-normal">Mismo hospital y modalidad</span>
                           </span>
 
                         </div>
@@ -325,8 +301,8 @@ function MatchPage() {
                           </p>
 
                           <p className="mt-1 text-sm leading-6 text-[#7D8998]">
-                            Se propone crear un nuevo
-                            equipo.
+                            Se propone crear un nuevo equipo.
+                            <button type="button" className="block mt-3 text-blue-700 underline" onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'new' })}>Confirmar equipo nuevo</button>
                           </p>
 
                         </div>
@@ -334,19 +310,20 @@ function MatchPage() {
                       </div>
                     )}
 
+                    <button type="button" className="mt-3 text-sm text-amber-800 underline" aria-pressed={decision?.type === 'review'} onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'review' })}>No puedo decidir · Enviar a revisión</button>
                   </div>
                 )
               })}
 
             </section>
 
-            {error && <p role="alert" className="storage-error">{error}</p>}
+            {error && <div className="storage-error"><p role="alert">{error}</p><button type="button" onClick={() => { setLoading(true); setError(''); setAttempt(n => n + 1) }}>Reintentar conexión</button></div>}
             {/* CONTINUAR */}
             <section className="mt-7">
 
               <button
                 onClick={handleContinue}
-                disabled={!allResolved || saving}
+                disabled={!allResolved || saving || loading}
                 className={`group flex h-14 w-full items-center justify-center gap-3 rounded-2xl font-medium transition ${
                   allResolved
                     ? 'ai-gradient text-white shadow-lg shadow-[#3437B8]/20'

@@ -12,7 +12,7 @@ function CapturePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [draft] = useState(() => readStored<Partial<Capture>>('capture-draft', readStored<Partial<Capture>>('current-observation', {})))
-  const [mode, setMode] = useState<CaptureMode>(draft.captureMode || 'chat')
+  const [mode, setMode] = useState<CaptureMode>('chat')
   const [observation, setObservation] = useState(draft.observation || '')
   const [isListening, setIsListening] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -91,27 +91,9 @@ function CapturePage() {
   }
 
   const toggleVoice = () => {
-    if (!isListening) {
-      setIsListening(true)
-      return
-    }
-
-    /*
-      DEMO:
-      Al detener la grabación agregamos una transcripción simulada.
-
-      Después aquí conectaremos el modelo de voz local.
-    */
     setIsListening(false)
-
-    const demoTranscript =
-      'Veo un tomógrafo Siemens Somatom de 64 cortes, aproximadamente ocho años y actualmente operativo.'
-
-    setObservation((current) =>
-      current.trim()
-        ? `${current.trim()} ${demoTranscript}`
-        : demoTranscript
-    )
+    setMode('chat')
+    setError('La captura de voz no está habilitada en esta versión. Escribe la observación; no se generará una transcripción simulada.')
   }
 
   const handlePhoto = (
@@ -137,11 +119,12 @@ function CapturePage() {
     setError('')
     const capture: Capture = {
       ...visit, id: draft.id || crypto.randomUUID(), visitId: visit.id,
-      photoData, observation: observation.trim(), photoName: photoName || null,
+      photoData, observation, photoName: photoName || null,
       captureMode: mode, capturedAt: new Date().toISOString(),
     }
     try {
-      const analysis = await analyzeObservation(capture.observation,
+      if (!visit.hospitalId) throw new Error('No se identificó el hospital de la visita. Vuelve a seleccionarlo antes de analizar.')
+      const analysis = await analyzeObservation(visit.hospitalId, capture.observation,
         AbortSignal.any([controller.signal, AbortSignal.timeout(190_000)]))
       if (controller.signal.aborted) return
       const analyzed = { ...capture, analysis }
@@ -223,8 +206,8 @@ function CapturePage() {
               </h1>
 
               <p className="mt-3 max-w-xl text-[15px] leading-6 text-[#6F7A8A]">
-                Describe uno o varios equipos de forma natural. Puedes escribir o
-                hablar; ambas opciones generan la misma observación.
+                Describe uno o varios equipos de forma natural por escrito.
+                La captura de voz no está habilitada en esta versión local.
               </p>
 
             </section>
@@ -249,7 +232,7 @@ function CapturePage() {
 
                 <button
                   aria-pressed={mode === 'voice'}
-                  onClick={() => setMode('voice')}
+                  onClick={toggleVoice}
                   className={`flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-medium transition ${
                     mode === 'voice'
                       ? 'bg-white text-[#4B1F91] shadow-sm'
@@ -257,7 +240,7 @@ function CapturePage() {
                   }`}
                 >
                   <Mic size={18} />
-                  Voz
+                  Voz · No disponible
                 </button>
 
               </div>

@@ -1,5 +1,6 @@
 from typing import Literal
 from pydantic import BaseModel, Field, model_validator
+from app.schemas.observation import ObservationAnalysisResponse
 
 
 class EquipmentRecord(BaseModel):
@@ -10,11 +11,14 @@ class EquipmentRecord(BaseModel):
     configuration: str = ''
     estimatedAge: str = ''
     status: str = ''
-    resolution: Literal['existing', 'new'] | None = None
+    resolution: Literal['existing', 'new', 'review'] | None = None
     matchedEquipmentId: str | None = None
+    reviewed: bool = False
 
 
 class ObservationRecord(BaseModel):
+    detectedLanguage: Literal['es', 'en', 'pt', 'other'] = 'other'
+    analysis: ObservationAnalysisResponse | None = None
     id: str = Field(min_length=1)
     title: str = ''
     captureMode: Literal['chat', 'voice']
@@ -33,6 +37,7 @@ class VisitRecord(BaseModel):
     region: str = ''
     startedAt: str = Field(min_length=1)
     completedAt: str = ''
+    collaboratorId: str | None = None
     observations: list[ObservationRecord] = Field(min_length=1, max_length=100)
 
     @model_validator(mode='after')
@@ -42,4 +47,7 @@ class VisitRecord(BaseModel):
         for observation in self.observations:
             if len({e.id for e in observation.equipment}) != len(observation.equipment):
                 raise ValueError('Duplicate equipment IDs')
+            matched = [e.matchedEquipmentId for e in observation.equipment if e.resolution == 'existing' and e.matchedEquipmentId]
+            if len(matched) != len(set(matched)):
+                raise ValueError('Two physical devices in one observation cannot match the same installed asset')
         return self

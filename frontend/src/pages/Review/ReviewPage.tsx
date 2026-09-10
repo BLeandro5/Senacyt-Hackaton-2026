@@ -1,6 +1,7 @@
 import { toEquipmentDrafts, type EquipmentDraft } from '../../data/observationApi'
 import { readStored, writeStored, type Capture } from '../../data/visitStore'
 import VisitContext from '../../components/VisitContext'
+import FollowUp from '../../components/FollowUp'
 import { useEffect, useId, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ChevronRight, CirclePlus, Pencil, Sparkles, Trash2 } from 'lucide-react'
@@ -75,7 +76,7 @@ function ReviewPage() {
 
       originalObservation: observation.observation,
 
-      equipment,
+      equipment: equipment.map(item => ({ ...item, reviewed: true })),
 
       reviewedAt: new Date().toISOString(),
     }
@@ -135,6 +136,7 @@ function ReviewPage() {
 
             </section>
 
+            <FollowUp observationId={observation.id || observation.capturedAt} equipment={equipment} update={updateEquipment} />
             {/* EQUIPOS */}
             <section className="mt-7">
 

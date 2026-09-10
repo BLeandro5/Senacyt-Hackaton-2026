@@ -13,7 +13,7 @@ class AnalysisTests(unittest.TestCase):
 
     def analyze(self):
         return self.client.post('/observations/analyze', json={
-            'hospital_id': 1, 'text': 'Un resonador Siemens.',
+            'hospital_id': 'HOSP-001', 'text': 'Un resonador Siemens.',
         })
 
     @patch('app.ai.extractor.generate_with_qvac')
@@ -29,7 +29,7 @@ class AnalysisTests(unittest.TestCase):
     def test_age_from_ct_does_not_leak_to_mri(self, generate):
         generate.return_value = '{"equipment":[{"modality":"MRI","manufacturer":"Siemens","estimated_age_years":7},{"modality":"MRI","manufacturer":"Siemens","estimated_age_years":7},{"modality":"CT","manufacturer":"Philips","estimated_age_years":7}]}'
         response = self.client.post('/observations/analyze', json={
-            'hospital_id': 1, 'text': 'Dos resonadores Siemens y un CT Philips de siete años.',
+            'hospital_id': 'HOSP-001', 'text': 'Dos resonadores Siemens y un CT Philips de siete años.',
         })
         self.assertEqual(response.status_code, 200)
         self.assertEqual([e['estimated_age_years'] for e in response.json()['equipment']],

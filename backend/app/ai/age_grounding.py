@@ -16,9 +16,9 @@ def normalize(text: str) -> str:
 
 
 MENTION = re.compile(
-    r'\b(?P<MRI>resonador(?:es)?|resonancias?(?: magneticas?)?|mri)\b|'
+    r'\b(?P<MRI>resonador(?:es)?|resonancias?(?: magneticas?)?|ressonancias?(?: magneticas?)?|mri)\b|'
     r'\b(?P<CT>tomografos?|tomografias?|ct|tac)\b|'
-    r'\b(?P<Ultrasound>ultrasonidos?|ecografos?|ultrasound)\b|'
+    r'\b(?P<Ultrasound>ultrasonidos?|ecografos?|ultrasound|ultrassom)\b|'
     r'\b(?P<Xray>rayos x|x-ray)\b'
 )
 ONES = dict(zip(
@@ -29,8 +29,11 @@ ONES = dict(zip(
     [0, 1, 1, 1, *range(2, 30)],
 ))
 TENS = dict(zip('treinta cuarenta cincuenta sesenta setenta ochenta noventa'.split(), range(30, 100, 10)))
+ONES.update(dict(zip('zero one two three four five six seven eight nine ten eleven twelve'.split(), range(13))))
+ONES.update({'um': 1, 'uma': 1, 'dois': 2, 'duas': 2, 'quatro': 4, 'sete': 7, 'oito': 8, 'nove': 9, 'dez': 10, 'onze': 11, 'doze': 12})
 NUMBER = r'(?:\d+(?:[.,]\d+)?|' + '|'.join(TENS) + r'(?: y (?:' + '|'.join(ONES) + r'))?|' + '|'.join(ONES) + ')'
-AGE = re.compile(r'\b(?:de|tiene|tienen|con)\s+(?:aproximadamente\s+)?(?P<number>' + NUMBER + r')\s+anos\b')
+AGE = re.compile(r'\b(?:de|tiene|tienen|con|com|is|aged|age|of)\s+(?:(?:aproximadamente|unos|unas|about|around|approximately|cerca de)\s+)?(?P<number>' + NUMBER + r')\s+(?:anos|years)(?:\s+old)?\b')
+PREFIX_AGE = re.compile(r'\b(?P<number>' + NUMBER + r')[- ]year[- ]old\b')
 SHARED = re.compile(r'\b(ambos|ambas|todos|todas)\b')
 
 
@@ -57,6 +60,12 @@ def ground_ages(text: str, equipment: list[EquipmentExtracted]) -> None:
         local = re.split(r'\b(?:hospital|sala|edificio|garantia|contrato|paciente|mantenimiento)\b', local, maxsplit=1)[0]
         ages = list(AGE.finditer(local))
         value = age_value(ages[0]['number']) if len(ages) == 1 else None
+        if not ages:
+            start = mentions[index - 1].end() if index else 0
+            prefix = re.split(r'[;.!?\n]|\band\b', source[start:mention.start()])[-1]
+            prefix_ages = list(PREFIX_AGE.finditer(prefix))
+            if len(prefix_ages) == 1:
+                value = age_value(prefix_ages[0]['number'])
         if re.search(r'\b(no|entre|menos|mas|posiblemente|quiza)\b', local):
             value = None
         groups.append({'modality': 'X-ray' if mention.lastgroup == 'Xray' else mention.lastgroup,

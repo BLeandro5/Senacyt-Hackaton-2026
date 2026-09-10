@@ -33,6 +33,8 @@ def analyze_observation_endpoint(
     except httpx.RequestError as exc:
         raise HTTPException(503, "No se pudo conectar con QVAC. Comprueba que esté iniciado.") from exc
     except httpx.HTTPStatusError as exc:
+        if exc.response.status_code == 503:
+            raise HTTPException(503, 'MedPsy está ocupado con otro análisis. Espera a que termine y reintenta; tu nota se conserva.') from exc
         raise HTTPException(502, "QVAC devolvió un error al procesar la observación.") from exc
     except (ValueError, KeyError, TypeError) as exc:
         raise HTTPException(502, "QVAC no devolvió una respuesta estructurada válida. Intenta nuevamente.") from exc

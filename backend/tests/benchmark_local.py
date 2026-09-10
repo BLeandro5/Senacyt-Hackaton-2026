@@ -1,7 +1,9 @@
 """Run synthetic observations through FastAPI and the live local SDK service."""
 import json
 import platform
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from datetime import datetime, timezone
 from unittest.mock import patch
 
@@ -52,7 +54,7 @@ def main():
             return data['output_text']
 
         with patch('app.ai.extractor.generate_with_qvac', side_effect=generate):
-            response = client.post('/observations/analyze', json={'hospital_id': 1, 'text': text})
+            response = client.post('/observations/analyze', json={'hospital_id': 'HOSP-001', 'text': text})
         data = response.json()
         actual = [(e['modality'], e['manufacturer'], e['estimated_age_years'])
                   for e in data.get('equipment', [])]

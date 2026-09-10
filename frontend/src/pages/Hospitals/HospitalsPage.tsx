@@ -1,107 +1,575 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Building2, Search } from 'lucide-react'
-import { storageRequest } from '../../data/storageApi'
-import { displayDate } from '../../data/visitStore'
-import { filterHospitalEquipment, type Hospital, type HospitalOverview } from '../../data/hospitalOverview'
+import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import {
+  Building2,
+  CalendarDays,
+  ChevronRight,
+  CircleCheck,
+  Clock3,
+  MapPin,
+  Monitor,
+  Search,
+  ShieldAlert,
+  SlidersHorizontal,
+} from 'lucide-react'
 
-export default function HospitalsPage() {
-  const { hospitalId } = useParams()
-  const navigate = useNavigate()
-  const [hospitals, setHospitals] = useState<Hospital[]>([])
-  const [overview, setOverview] = useState<HospitalOverview | null>(null)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [attempt, setAttempt] = useState(0)
-  const [query, setQuery] = useState('')
-  const [area, setArea] = useState('')
-  const [type, setType] = useState('')
-  useEffect(() => {
-    let active = true
-    Promise.all([
-      storageRequest<Hospital[]>('/hospitals'),
-      hospitalId ? storageRequest<HospitalOverview>(`/hospitals/${encodeURIComponent(hospitalId)}/overview`) : Promise.resolve(null),
-    ]).then(([catalog, data]) => {
-      if (active) { setHospitals(catalog); setOverview(data); setError('') }
-    }).catch(() => {
-      if (active) { setOverview(null); setError('No se pudo cargar el hospital. Comprueba que exista y que el backend esté iniciado.') }
-    }).finally(() => { if (active) setLoading(false) })
-    return () => { active = false }
-  }, [hospitalId, attempt])
+import { hospitals } from '../../data/hospitals'
+import { getVisits } from '../../data/visits'
+import { displayDate, type Equipment } from '../../data/visitStore'
 
-  const current = overview?.hospital.id === hospitalId ? overview : null
-  const equipment = current?.equipment || []
-  const filtered = filterHospitalEquipment(equipment, query, area, type)
-  const areas = [...new Set(equipment.map(e => e.area).filter(Boolean))].sort()
-  const types = [...new Set(equipment.map(e => e.type))].sort()
-  const selectHospital = (id: string) => {
-    setLoading(true); setQuery(''); setArea(''); setType(''); setError('')
-    navigate(id ? `/hospitals/${encodeURIComponent(id)}` : '/hospitals')
-  }
-
-  return <main className="mx-auto max-w-[1380px] px-4 py-8 pb-28 sm:px-6">
-    <div className="mb-6 flex items-center gap-3">
-      <Building2 className="text-blue-700" size={30} />
-      <div><h1 className="text-3xl font-semibold">Vista por hospital</h1>
-        <p className="mt-2 text-sm text-slate-500">Consulta las visitas finalizadas y los equipos registrados de cada cliente.</p></div>
-    </div>
-    <label className="block max-w-xl text-sm font-medium">Hospital
-      <select value={hospitalId || ''} onChange={e => selectHospital(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white p-3">
-        <option value="">Selecciona un hospital</option>
-        {hospitals.map(h => <option key={h.id} value={h.id}>{h.name} · {h.region}</option>)}
-      </select>
-    </label>
-    {loading && <p role="status" className="mt-5">Cargando datos del hospital...</p>}
-    {error && <div role="alert" className="storage-error mt-5">{error}
-      <button className="ml-3 underline" onClick={() => { setLoading(true); setAttempt(n => n + 1) }}>Reintentar</button>
-    </div>}
-    {!hospitalId && !loading && !error && <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {hospitals.map(h => <Link key={h.id} to={`/hospitals/${encodeURIComponent(h.id)}`} className="panel block hover:border-blue-400">
-        <h2 className="font-semibold text-blue-800">{h.name}</h2><p className="mt-2 text-sm text-slate-500">{h.city} · {h.region}</p>
-      </Link>)}
-      {hospitals.length === 0 && <p>No hay hospitales registrados.</p>}
-    </div>}
-    {current && !error && <>
-      <section className="panel mt-6">
-        <h2 className="text-xl font-semibold">{current.hospital.name}</h2>
-        <p className="mt-1 text-sm text-slate-500">{current.hospital.city} · {current.hospital.region}</p>
-        <p className="mt-2 text-sm">Última visita: {current.summary.lastVisit ? displayDate(current.summary.lastVisit) : 'Sin visitas finalizadas'}</p>
-        <div className="mt-5 grid grid-cols-3 gap-3">
-          {[['Visitas', current.summary.visits], ['Observaciones', current.summary.observations], ['Registros de equipos', current.summary.equipmentRecords]].map(([label, count]) =>
-            <div key={label} className="rounded-xl bg-blue-50 p-3"><p className="text-2xl font-semibold text-blue-800">{count}</p><p className="text-xs text-slate-600">{label}</p></div>)}
-        </div>
-        <p className="mt-4 text-sm text-slate-500">Un equipo puede aparecer en varias visitas. Estos totales cuentan registros, no equipos físicos únicos.</p>
-      </section>
-      <section className="panel mt-5">
-        <h2 className="text-xl font-semibold">Equipos registrados</h2>
-        <div className="my-4 grid gap-3 sm:grid-cols-3">
-          <label className="text-sm"><span className="flex items-center gap-1"><Search size={14} />Buscar</span>
-            <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Marca, modelo o estado" className="mt-1 w-full rounded-xl border border-slate-200 p-3" /></label>
-          <label className="text-sm">Área<select value={area} onChange={e => setArea(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 p-3">
-            <option value="">Todas las áreas</option>{areas.map(a => <option key={a}>{a}</option>)}
-          </select></label>
-          <label className="text-sm">Tipo<select value={type} onChange={e => setType(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 p-3">
-            <option value="">Todos los tipos</option>{types.map(t => <option key={t}>{t}</option>)}
-          </select></label>
-        </div>
-        <p role="status" className="mb-3 text-sm text-slate-500">{filtered.length} de {equipment.length} registros</p>
-        {filtered.length === 0 ? <p className="py-8 text-center text-slate-500">{equipment.length ? 'No hay resultados para estos filtros.' : 'Finaliza una visita para ver aquí sus equipos.'}</p> :
-          <div className="overflow-x-auto"><table className="w-full text-left text-sm">
-            <thead><tr className="border-b text-slate-500">{['Equipo', 'Área', 'Antigüedad', 'Estado', 'Origen'].map(h => <th key={h} scope="col" className="p-3">{h}</th>)}</tr></thead>
-            <tbody>{filtered.map(e => <tr key={`${e.visitId}/${e.observationId}/${e.id}`} className="border-b border-slate-100">
-              <td className="p-3"><p className="font-semibold">{e.type}</p><p>{e.brand || 'Marca no indicada'} · {e.model || 'Modelo no indicado'}</p>
-                <details className="mt-1 text-slate-500"><summary className="cursor-pointer">Observación original</summary><p className="mt-2 max-w-sm whitespace-pre-wrap">{e.originalText}</p></details></td>
-              <td className="p-3">{e.area || 'No indicada'}</td><td className="p-3">{e.estimatedAge || 'No indicada'}</td><td className="p-3">{e.status || 'No indicado'}</td>
-              <td className="p-3"><Link to={`/visits/${encodeURIComponent(e.visitId)}`} className="text-blue-700 underline">{displayDate(e.recordedAt)}</Link></td>
-            </tr>)}</tbody>
-          </table></div>}
-      </section>
-      <section className="panel mt-5"><h2 className="text-xl font-semibold">Historial del hospital</h2>
-        <div className="mt-3 divide-y divide-slate-100">{current.visits.map(v => <Link key={v.id} to={`/visits/${encodeURIComponent(v.id)}`} className="flex justify-between gap-3 py-3 text-sm text-blue-700">
-          <span>{displayDate(v.completedAt)} · {v.area || 'Área no indicada'}</span><span>{v.observationCount} observaciones →</span>
-        </Link>)}</div>
-        {!current.visits.length && <p className="mt-3 text-sm text-slate-500">Aún no hay visitas finalizadas.</p>}
-      </section>
-    </>}
-  </main>
+type HospitalSummary = {
+  id: string
+  name: string
+  region: string
+  city: string
+  visitCount: number
+  equipmentCount: number
+  reviewCount: number
+  lastVisit?: string
+  pendingSyncCount: number
 }
+
+function HospitalsPage() {
+  const navigate = useNavigate()
+
+  const [search, setSearch] = useState('')
+  const [filter, setFilter] = useState<
+    'all' | 'activity' | 'review' | 'pending'
+  >('all')
+
+  const visits = useMemo(() => getVisits(), [])
+
+  const hospitalSummaries = useMemo<HospitalSummary[]>(() => {
+    return hospitals.map((hospital) => {
+      const hospitalVisits = visits.filter(
+        (visit) => visit.hospital === hospital.name,
+      )
+
+      const equipment = hospitalVisits.flatMap((visit) =>
+        visit.observations.flatMap((observation) => observation.equipment),
+      )
+
+      const reviewCount = equipment.filter(needsReview).length
+
+      const pendingSyncCount = hospitalVisits.filter(
+        (visit) => visit.syncStatus === 'pending',
+      ).length
+
+      const latestVisit = [...hospitalVisits].sort((a, b) => {
+        const first = parseDate(a.completedAt)
+        const second = parseDate(b.completedAt)
+
+        return second - first
+      })[0]
+
+      return {
+        id: hospital.id,
+        name: hospital.name,
+        region: hospital.region,
+        city: hospital.city,
+        visitCount: hospitalVisits.length,
+        equipmentCount: equipment.length,
+        reviewCount,
+        pendingSyncCount,
+        lastVisit: latestVisit?.completedAt,
+      }
+    })
+  }, [visits])
+
+  const filteredHospitals = useMemo(() => {
+    const query = search.trim().toLowerCase()
+
+    return hospitalSummaries.filter((hospital) => {
+      const matchesSearch =
+        !query ||
+        hospital.name.toLowerCase().includes(query) ||
+        hospital.region.toLowerCase().includes(query) ||
+        hospital.city.toLowerCase().includes(query)
+
+      if (!matchesSearch) {
+        return false
+      }
+
+      if (filter === 'activity') {
+        return hospital.visitCount > 0
+      }
+
+      if (filter === 'review') {
+        return hospital.reviewCount > 0
+      }
+
+      if (filter === 'pending') {
+        return hospital.pendingSyncCount > 0
+      }
+
+      return true
+    })
+  }, [hospitalSummaries, search, filter])
+
+  const hospitalsWithActivity = hospitalSummaries.filter(
+    (hospital) => hospital.visitCount > 0,
+  ).length
+
+  const totalEquipment = hospitalSummaries.reduce(
+    (total, hospital) => total + hospital.equipmentCount,
+    0,
+  )
+
+  const totalReview = hospitalSummaries.reduce(
+    (total, hospital) => total + hospital.reviewCount,
+    0,
+  )
+
+  const totalPending = hospitalSummaries.reduce(
+    (total, hospital) => total + hospital.pendingSyncCount,
+    0,
+  )
+
+  return (
+    <main className="px-4 pb-12 pt-7 sm:px-6 lg:px-8 lg:pt-9">
+      <div className="mx-auto max-w-[1380px]">
+        {/* Intro */}
+        <section className="mb-7">
+          <p className="text-sm font-semibold text-[#0B5ED7]">
+            Base instalada
+          </p>
+
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Hospitales
+          </h1>
+
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            Consulta la actividad registrada por hospital y explora los equipos
+            observados en cada cliente.
+          </p>
+        </section>
+
+        {/* Summary */}
+        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <SummaryCard
+            icon={<Building2 size={20} />}
+            value={hospitalsWithActivity}
+            label="Hospitales con actividad"
+            description={`de ${hospitals.length} registrados`}
+          />
+
+          <SummaryCard
+            icon={<Monitor size={20} />}
+            value={totalEquipment}
+            label="Equipos observados"
+            description="En todas las visitas"
+          />
+
+          <SummaryCard
+            icon={<ShieldAlert size={20} />}
+            value={totalReview}
+            label="Registros por revisar"
+            description="Información incompleta"
+            warning
+          />
+
+          <SummaryCard
+            icon={<Clock3 size={20} />}
+            value={totalPending}
+            label="Visitas pendientes"
+            description="Pendientes de sincronización"
+            warning={totalPending > 0}
+          />
+        </section>
+
+        {/* Search */}
+        <section className="mt-6 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+            <div className="relative flex-1">
+              <Search
+                size={19}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+
+              <input
+                type="text"
+                aria-label="Buscar hospitales"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Buscar hospital, ciudad o región..."
+                className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#0B5ED7] focus:bg-white focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+
+            <div className="flex items-center gap-2 overflow-x-auto">
+              <div className="mr-1 hidden text-slate-400 sm:block">
+                <SlidersHorizontal size={18} />
+              </div>
+
+              <FilterButton
+                active={filter === 'all'}
+                onClick={() => setFilter('all')}
+              >
+                Todos
+              </FilterButton>
+
+              <FilterButton
+                active={filter === 'activity'}
+                onClick={() => setFilter('activity')}
+              >
+                Con actividad
+              </FilterButton>
+
+              <FilterButton
+                active={filter === 'review'}
+                onClick={() => setFilter('review')}
+              >
+                Por revisar
+              </FilterButton>
+
+              <FilterButton
+                active={filter === 'pending'}
+                onClick={() => setFilter('pending')}
+              >
+                Pendientes
+              </FilterButton>
+            </div>
+          </div>
+        </section>
+
+        {/* Desktop table */}
+        <section className="mt-5 hidden overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm lg:block">
+          <div className="grid grid-cols-[minmax(280px,1.5fr)_0.8fr_0.65fr_0.65fr_0.8fr_48px] items-center gap-4 border-b border-slate-100 bg-slate-50 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+            <span>Hospital</span>
+            <span>Última visita</span>
+            <span>Visitas</span>
+            <span>Equipos</span>
+            <span>Estado</span>
+            <span />
+          </div>
+
+          {filteredHospitals.length > 0 ? (
+            filteredHospitals.map((hospital, index) => (
+              <button
+                type="button"
+                key={hospital.id}
+                onClick={() =>
+                  navigate(`/supervisor/hospitals/${hospital.id}`)
+                }
+                className={`group grid w-full grid-cols-[minmax(280px,1.5fr)_0.8fr_0.65fr_0.65fr_0.8fr_48px] items-center gap-4 px-6 py-5 text-left transition hover:bg-slate-50 ${
+                  index !== filteredHospitals.length - 1
+                    ? 'border-b border-slate-100'
+                    : ''
+                }`}
+              >
+                <div className="flex min-w-0 items-center gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#0B5ED7]">
+                    <Building2 size={19} />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-slate-950">
+                      {hospital.name}
+                    </p>
+
+                    <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-400">
+                      <MapPin size={13} />
+                      {hospital.city} · {hospital.region}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  {hospital.lastVisit ? (
+                    <>
+                      <p className="text-sm font-medium text-slate-700">
+                        {displayDate(hospital.lastVisit)}
+                      </p>
+
+                      <p className="mt-1 text-xs text-slate-400">
+                        Última actividad
+                      </p>
+                    </>
+                  ) : (
+                    <span className="text-sm text-slate-400">
+                      Sin visitas
+                    </span>
+                  )}
+                </div>
+
+                <div>
+                  <p className="text-lg font-semibold text-slate-950">
+                    {hospital.visitCount}
+                  </p>
+
+                  <p className="text-xs text-slate-400">
+                    registradas
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-lg font-semibold text-slate-950">
+                    {hospital.equipmentCount}
+                  </p>
+
+                  <p className="text-xs text-slate-400">
+                    observados
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {hospital.reviewCount > 0 && (
+                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs font-semibold text-amber-700">
+                      <ShieldAlert size={13} />
+                      {hospital.reviewCount} por revisar
+                    </span>
+                  )}
+
+                  {hospital.pendingSyncCount > 0 && (
+                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-violet-50 px-2.5 py-1.5 text-xs font-semibold text-violet-700">
+                      <Clock3 size={13} />
+                      {hospital.pendingSyncCount} pendiente
+                    </span>
+                  )}
+
+                  {hospital.visitCount > 0 &&
+                    hospital.reviewCount === 0 &&
+                    hospital.pendingSyncCount === 0 && (
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 text-xs font-semibold text-emerald-700">
+                        <CircleCheck size={13} />
+                        Sin alertas
+                      </span>
+                    )}
+
+                  {hospital.visitCount === 0 && (
+                    <span className="rounded-lg bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-500">
+                      Sin actividad
+                    </span>
+                  )}
+                </div>
+
+                <ChevronRight
+                  size={19}
+                  className="justify-self-end text-slate-300 transition group-hover:translate-x-1 group-hover:text-[#0B5ED7]"
+                />
+              </button>
+            ))
+          ) : (
+            <EmptyState />
+          )}
+        </section>
+
+        {/* Mobile/tablet cards */}
+        <section className="mt-5 grid gap-4 lg:hidden">
+          {filteredHospitals.length > 0 ? (
+            filteredHospitals.map((hospital) => (
+              <button
+                type="button"
+                key={hospital.id}
+                onClick={() =>
+                  navigate(`/supervisor/hospitals/${hospital.id}`)
+                }
+                className="group rounded-[22px] border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:border-blue-200 hover:shadow-md"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#0B5ED7]">
+                    <Building2 size={19} />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold text-slate-950">
+                          {hospital.name}
+                        </p>
+
+                        <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-400">
+                          <MapPin size={13} />
+                          {hospital.city}
+                        </p>
+                      </div>
+
+                      <ChevronRight
+                        size={18}
+                        className="shrink-0 text-slate-300"
+                      />
+                    </div>
+
+                    <div className="mt-4 grid grid-cols-3 gap-2">
+                      <MobileMetric
+                        value={hospital.visitCount}
+                        label="Visitas"
+                      />
+
+                      <MobileMetric
+                        value={hospital.equipmentCount}
+                        label="Equipos"
+                      />
+
+                      <MobileMetric
+                        value={hospital.reviewCount}
+                        label="Revisar"
+                        warning={hospital.reviewCount > 0}
+                      />
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
+                      <div className="flex items-center gap-2 text-xs text-slate-400">
+                        <CalendarDays size={14} />
+
+                        {hospital.lastVisit
+                          ? displayDate(hospital.lastVisit)
+                          : 'Sin visitas registradas'}
+                      </div>
+
+                      {hospital.pendingSyncCount > 0 && (
+                        <span className="rounded-lg bg-violet-50 px-2 py-1 text-[11px] font-semibold text-violet-700">
+                          {hospital.pendingSyncCount} pendiente
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))
+          ) : (
+            <EmptyState />
+          )}
+        </section>
+      </div>
+    </main>
+  )
+}
+
+function needsReview(equipment: Equipment) {
+  const unknown = (value?: string) =>
+    !value || /desconocid|no informad/i.test(value)
+
+  return (
+    unknown(equipment.brand) ||
+    unknown(equipment.model) ||
+    !equipment.resolution
+  )
+}
+
+function parseDate(value?: string) {
+  if (!value) return 0
+
+  const parsed = new Date(value).getTime()
+
+  return Number.isNaN(parsed) ? 0 : parsed
+}
+
+function SummaryCard({
+  icon,
+  value,
+  label,
+  description,
+  warning = false,
+}: {
+  icon: React.ReactNode
+  value: number
+  label: string
+  description: string
+  warning?: boolean
+}) {
+  return (
+    <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
+      <div
+        className={`flex h-10 w-10 items-center justify-center rounded-xl ${
+          warning
+            ? 'bg-amber-50 text-amber-600'
+            : 'bg-blue-50 text-[#0B5ED7]'
+        }`}
+      >
+        {icon}
+      </div>
+
+      <p className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">
+        {value}
+      </p>
+
+      <p className="mt-1 text-sm font-semibold text-slate-900">
+        {label}
+      </p>
+
+      <p className="mt-1 text-xs text-slate-400">
+        {description}
+      </p>
+    </div>
+  )
+}
+
+function FilterButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
+        active
+          ? 'bg-[#0B5ED7] text-white'
+          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
+
+function MobileMetric({
+  value,
+  label,
+  warning = false,
+}: {
+  value: number
+  label: string
+  warning?: boolean
+}) {
+  return (
+    <div
+      className={`rounded-xl p-3 ${
+        warning ? 'bg-amber-50' : 'bg-slate-50'
+      }`}
+    >
+      <p
+        className={`text-lg font-semibold ${
+          warning ? 'text-amber-800' : 'text-slate-950'
+        }`}
+      >
+        {value}
+      </p>
+
+      <p
+        className={`mt-0.5 text-[11px] ${
+          warning ? 'text-amber-700' : 'text-slate-400'
+        }`}
+      >
+        {label}
+      </p>
+    </div>
+  )
+}
+
+function EmptyState() {
+  return (
+    <div className="col-span-full px-6 py-14 text-center">
+      <Search
+        size={34}
+        className="mx-auto text-slate-300"
+      />
+
+      <p className="mt-4 font-semibold text-slate-900">
+        No encontramos hospitales
+      </p>
+
+      <p className="mt-1 text-sm text-slate-400">
+        Cambia la búsqueda o selecciona otro filtro.
+      </p>
+    </div>
+  )
+}
+
+export default HospitalsPage

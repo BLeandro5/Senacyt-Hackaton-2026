@@ -5,6 +5,7 @@ import { Building2, Check, ChevronRight, CircleCheck, Clock3, MapPin, Search, Sp
 
 import { hospitals as cachedHospitals } from '../../data/hospitals'
 import { storageRequest } from '../../data/storageApi'
+import type { CurrentUser } from '../../data/userApi'
 
 const areas = [
   'Radiología',
@@ -57,6 +58,7 @@ function NewVisitPage() {
     if (!selectedHospital) return
 
     if (current) { navigate(resumePath()); return }
+    const user = readStored<CurrentUser | null>('demo-user', null)
     const visit = {
       id: crypto.randomUUID(),
       observations: [],
@@ -65,6 +67,7 @@ function NewVisitPage() {
       region: selectedHospital.region,
       area: area || '',
       startedAt: new Date().toISOString(),
+      collaboratorId: user?.role === 'field' ? user.id : undefined,
     }
 
     try { writeStored('current-visit', visit); clearObservation() }

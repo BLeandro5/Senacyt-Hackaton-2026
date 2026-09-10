@@ -55,7 +55,7 @@ function SuccessPage() {
           </p>
 
           {/* RESUMEN */}
-          <section className="mt-8 rounded-[22px] border border-[#E5EAF0] bg-[#F8F9FC] p-5 text-left">
+          <section className="success-summary mt-8 rounded-[22px] border border-[#E5EAF0] bg-[#F8F9FC] p-5 text-left">
 
             <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#8A96A6]">
               Resumen

@@ -11,6 +11,7 @@ export default function InstalledBaseMapPage() {
   const [province, setProvince] = useState('')
   const [city, setCity] = useState('')
   const [query, setQuery] = useState('')
+  const [selected, setSelected] = useState<string | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
     storageRequest<Hospital[]>('/hospitals').then(setHospitals)
@@ -24,9 +25,12 @@ export default function InstalledBaseMapPage() {
     `${h.name} ${h.city} ${h.province} ${h.dependency}`.toLocaleLowerCase('es').includes(query.toLocaleLowerCase('es')),
   )
   const plotted = visible.filter(h => h.latitude != null && h.longitude != null)
+  const lons = plotted.map(h => Number(h.longitude)); const lats = plotted.map(h => Number(h.latitude))
+  const bounds = { minLon: Math.min(...lons, -83), maxLon: Math.max(...lons, -77), minLat: Math.min(...lats, 7), maxLat: Math.max(...lats, 10) }
   const point = (hospital: Hospital) => {
-    const x = ((Number(hospital.longitude) + 83.1) / 5.7) * 940 + 30
-    const y = ((10.1 - Number(hospital.latitude)) / 3.0) * 330 + 30
+    const width = Math.max(0.5, bounds.maxLon - bounds.minLon); const height = Math.max(0.5, bounds.maxLat - bounds.minLat)
+    const x = 70 + ((Number(hospital.longitude) - bounds.minLon) / width) * 860
+    const y = 310 - ((Number(hospital.latitude) - bounds.minLat) / height) * 220
     return { x, y }
   }
   return <main className="mx-auto max-w-[1380px] px-4 py-8 pb-28 sm:px-6">
@@ -43,14 +47,14 @@ export default function InstalledBaseMapPage() {
     </section>
     <p role="status" className="mt-4 text-sm text-slate-600"><strong>{visible.length}</strong> hospitales en la selección · {unique(visible.map(h => h.province)).length} provincias</p>
     <section className="panel mt-4 overflow-hidden p-0">
-      <div className="border-b bg-blue-50 px-5 py-3 text-sm text-blue-900">Ubicación aproximada por ciudad. Selecciona un punto para abrir el historial del hospital.</div>
-      <div className="overflow-x-auto bg-slate-50 p-4"><svg viewBox="0 0 1000 390" className="min-w-[700px]" role="img" aria-label="Distribución geográfica de hospitales de Panamá">
-        <rect x="0" y="0" width="1000" height="390" rx="16" fill="#e0f2fe" />
-        {[100, 200, 300].map(y => <line key={y} x1="0" x2="1000" y1={y} y2={y} stroke="#bae6fd" />)}
-        {[200, 400, 600, 800].map(x => <line key={x} y1="0" y2="390" x1={x} x2={x} stroke="#bae6fd" />)}
-        <path d="M40 215 C150 155 210 230 300 195 S460 170 570 190 S710 135 800 158 S910 120 970 148" fill="none" stroke="#93c5fd" strokeWidth="34" strokeLinecap="round" opacity=".55" />
-        {plotted.map(h => { const p = point(h); return <Link key={h.id} to={`/hospitals/${encodeURIComponent(h.id)}`}><circle cx={p.x} cy={p.y} r="9" fill="#0759c9" stroke="white" strokeWidth="4"><title>{h.name} · {h.city}</title></circle></Link> })}
+      <div className="border-b bg-blue-50 px-5 py-3 text-sm text-blue-900">Ubicación por coordenadas del catálogo. Selecciona un punto para ver el hospital y abrir su historial.</div>
+      <div className="overflow-x-auto bg-slate-50 p-4"><svg viewBox="0 0 1000 390" className="min-w-[700px]" role="img" aria-label="Mapa esquemático de hospitales de Panamá">
+        <rect x="0" y="0" width="1000" height="390" rx="16" fill="#f8fafc" />
+        <path d="M55 240 C150 178 214 207 292 224 C390 247 478 183 568 201 C645 217 703 167 778 183 C853 201 902 139 958 176 L939 241 C869 226 813 264 739 248 C650 229 591 282 505 257 C422 234 365 287 282 267 C189 245 117 291 63 278 Z" fill="#dbeafe" stroke="#93c5fd" strokeWidth="3" />
+        <text x="70" y="55" fill="#475569" fontSize="16" fontWeight="600">Panamá</text>
+        {plotted.map(h => { const p = point(h); const isSelected = selected === h.id; return <g key={h.id} onClick={() => setSelected(h.id)} className="cursor-pointer"><circle cx={p.x} cy={p.y} r={isSelected ? "13" : "9"} fill={isSelected ? "#f59e0b" : "#0759c9"} stroke="white" strokeWidth="4"><title>{h.name} · {h.province} · {h.city}</title></circle>{isSelected && <text x={p.x + 15} y={p.y + 5} fill="#172033" fontSize="13" fontWeight="600">{h.name}</text>}</g> })}
       </svg></div>
+      {selected && <div className="border-t bg-white px-5 py-4 text-sm">{(() => { const hospital = plotted.find(h => h.id === selected)!; return <span><strong>{hospital.name}</strong> · {hospital.province} · {hospital.city} <Link className="ml-3 text-blue-700 underline" to={`/hospitals/${encodeURIComponent(hospital.id)}`}>Abrir Customer 360</Link></span> })()}</div>}
     </section>
     <section className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {visible.map(h => <article key={h.id} className="panel flex flex-col"><div className="flex gap-3"><Building2 className="shrink-0 text-blue-700" size={22}/><div><h2 className="font-semibold">{h.name}</h2><p className="mt-1 text-sm text-slate-500">{h.country} · {h.province} · {h.city}</p><p className="mt-1 text-xs text-slate-500">{h.facility_type} · {h.dependency}</p></div></div><div className="mt-4 flex gap-3 text-sm"><Link className="text-blue-700 underline" to={`/hospitals/${encodeURIComponent(h.id)}`}>Ver observaciones</Link><Link className="ml-auto inline-flex items-center gap-1 rounded-lg bg-blue-700 px-3 py-1.5 text-white" to={`/visits/new?hospital=${encodeURIComponent(h.id)}`}><Plus size={15}/> Observar</Link></div></article>)}

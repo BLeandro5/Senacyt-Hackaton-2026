@@ -4,7 +4,8 @@ import VisitContext from '../../components/VisitContext'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ChevronRight, CirclePlus, SearchCheck, Sparkles } from 'lucide-react'
-import { candidateSimilarity, rankCandidates, type AssetCandidate } from '../../data/equipmentMatching'
+import { candidateSimilarity, rankCandidates, normalizeModality, type AssetCandidate } from '../../data/equipmentMatching'
+import type { HospitalOverview } from '../../data/hospitalOverview'
 
 type Decision = {
   equipmentId: string
@@ -22,6 +23,8 @@ function MatchPage() {
   const equipment = record.equipment
 
   const [available, setAvailable] = useState<AssetCandidate[]>([])
+  const [history, setHistory] = useState<HospitalOverview['equipment']>([])
+  const [lookupError, setLookupError] = useState('')
   const [candidates, setCandidates] = useState<{ equipmentId: string; match: { id: string; type: string; brand: string; model: string; area?: string; lastSeen: string; similarity: number } | null }[]>([])
   const [loading, setLoading] = useState(true)
   const [attempt, setAttempt] = useState(0)
@@ -29,14 +32,19 @@ function MatchPage() {
   const hospitalId = record.hospitalId
   useEffect(() => {
     let active = true
-    storageRequest<AssetCandidate[]>(`/installed-equipment?hospital_id=${encodeURIComponent(hospitalId || '')}`).then(rows => {
+    Promise.all([
+      storageRequest<AssetCandidate[]>(`/installed-equipment?hospital_id=${encodeURIComponent(hospitalId || '')}`),
+      storageRequest<HospitalOverview>(`/hospitals/${encodeURIComponent(hospitalId || '')}/overview`),
+    ]).then(([rows, overview]) => {
       if (!active) return
+      setLookupError('')
+      setHistory(overview.equipment)
       setAvailable(rows)
       setCandidates(equipment.map(item => {
         const asset = rankCandidates(rows, hospitalId || '', item).find(a => (!item.brand || !a.manufacturer || a.manufacturer.toLowerCase() === item.brand.toLowerCase()) && (!item.model || !a.model || a.model.toLowerCase() === item.model.toLowerCase()))
         return { equipmentId: item.id, match: asset ? { id: asset.id, type: asset.modality, brand: asset.manufacturer || '', model: asset.model || '', lastSeen: asset.lastObservedAt, similarity: candidateSimilarity(asset, item) } : null }
       }))
-    }).catch(cause => { if (active) setError(cause.message) })
+    }).catch(cause => { if (active) setLookupError(cause.message) })
       .finally(() => { if (active) setLoading(false) })
     return () => { active = false }
   // The stored review is fixed for this screen.
@@ -114,6 +122,8 @@ function MatchPage() {
 
             </section>
 
+            {loading && <p role="status" className="panel mt-5">Consultando equipos e historial del hospital…</p>}
+            {lookupError && <div role="alert" className="storage-error"><p>{lookupError}</p><p>No se pudo verificar el inventario. Esto no significa que los equipos sean nuevos.</p><button onClick={() => { setLoading(true); setAttempt(n => n + 1) }}>Reintentar consulta</button></div>}
             <section className="mt-7 space-y-4">
 
               {equipment.map((item, index) => {
@@ -123,6 +133,7 @@ function MatchPage() {
                 )
 
                 const match = candidate?.match
+                const relatedHistory = history.filter(e => normalizeModality(e.type) === normalizeModality(item.type))
 
                 const decision = decisions.find(
                   (decision) =>
@@ -187,7 +198,7 @@ function MatchPage() {
                       }}><option value="">Sin candidato seleccionado</option>{rankCandidates(available, hospitalId || '', item).map(a => <option key={a.id} value={a.id}>{a.manufacturer || 'Marca no informada'} · {a.model || 'Modelo no informado'} · {a.id.slice(0, 8)}</option>)}</select>
                       <p className="mt-1 text-xs text-slate-500">La selección no fusiona equipos. Si los datos difieren, confirma solo si sabes que es el mismo activo; el conflicto quedará visible.</p>
                     </label>}
-                    {match ? (
+                    {!loading && !lookupError && (match ? (
                       <div className="mt-5 rounded-2xl border border-[#E3E0F4] bg-[#FAF9FF] p-4">
 
                         <div className="flex items-center justify-between gap-4">
@@ -288,7 +299,7 @@ function MatchPage() {
 
                       </div>
                     ) : (
-                      <div className="mt-5 flex items-start gap-3 rounded-2xl bg-[#F5FAF8] p-4">
+                      <div className="match-empty mt-5 flex items-start gap-3 rounded-2xl bg-[#F5FAF8] p-4">
 
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#E8F7F1] text-[#159B72]">
                           <CirclePlus size={17} />
@@ -297,20 +308,21 @@ function MatchPage() {
                         <div>
 
                           <p className="text-sm font-semibold text-[#172033]">
-                            No encontramos una coincidencia probable
+                            {relatedHistory.length ? 'Hay observaciones anteriores para revisar' : available.length ? 'Sin candidato compatible identificado' : 'Este hospital no tiene equipos consolidados'}
                           </p>
 
                           <p className="mt-1 text-sm leading-6 text-[#7D8998]">
-                            Se propone crear un nuevo equipo.
-                            <button type="button" className="block mt-3 text-blue-700 underline" onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'new' })}>Confirmar equipo nuevo</button>
+                            La información disponible no permite concluir si es nuevo o duplicado. Puedes guardar la observación pendiente de verificación.
+                            <button type="button" className="block mt-3 text-blue-700 underline" aria-pressed={decision?.type === 'review'} onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'review' })}>Guardar como pendiente de verificación</button>
+                            <button type="button" className="block mt-3 text-blue-700 underline" onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'new' })}>Sé que es un equipo diferente: registrar nuevo</button>
                           </p>
 
                         </div>
 
                       </div>
-                    )}
-
-                    <button type="button" className="mt-3 text-sm text-amber-800 underline" aria-pressed={decision?.type === 'review'} onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'review' })}>No puedo decidir · Enviar a revisión</button>
+                    ))}
+                    {!loading && !lookupError && relatedHistory.length > 0 && <details className="mt-3 text-sm"><summary className="cursor-pointer text-blue-700">Ver {relatedHistory.length} evidencias anteriores de esta modalidad</summary><p className="mt-2">Estas observaciones pueden describir el mismo equipo. Cada registro no equivale a un activo único.</p>{relatedHistory.map(e => <div key={`${e.visitId}/${e.observationId}/${e.id}`} className="mt-3 border-t pt-3"><p>{e.brand || 'Marca desconocida'} · {e.model || 'Modelo desconocido'} · {e.estimatedAge || 'Edad desconocida'}</p><p>Visita {e.visitId} · {e.recordedAt}</p><p className="mt-2 whitespace-pre-wrap">{e.originalText}</p></div>)}</details>}
+                    <button type="button" className="mt-3 text-sm text-amber-800 underline" aria-pressed={decision?.type === 'review'} onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'review' })}>No puedo decidir · Guardar pendiente de verificación</button>
                   </div>
                 )
               })}

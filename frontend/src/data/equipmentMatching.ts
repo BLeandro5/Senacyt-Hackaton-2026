@@ -1,6 +1,8 @@
 export type AssetCandidate = { id: string; hospital_id: string; modality: string; manufacturer: string | null; model: string | null; configuration?: string | null; estimated_age?: string | null; lastObservedAt: string }
 export function normalizeModality(value: string) {
   const key = value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase()
+  const aliases: Record<string, string> = { mamografia: 'mammography', mamografo: 'mammography', 'rayos x': 'x-ray', radiografia: 'x-ray', ecografia: 'ultrasound', mr: 'mri', 'resonancia magnetica': 'mri' }
+  if (aliases[key]) return aliases[key]
   return ({ resonador: 'mri', resonancia: 'mri', tomografo: 'ct', tac: 'ct', ultrasonido: 'ultrasound', ecografo: 'ultrasound', ultrassom: 'ultrasound' } as Record<string, string>)[key] || key
 }
 export function rankCandidates(rows: AssetCandidate[], hospitalId: string, item: { type: string; brand: string; model: string; configuration?: string }) {

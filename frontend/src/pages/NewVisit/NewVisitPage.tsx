@@ -32,7 +32,8 @@ function NewVisitPage() {
     return () => { active = false }
   }, [])
   const [search, setSearch] = useState('')
-  const [selectedHospitalId, setSelectedHospitalId] = useState(() => searchParams.get('hospital') || '')
+  const [selectedHospitalChoice, setSelectedHospitalId] = useState('')
+  const selectedHospitalId = searchParams.get('hospital') || selectedHospitalChoice
   const [area, setArea] = useState('')
 
   const filteredHospitals = useMemo(() => {
@@ -59,7 +60,11 @@ function NewVisitPage() {
   const handleContinue = () => {
     if (!selectedHospital) return
 
-    if (current) { navigate(resumePath()); return }
+    if (current) {
+      if (current.hospitalId === selectedHospital.id) { navigate(resumePath()); return }
+      setError(`Hay una visita en curso para ${current.hospitalName}. Finalízala o descártala antes de cambiar de hospital.`)
+      return
+    }
     const user = readStored<CurrentUser | null>('demo-user', null)
     const visit = {
       id: crypto.randomUUID(),
@@ -88,7 +93,7 @@ function NewVisitPage() {
 
       <main className="mx-auto max-w-[1380px] px-4 pb-32 pt-7 sm:px-6 lg:px-8 lg:pb-10 lg:pt-9">
         {error && <p role="alert" className="storage-error">{error}</p>}
-        {current && <section className="panel mb-6"><h2 className="font-semibold">Ya tienes una visita en progreso</h2><p className="my-3 text-sm">{current.hospitalName}. Continúa esta visita y finalízala antes de comenzar otra.</p><button className="rounded-xl bg-blue-700 px-4 py-3 text-white" onClick={() => navigate(resumePath())}>Continuar visita actual</button></section>}
+        {current && <section className="panel mb-6"><h2 className="font-semibold">Ya tienes una visita en progreso</h2><p className="my-3 text-sm">{current.hospitalName}. Continúa esta visita y finalízala antes de comenzar otra.</p><div className="flex flex-wrap gap-3"><button className="rounded-xl bg-blue-700 px-4 py-3 text-white" onClick={() => navigate(resumePath())}>Continuar visita actual</button><button className="rounded-xl border border-slate-300 px-4 py-3 text-slate-700" onClick={() => { localStorage.removeItem('current-visit'); clearObservation(); navigate(`/visits/new${searchParams.toString() ? `?${searchParams}` : ''}`, { replace: true }) }}>Descartar visita y cambiar hospital</button></div></section>}
         {/* Progress */}
         <div className="mb-8">
           <div className="mb-3 flex items-center justify-between text-xs">

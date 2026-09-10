@@ -10,6 +10,7 @@ export type AnalysisResult = {
     model: string | null
     configuration: string | null
     estimated_age_years: number | null
+    age_description?: string | null
     condition: string | null
   }[]
 }
@@ -62,12 +63,12 @@ export function toEquipmentDrafts(analysis: AnalysisResult): EquipmentDraft[] {
     id: `MEDPSY-${crypto.randomUUID()}`,
     type: names[item.modality] || item.modality,
     brand: item.manufacturer ?? '', model: item.model ?? '', configuration: item.configuration ?? '',
-    estimatedAge: item.estimated_age_years === null ? '' : `${item.estimated_age_years} años`,
+    estimatedAge: item.age_description || (item.estimated_age_years === null ? '' : `${item.estimated_age_years} años`),
     status: item.condition ?? 'Desconocido',
     fieldStatuses: {
       modality: 'Reported', manufacturer: item.manufacturer ? 'Reported' : 'Unknown',
       model: item.model ? 'Reported' : 'Unknown', configuration: item.configuration ? 'Reported' : 'Unknown',
-      age: item.estimated_age_years === null ? 'Unknown' : 'Reported',
+      age: item.age_description ? 'Estimated' : item.estimated_age_years === null ? 'Unknown' : 'Reported',
       condition: item.condition ? 'Reported' : 'Unknown', quantity: 'Reported',
     },
   }))

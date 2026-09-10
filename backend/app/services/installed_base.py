@@ -10,6 +10,9 @@ from app.services.reliability import reliability
 
 def modality(value):
     key = normalize(value or '').strip()
+    aliases = {'mamografia': 'Mammography', 'mamografo': 'Mammography', 'mammography': 'Mammography', 'rayos x': 'X-ray', 'x-ray': 'X-ray', 'radiografia': 'X-ray', 'ecografia': 'Ultrasound'}
+    if key in aliases:
+        return aliases[key]
     return {'resonador': 'MRI', 'resonancia': 'MRI', 'mri': 'MRI', 'tomografo': 'CT', 'ct': 'CT', 'tac': 'CT',
             'ecografo': 'Ultrasound', 'ultrasonido': 'Ultrasound', 'ultrasound': 'Ultrasound'}.get(key, key)
 

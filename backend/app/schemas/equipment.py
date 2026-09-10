@@ -17,6 +17,7 @@ class EquipmentExtracted(BaseModel):
 
     # Edad aproximada en años
     estimated_age_years: Optional[float] = Field(default=None, ge=0, le=150)
+    age_description: Optional[str] = None
 
     # Estado aparente del equipo
     condition: Optional[str] = None

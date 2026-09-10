@@ -5,8 +5,11 @@ import FollowUp from '../../components/FollowUp'
 import { useEffect, useId, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ChevronRight, CirclePlus, Pencil, Sparkles, Trash2 } from 'lucide-react'
+import { detectUserLanguage } from '../../data/language'
+import { currentReviewCopy } from '../../data/reviewCopy'
 
 function ReviewPage() {
+  const copy = currentReviewCopy()
   const navigate = useNavigate()
 
   const [error, setError] = useState('')
@@ -117,7 +120,7 @@ function ReviewPage() {
               </div>
 
               <h1 className="mt-6 text-3xl font-semibold tracking-tight text-[#172033] sm:text-4xl">
-                La IA detectó {equipment.length} {equipment.length === 1 ? 'equipo' : 'equipos'}
+                {copy.detected(equipment.length)}
               </h1>
 
               <p className="mt-3 max-w-xl text-[15px] leading-6 text-[#6F7A8A]">
@@ -146,7 +149,7 @@ function ReviewPage() {
 
             </section>
 
-            <FollowUp observationId={observation.id || observation.capturedAt} equipment={equipment} update={updateEquipment} />
+            <FollowUp observationId={observation.id || observation.capturedAt} equipment={equipment} update={updateEquipment} language={observation.analysis?.detected_language === 'en' || observation.analysis?.detected_language === 'pt' ? observation.analysis.detected_language : detectUserLanguage(observation.observation)} />
             {/* EQUIPOS */}
             <section className="mt-7">
 
@@ -154,7 +157,7 @@ function ReviewPage() {
 
                 <div>
                   <h2 className="text-base font-semibold text-[#172033]">
-                    Equipos encontrados
+                    {copy.found}
                   </h2>
 
                   <p className="mt-1 text-sm text-[#8A96A6]">
@@ -294,6 +297,7 @@ function EquipmentCard({
   onChange,
   onRemove,
 }: EquipmentCardProps) {
+  const copy = currentReviewCopy()
   return (
     <div className="rounded-[22px] border border-[#E5EAF0] bg-white p-4 sm:p-5">
 
@@ -339,10 +343,10 @@ function EquipmentCard({
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2 text-xs">
-        {([['Tipo', 'modality'], ['Marca', 'manufacturer'], ['Modelo', 'model'], ['Configuración', 'configuration'], ['Edad', 'age'], ['Estado', 'condition']] as const).map(([label, field]) => {
+        {(['modality', 'manufacturer', 'model', 'configuration', 'age', 'condition'] as const).map(field => {
           const status = item.fieldStatuses?.[field] || 'Unknown'
           const color = status === 'Confirmed' ? 'bg-emerald-50 text-emerald-800' : status === 'Reported' ? 'bg-blue-50 text-blue-800' : status === 'Estimated' ? 'bg-amber-50 text-amber-800' : 'bg-slate-100 text-slate-600'
-          return <span key={field} className={`rounded-full px-2 py-1 ${color}`}>{label}: {status}</span>
+          return <span key={field} className={`rounded-full px-2 py-1 ${color}`}>{copy.fields[field]}: {copy.statuses[status]}</span>
         })}
       </div>
 
@@ -420,6 +424,7 @@ function EquipmentCard({
             className="mt-2 h-12 w-full rounded-xl border border-[#E3E8EF] bg-[#FBFCFD] px-3 text-sm text-[#172033] outline-none focus:border-[#3437B8] focus:ring-4 focus:ring-[#EEF0FF]"
           >
             <option>Desconocido</option>
+            {item.status && !['Desconocido', 'Operativo', 'Con observaciones', 'Fuera de servicio'].includes(item.status) && <option>{item.status}</option>}
             <option>Operativo</option>
             <option>Con observaciones</option>
             <option>Fuera de servicio</option>

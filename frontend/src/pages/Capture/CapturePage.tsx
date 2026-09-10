@@ -6,6 +6,7 @@ import { Camera, Check, ChevronRight, FileText, Keyboard, Mic, MicOff, Send, Spa
 
 type CaptureMode = 'chat' | 'voice'
 import { analyzeObservation, findSimilarVisits, toEquipmentDrafts } from '../../data/observationApi'
+import { assistantCopy, detectUserLanguage } from '../../data/language'
 
 function CapturePage() {
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ function CapturePage() {
   const [photoName, setPhotoName] = useState(draft.photoName || '')
   const [photoData, setPhotoData] = useState(draft.photoData || '')
   const [error, setError] = useState('')
+  const copy = assistantCopy[detectUserLanguage(observation)]
   const request = useRef<AbortController | null>(null)
   const visit = readStored<CurrentVisit>('current-visit', { hospitalName: '' })
   useEffect(() => {
@@ -127,7 +129,10 @@ function CapturePage() {
       const analysis = await analyzeObservation(visit.hospitalId, capture.observation,
         AbortSignal.any([controller.signal, AbortSignal.timeout(190_000)]))
       if (controller.signal.aborted) return
+      // Similarity helps the reviewer but must never prevent an otherwise
+      // valid local extraction from reaching the human review screen.
       const visitSimilarity = await findSimilarVisits(visit.hospitalId, capture.observation, controller.signal)
+        .catch(() => ({ isDuplicate: false, highestSimilarity: 0, matches: [] }))
       const analyzed = { ...capture, analysis, visitSimilarity }
       writeStored('current-observation', analyzed)
       writeStored('capture-draft', analyzed)
@@ -264,13 +269,14 @@ function CapturePage() {
                         <Sparkles size={17} />
                       </div>
 
-                      <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-[#F6F7FB] px-4 py-3">
+                      <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-[#F6F7FB] px-4 py-3" aria-live="polite">
 
-                        <p className="text-sm leading-6 text-[#566276]">
+                        <p className="hidden">
                           Cuéntame qué equipo ves. Si conoces la marca,
                           modelo, antigüedad o estado, inclúyelos.
                         </p>
 
+                        <p className="text-sm leading-6 text-[#566276]">{copy.prompt}</p>
                       </div>
 
                     </div>

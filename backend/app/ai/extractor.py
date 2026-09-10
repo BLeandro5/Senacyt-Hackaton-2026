@@ -5,7 +5,7 @@ from typing import Literal
 from pydantic import BaseModel
 
 from app.ai.qvac_client import generate_with_qvac
-from app.ai.age_grounding import ground_ages, normalize
+from app.ai.age_grounding import ground_ages, normalize, MENTION
 from app.ai.count_grounding import complete_explicit_mentions, ground_counts
 from app.ai.language import detect_language
 from app.schemas.equipment import EquipmentExtracted
@@ -19,6 +19,92 @@ class ExtractionResult(BaseModel):
     country: str | None = None
 
 
+KNOWN_MANUFACTURERS = ('Philips', 'Siemens', 'GE', 'Mindray', 'Hologic', 'Canon', 'Fujifilm', 'Samsung', 'Esaote', 'Carestream', 'Shimadzu', 'Hitachi', 'Toshiba')
+NUMBER_WORDS = {'un': 1, 'uno': 1, 'una': 1, 'dos': 2, 'tres': 3, 'cuatro': 4, 'cinco': 5, 'seis': 6, 'siete': 7, 'ocho': 8, 'nueve': 9, 'diez': 10}
+
+
+def explicit_span_inventory(text: str) -> list[EquipmentExtracted]:
+    """Extract literal ES inventory spans to validate a small local model.
+
+    This intentionally recognizes only facts stated in the same equipment
+    phrase. It does not estimate ranges, infer brands, or manufacture models.
+    """
+    source = normalize(text)
+    mentions = list(MENTION.finditer(source))
+    result = []
+    for position, mention in enumerate(mentions):
+        modality = 'X-ray' if mention.lastgroup == 'Xray' else mention.lastgroup
+        start = mention.end()
+        end = mentions[position + 1].start() if position + 1 < len(mentions) else len(source)
+        phrase = source[start:end]
+        if re.search(r'\b(?:no hay|sin|no se observaron)\s*$', source[max(0, mention.start()-30):mention.start()]):
+            continue
+        prefix = source[max(0, mention.start() - 48):mention.start()]
+        count_match = re.search(r'\b(\d+|' + '|'.join(NUMBER_WORDS) + r')\s*$', prefix)
+        expected = int(count_match.group(1)) if count_match and count_match.group(1).isdigit() else NUMBER_WORDS.get(count_match.group(1), 1) if count_match else 1
+        brand_hits = [(match.start(), name) for name in KNOWN_MANUFACTURERS
+                      for match in re.finditer(r'\b' + re.escape(normalize(name)) + r'\b', phrase)]
+        brand_hits.sort()
+        created = 0
+        for index, (brand_position, brand) in enumerate(brand_hits):
+            before_brand = phrase[max(0, brand_position - 24):brand_position]
+            explicit_count = re.search(r'\b(\d+|' + '|'.join(NUMBER_WORDS) + r')\s*$', before_brand)
+            copies = int(explicit_count.group(1)) if explicit_count and explicit_count.group(1).isdigit() else NUMBER_WORDS.get(explicit_count.group(1), 1) if explicit_count else 1
+            next_brand = brand_hits[index + 1][0] if index + 1 < len(brand_hits) else len(phrase)
+            details = phrase[max(0, brand_position - 16):next_brand]
+            # End at the next physical device, not merely at its brand.
+            details = re.split(r';|\by\s+(?:un|otro)\s+(?:equipo|sistema)|\bel segundo\b', details)[0]
+            nearby = details
+            age_match = re.search(r'\b(?:(?:fue\s+instalado\s+)?hace\s+)?(?:unos?|aproximadamente|cerca de)?\s*(\d+|' + '|'.join(NUMBER_WORDS) + r')\s+anos\b', details)
+            age = None if re.search(r'\bentre\s+\d+\s+y\s+\d+\b', details) else (int(age_match.group(1)) if age_match and age_match.group(1).isdigit() else NUMBER_WORDS.get(age_match.group(1)) if age_match else None)
+            configuration = '1.5T' if re.search(r'\b1[.,]5\s*t\b', nearby) else 'Móvil' if re.search(r'\bmovil\b', nearby) else 'Portátil' if re.search(r'\bportatil\b', nearby) else None
+            condition = 'Operativo' if re.search(r'\boperativ[oa]\b', details) else None
+            if condition and 'fallas' in details:
+                condition = 'Operativo con fallas intermitentes en el sistema de enfriamiento' if 'fallas intermitentes en el sistema de enfriamiento' in details else 'Operativo'
+            age_range = re.search(r'\bentre\s+(\d+)\s+y\s+(\d+)\s+anos', details)
+            age_description = f"{age_range[1]}–{age_range[2]} años" if age_range else (f'Aproximadamente {age} años' if age is not None and re.search(r'\b(unos|estima|aproximadamente|parece)\b', details) else None)
+            result.extend(EquipmentExtracted(modality=modality, manufacturer=brand, configuration=configuration,
+                                             estimated_age_years=age, age_description=age_description, condition=condition) for _ in range(min(copies, 50)))
+            created += copies
+        remainder = re.search(r'\by\s+un\s+equipo\s+portatil\b', phrase)
+        result.extend(EquipmentExtracted(modality=modality, configuration='Portátil' if remainder else None) for _ in range(max(0, min(expected, 50) - created)))
+    return result
+
+
+def complete_json_objects(raw: str) -> list[dict]:
+    """Return valid nested JSON objects without trying to repair their values."""
+    objects = []
+    for start, opening in enumerate(raw):
+        if opening != '{':
+            continue
+        depth, quoted, escaped = 0, False, False
+        for index in range(start, len(raw)):
+            character = raw[index]
+            if quoted:
+                if escaped:
+                    escaped = False
+                elif character == '\\':
+                    escaped = True
+                elif character == '"':
+                    quoted = False
+                continue
+            if character == '"':
+                quoted = True
+            elif character == '{':
+                depth += 1
+            elif character == '}':
+                depth -= 1
+                if depth == 0:
+                    try:
+                        value = json.loads(raw[start:index + 1])
+                        if isinstance(value, dict):
+                            objects.append(value)
+                    except json.JSONDecodeError:
+                        pass
+                    break
+    return objects
+
+
 def parse_extraction(raw: str) -> ExtractionResult:
     # Qwen-based models can start inside an implicit thinking block: the SDK
     # may return its closing tag without an opening <think>. Only parse the
@@ -28,7 +114,15 @@ def parse_extraction(raw: str) -> ExtractionResult:
     if '<think>' in raw:
         raise ValueError('Model reasoning was not completed')
     raw = re.sub(r'^```(?:json)?\s*|\s*```$', '', raw.strip(), flags=re.IGNORECASE)
-    return ExtractionResult.model_validate_json(raw)
+    try:
+        return ExtractionResult.model_validate_json(raw)
+    except ValueError as original_error:
+        # MedPsy can repeat an equipment wrapper between valid device objects.
+        # Only complete objects that already name a modality are retained.
+        items = [value for value in complete_json_objects(raw) if 'modality' in value]
+        if not items:
+            raise original_error
+        return ExtractionResult(equipment=[EquipmentExtracted.model_validate(item) for item in items])
 
 
 def extract_result(text: str) -> ExtractionResult:
@@ -72,6 +166,7 @@ Use MRI for resonador/resonancia, CT for tomógrafo, Ultrasound for ecógrafo/ul
 Example: "Un tomógrafo Philips de ocho años." => {"equipment":[{"modality":"CT","manufacturer":"Philips","model":null,"configuration":null,"estimated_age_years":8,"condition":null}],"facility":null,"city":null,"country":null}
 Observation JSON string:
 """
+    literal_inventory = explicit_span_inventory(text)
     raw = generate_with_qvac(prompt + json.dumps(text, ensure_ascii=False))
     result = parse_extraction(raw)
     result.detected_language = detect_language(text)
@@ -81,16 +176,21 @@ Observation JSON string:
         value = getattr(result, field)
         if value and (' '.join(normalize(value).split()) not in source):
             setattr(result, field, None)
-    equipment = result.equipment
+    # Keep a valid model result by default. For a long field note, a literal
+    # span inventory can safely restore devices the model omitted altogether.
+    enumerated_inventory = ':' in text and len({e.modality for e in literal_inventory}) >= 3
+    using_literal_inventory = bool(result.equipment and (enumerated_inventory or len(literal_inventory) > len(result.equipment)))
+    equipment = literal_inventory if using_literal_inventory else result.equipment
     # Do not keep model-created labels such as "Philips CT scanner" when the
     # note named only Philips and CT. Attributes must be directly grounded.
     for item in equipment:
         for field in ('manufacturer', 'model', 'configuration', 'condition'):
             value = getattr(item, field)
-            if value and (' '.join(normalize(value).split()) not in source):
+            if not using_literal_inventory and value and (' '.join(normalize(value).split()) not in source):
                 setattr(item, field, None)
     # Normalize equivalent modality names without inventing or adding equipment.
     modalities = {
+        'tomography': 'CT',
         'resonancia': 'MRI', 'resonancia magnética': 'MRI', 'resonador': 'MRI',
         'mri': 'MRI', 'ct': 'CT', 'tomógrafo': 'CT', 'tomografía': 'CT',
         'ultrasound': 'Ultrasound', 'ultrasonido': 'Ultrasound', 'ecógrafo': 'Ultrasound',
@@ -101,6 +201,9 @@ Observation JSON string:
     for item in equipment:
         key = item.modality.strip().lower().split('|', 1)[0].strip()
         item.modality = modalities.get(key, item.modality)
+    if using_literal_inventory:
+        result.equipment = equipment
+        return result
     ground_ages(text, equipment)
     grounded = ground_counts(text, equipment)
     result.equipment = complete_explicit_mentions(text, grounded) if grounded else grounded

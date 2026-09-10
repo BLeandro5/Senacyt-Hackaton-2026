@@ -54,26 +54,26 @@ flowchart LR
 
 El flujo principal de IA usa exclusivamente `@qvac/sdk` y el modelo oficial `HEALTHCARE_1_7B_MEDICAL_Q4_K_M` de MedPsy. QVAC escucha en `127.0.0.1:11500`; FastAPI se comunica con esa dirección local. No hay inferencia en la nube ni RAG implementado.
 
-| Componente | Puerto | Propósito |
+| Componente       | Puerto  | Propósito |
 | --- | ---: | --- |
-| QVAC / MedPsy | 11500 | Inferencia local mediante `@qvac/sdk` |
-| FastAPI | 8000 | API, SQLite, extracción y validación |
-| Vite | 5173 | Interfaz web local |
-| SQLite | archivo | `backend/data/inventory.sqlite3` |
+| QVAC / MedPsy    | 11500   | Inferencia local mediante `@qvac/sdk` |
+| FastAPI          | 8000    | API, SQLite, extracción y validación |
+| Vite             | 5173    | Interfaz web local |
+| SQLite           | archivo | `backend/data/inventory.sqlite3` |
 
 ## Requisitos
 
 La configuración de referencia y el benchmark incluido se ejecutaron en:
 
 | Recurso | Especificación registrada |
-| --- | --- |
+| ---     | --- |
 | Sistema | Windows 11 Home, 64 bits |
-| Equipo | Lenovo 82Y3 |
-| CPU | Intel Core i9-13900H, 14 núcleos / 20 hilos |
-| GPU | NVIDIA GeForce RTX 4070 Laptop GPU |
-| RAM | 32 GB |
+| Equipo  | Lenovo 82Y3 |
+| CPU     | Intel Core i9-13900H, 14 núcleos / 20 hilos |
+| GPU     | NVIDIA GeForce RTX 4070 Laptop GPU |
+| RAM     | 32 GB |
 | Node.js | 24.20.0 |
-| Python | 3.14.7 |
+| Python  | 3.14.7 |
 
 El detalle reproducible de la máquina se genera en `benchmarks/results/hardware.json`. MedPsy Q4 está diseñado para hardware de consumo; el rendimiento variará según CPU, GPU, memoria, drivers y configuración del SDK.
 
@@ -225,7 +225,7 @@ Resultado esperado: dos equipos MRI Siemens sin edad explícita y un CT Philips 
 | Confiabilidad | Completitud, revisión, frescura, corroboración y conflicto; no es confianza del modelo. |
 | Frescura y oportunidades | Señales de información antigua, conflicto y equipos con edad mayor de siete años; no es recomendación clínica. |
 | Customer 360 | Activos, evidencias, visitas, nota fuente, colaboradores, conflictos y auditoría por hospital. |
-| Dashboard y mapa | Totales por hospital, región y modalidad; mapa local con contorno vectorial detallado de Panamá y coordenadas del catálogo, sin mosaicos remotos. |
+| Dashboard y mapa | Totales por hospital, región y modalidad; mapa local por coordenadas del catálogo, sin mosaicos remotos. |
 | Analítica natural | MedPsy convierte una pregunta en filtros JSON validados; nunca genera SQL. |
 
 ## Voz y fotografías
@@ -250,7 +250,7 @@ Más detalle y plan de evaluación: [PHOTO_ANALYSIS.md](PHOTO_ANALYSIS.md).
 
 - SQLite local es la fuente de verdad para visitas finalizadas.
 - Las observaciones, inventario, voz y fotografías no se envían a Internet durante el uso normal.
-- El mapa incluye un contorno vectorial detallado de Panamá y funciona con coordenadas locales; no solicita cartografía, geocodificación ni mosaicos remotos.
+- El mapa funciona con coordenadas locales y no solicita cartografía, geocodificación ni mosaicos remotos.
 - Las únicas conexiones externas son instalaciones explícitas de paquetes, pesos MedPsy, modelo Vosk o idiomas OCR.
 - Los benchmarks guardan prompts **sintéticos** para reproducibilidad; las métricas operativas no guardan observaciones reales.
 - No guardes contraseñas en texto plano ni compartas `backend/data/inventory.sqlite3` fuera de un contexto autorizado.

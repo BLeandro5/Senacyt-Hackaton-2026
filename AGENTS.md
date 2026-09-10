@@ -1,6 +1,7 @@
 # Proyecto
 
 React/Vite en `frontend`, FastAPI/SQLite en `backend` y MedPsy local mediante QVAC en `qvac`.
+La consulta general está en Inicio: observaciones de todos los colaboradores por país/hospital. No hay módulo supervisor activo en la interfaz.
 No usar inferencia cloud ni descargar el modelo salvo petición explícita.
 
 ## Reglas de datos

@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, Eye, EyeOff, LockKeyhole, ShieldCheck, User } from 'lucide-react'
 
-import { users } from '../../data/users'
 import { loginUser } from '../../data/userApi'
 
 function LoginPage() {
@@ -13,46 +12,16 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
 
-  const legacyHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    const user = users.find(
-      (item) =>
-        item.username === username.trim() &&
-        item.password === password
-    )
-
-    if (!user) {
-      setError('Usuario o contraseña incorrectos.')
-      return
-    }
-
-    setError('')
-
-    try {
-      localStorage.setItem('demo-user', JSON.stringify({ id: user.id, username: user.username, name: user.name, role: user.role }))
-    } catch { setError('No se pudo guardar la sesión. Permite el almacenamiento del navegador e intenta de nuevo.'); return }
-
-    if (user.role === 'supervisor') {
-      navigate('/supervisor')
-    } else {
-      navigate('/home')
-    }
-  }
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError('')
     try {
-      const demo = users.find(item => item.username === username.trim() && item.password === password && item.role === 'supervisor')
-      const user = demo
-        ? { id: String(demo.id), name: demo.name, firstName: demo.name.split(' ')[0], lastName: demo.name.split(' ').slice(1).join(' '), cedula: '', email: '', phone: '', role: 'supervisor' as const }
-        : await loginUser(username, password)
+      const user = await loginUser(username, password)
       localStorage.setItem('demo-user', JSON.stringify(user))
-      navigate(user.role === 'supervisor' ? '/supervisor' : '/home')
+      navigate('/home')
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'No se pudo iniciar sesión.') }
   }
-  void legacyHandleSubmit
+
 
   return (
   <main className="min-h-screen bg-white md:bg-slate-100 md:p-6">
@@ -248,7 +217,7 @@ function LoginPage() {
 
                 <div>
                   <p className="text-sm font-medium text-slate-700">
-                    Acceso de demostración
+                    Acceso local de colaboradores
                   </p>
 
                   <p className="mt-1 text-sm leading-6 text-slate-400">

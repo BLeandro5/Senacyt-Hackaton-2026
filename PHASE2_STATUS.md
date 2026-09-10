@@ -1,5 +1,7 @@
 # Estado de integración — listo para pruebas locales
 
+**Cambio posterior de alcance:** supervisor retirado de la navegación y del login demo. La pantalla principal muestra Observaciones generales de todos los colaboradores, con filtros por país/hospital y búsqueda, y acceso a visitas completas. Las referencias al supervisor abajo describen la implementación anterior, no el flujo vigente. Datos y endpoints conservados; sin borrados.
+
 El flujo principal está preparado para QA manual. Esto NO declara terminada toda la Fase 2 ni lista una aplicación de producción.
 Interfaz comprobada por HTTP: http://localhost:5173. API y QVAC activos; estado local ready.
 Guía: [TESTING.md](TESTING.md).

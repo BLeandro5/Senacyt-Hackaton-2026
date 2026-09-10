@@ -79,6 +79,10 @@ def connect():
                 db.execute(f'ALTER TABLE {table} ADD COLUMN {column} {declaration}')
     catalog = json.loads(Path(__file__).with_name('hospitals.json').read_text(encoding='utf-8'))
     db.executemany('INSERT OR IGNORE INTO hospitals(id,name,region,city) VALUES (:id,:name,:region,:city)', catalog)
+    # Complete geography only for the known seed catalog, never infer country
+    # from a user's note or overwrite a country already supplied by the user.
+    db.executemany("UPDATE hospitals SET country=:country WHERE id=:id AND (country IS NULL OR trim(country)='')",
+                   [h for h in catalog if h.get('country')])
     db.commit()
     return db
 

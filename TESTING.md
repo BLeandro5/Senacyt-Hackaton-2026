@@ -1,5 +1,11 @@
 # Pruebas locales del sistema
 
+## Cambio de navegación vigente
+
+El módulo supervisor fue retirado de la interfaz por decisión del usuario. Desde **Inicio → Observaciones generales** se consultan las notas de todos los colaboradores, filtradas por país, hospital y búsqueda. Cada nota permite abrir su visita completa. Las rutas antiguas `/supervisor/*` redirigen a Inicio y el login demo de supervisor se retiró. Las secciones de esta guía que describen acciones del antiguo supervisor son históricas y ya no forman parte de la prueba de interfaz vigente. Los datos y endpoints existentes se conservaron, sin borrar información.
+
+Prueba actual: registra y finaliza visitas con dos colaboradores, entra en Inicio, filtra país y hospital, busca por marca/nombre y abre la visita. El catálogo inicial de cinco hospitales tiene país Panamá; otros registros sin país se muestran como **País no informado**, sin inferir ubicación.
+
 Esta versión está preparada para pruebas funcionales del flujo principal. No es una entrega de producción ni una declaración de que toda la Fase 2 esté completa.
 
 ## Abrir la aplicación

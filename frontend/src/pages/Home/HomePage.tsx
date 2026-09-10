@@ -1,4 +1,5 @@
 import { useVisits } from '../../data/useVisits'
+import ObservationExplorer from '../../components/ObservationExplorer'
 import { readStored, displayDate, resumePath, clearObservation } from '../../data/visitStore'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -66,6 +67,7 @@ function HomePage() {
         {storageError && <p role="alert" className="storage-error">{storageError}</p>}
         <button className="mb-5 rounded-xl bg-blue-700 px-5 py-3 text-white" onClick={() => navigate('/capture/quick')}>Captura rápida</button>
         <button className="mb-5 ml-3 rounded-xl border border-blue-200 px-5 py-3" onClick={() => navigate('/settings')}>Configuración</button>
+        <a className="mb-5 ml-3 inline-block rounded-xl border border-blue-200 px-5 py-3 text-blue-700" href="#observaciones-generales">Ver observaciones generales</a>
         {/* Greeting */}
         <section className="mb-6">
           <p className="text-sm font-semibold text-[#0B5ED7]">
@@ -192,6 +194,7 @@ function HomePage() {
           </div>
         </section>
 
+        <ObservationExplorer />
         {/* Main content */}
         <section className="mt-5 grid gap-5 lg:grid-cols-12">
           {/* Recent visits */}

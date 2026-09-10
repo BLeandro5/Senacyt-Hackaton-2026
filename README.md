@@ -1,5 +1,7 @@
 # Senacyt-Hackaton-2026
 
+La consulta general ahora está en **Inicio → Observaciones generales**, para todos los colaboradores: filtros por país y hospital, búsqueda por nota/equipo/colaborador y detalle de visita. El módulo supervisor está retirado de la interfaz; las referencias posteriores a sus pantallas son históricas. No se borraron los datos guardados.
+
 ## Prototipo local con MedPsy
 
 Flujo actual: captura → `POST /observations/analyze` → FastAPI → extractor →

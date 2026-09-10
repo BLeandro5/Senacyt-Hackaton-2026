@@ -16,7 +16,6 @@ export function AppLayout() {
   }, [])
   useEffect(() => { window.scrollTo(0, 0) }, [location.pathname])
   if (!user?.name) return <Navigate to="/login" replace />
-  if (user.role === 'supervisor') return <Navigate to="/supervisor" replace />
   if (user.role !== 'field') return <Navigate to="/login" replace />
   const visit = readStored<CurrentVisit | null>('current-visit', null)
   const capture = readStored<Capture | null>('current-observation', null)

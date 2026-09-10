@@ -1,7 +1,6 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 import { AppLayout, RouteError } from '../components/AppLayout'
-import SupervisorLayout from '../components/SupervisorLayout'
 import LoginPage from '../pages/Login/LoginPage'
 import RegisterPage from '../pages/Register/RegisterPage'
 import HomePage from '../pages/Home/HomePage'
@@ -12,7 +11,6 @@ import MatchPage from '../pages/Match/MatchPage'
 import SuccessPage from '../pages/Success/SuccessPage'
 import VisitsPage from '../pages/Visits/VisitsPage'
 import VisitDetailPage from '../pages/VisitDetail/VisitDetailPage'
-import InstalledBasePage from '../pages/InstalledBase/InstalledBasePage'
 import QuickCapturePage from '../pages/QuickCapture/QuickCapturePage'
 import SettingsPage from '../pages/Settings/SettingsPage'
 
@@ -36,16 +34,6 @@ export const router = createBrowserRouter([
       { path: '/visits/:visitId', element: <VisitDetailPage /> },
     ],
   },
-  {
-    element: <SupervisorLayout />,
-    errorElement: <RouteError />,
-    children: [
-      { path: '/supervisor', element: <InstalledBasePage /> },
-      { path: '/supervisor/hospitals', element: <InstalledBasePage /> },
-      { path: '/supervisor/hospitals/:hospitalId', element: <InstalledBasePage /> },
-      { path: '/supervisor/review', element: <InstalledBasePage /> },
-      { path: '/supervisor/settings', element: <SettingsPage /> },
-    ],
-  },
+  { path: '/supervisor/*', element: <Navigate to="/home" replace /> },
   { path: '*', element: <RouteError /> },
 ])

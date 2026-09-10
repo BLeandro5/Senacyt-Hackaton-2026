@@ -3,7 +3,23 @@ import ObservationExplorer from '../../components/ObservationExplorer'
 import { readStored, displayDate, resumePath, clearObservation } from '../../data/visitStore'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Activity, Building2, CalendarDays, CheckCircle2, ChevronRight, ClipboardList, Cloud, CloudOff, Clock3, Lightbulb, Monitor, Plus, ScanLine, Sparkles, Wifi } from 'lucide-react'
+import {
+  Activity,
+  Building2,
+  CalendarDays,
+  CheckCircle2,
+  ChevronRight,
+  ClipboardList,
+  Cloud,
+  CloudOff,
+  Clock3,
+  Lightbulb,
+  Monitor,
+  Plus,
+  ScanLine,
+  Sparkles,
+  Wifi,
+} from 'lucide-react'
 
 type DemoUser = {
   name: string
@@ -22,13 +38,37 @@ function HomePage() {
   const navigate = useNavigate()
 
   const [isOnline, setIsOnline] = useState(navigator.onLine)
+  const [showObservations, setShowObservations] = useState(false)
 
-  const [user] = useState<DemoUser>(() => readStored('demo-user', { name: 'Colaborador' }))
-  const [currentVisit, setCurrentVisit] = useState<CurrentVisit | null>(() => readStored('current-visit', null))
+  const [user] = useState<DemoUser>(() =>
+    readStored('demo-user', { name: 'Colaborador' }),
+  )
+
+  const [currentVisit, setCurrentVisit] = useState<CurrentVisit | null>(() =>
+    readStored('current-visit', null),
+  )
+
   const { visits: allVisits, error: storageError } = useVisits(false)
-  const recentVisits = allVisits.slice(0, 4).map(v => ({ ...v, date: displayDate(v.date), equipmentCount: v.observations.reduce((n,o) => n + o.equipment.length, 0) }))
-  const todayVisits = allVisits.filter(v => v.completedAt.includes('T') && new Date(v.completedAt).toDateString() === new Date().toDateString())
-  const pendingCount = allVisits.filter(v => v.syncStatus === 'pending').length
+
+  const recentVisits = allVisits.slice(0, 4).map((v) => ({
+    ...v,
+    date: displayDate(v.date),
+    equipmentCount: v.observations.reduce(
+      (n, o) => n + o.equipment.length,
+      0,
+    ),
+  }))
+
+  const todayVisits = allVisits.filter(
+    (v) =>
+      v.completedAt.includes('T') &&
+      new Date(v.completedAt).toDateString() === new Date().toDateString(),
+  )
+
+  const pendingCount = allVisits.filter(
+    (v) => v.syncStatus === 'pending',
+  ).length
+
   useEffect(() => {
     const handleOnline = () => setIsOnline(true)
     const handleOffline = () => setIsOnline(false)
@@ -46,28 +86,76 @@ function HomePage() {
     return user.name?.split(' ')[0] || 'Ana'
   }, [user.name])
 
-  const todayEquipment = todayVisits.reduce((n,v) => n + v.observations.reduce((m,o) => m + o.equipment.length, 0), 0)
+  const todayEquipment = todayVisits.reduce(
+    (n, v) =>
+      n +
+      v.observations.reduce(
+        (m, o) => m + o.equipment.length,
+        0,
+      ),
+    0,
+  )
 
   const discardCurrentVisit = () => {
-    if (!window.confirm('¿Descartar esta visita y su borrador? Las visitas finalizadas se conservan.')) return
+    if (
+      !window.confirm(
+        '¿Descartar esta visita y su borrador? Las visitas finalizadas se conservan.',
+      )
+    ) {
+      return
+    }
+
     clearObservation()
     localStorage.removeItem('current-visit')
     localStorage.removeItem('current-observation')
     localStorage.removeItem('current-structured-record')
     localStorage.removeItem('match-result')
+
     setCurrentVisit(null)
   }
 
   return (
     <div className="min-h-screen bg-[#F3F5F9] text-slate-950">
-      {/* Desktop header */}
-
-
       <main className="mx-auto max-w-[1380px] px-4 pb-28 pt-7 sm:px-6 lg:px-8 lg:pb-10 lg:pt-9">
-        {storageError && <p role="alert" className="storage-error">{storageError}</p>}
-        <button className="mb-5 rounded-xl bg-blue-700 px-5 py-3 text-white" onClick={() => navigate('/capture/quick')}>Captura rápida</button>
-        <button className="mb-5 ml-3 rounded-xl border border-blue-200 px-5 py-3" onClick={() => navigate('/settings')}>Configuración</button>
-        <a className="mb-5 ml-3 inline-block rounded-xl border border-blue-200 px-5 py-3 text-blue-700" href="#observaciones-generales">Ver observaciones generales</a>
+        {storageError && (
+          <p role="alert" className="storage-error">
+            {storageError}
+          </p>
+        )}
+
+        {/* Quick actions */}
+        <div className="mb-5 flex flex-wrap gap-3">
+          <button
+            type="button"
+            className="rounded-xl bg-blue-700 px-5 py-3 text-white transition hover:bg-blue-800"
+            onClick={() => navigate('/capture/quick')}
+          >
+            Captura rápida
+          </button>
+
+          <button
+            type="button"
+            className="rounded-xl border border-blue-200 bg-white px-5 py-3 text-slate-700 transition hover:bg-blue-50"
+            onClick={() => navigate('/settings')}
+          >
+            Configuración
+          </button>
+
+          <button
+            type="button"
+            aria-expanded={showObservations}
+            aria-controls="observaciones-generales"
+            className="rounded-xl border border-blue-200 bg-white px-5 py-3 text-blue-700 transition hover:bg-blue-50"
+            onClick={() =>
+              setShowObservations((value) => !value)
+            }
+          >
+            {showObservations
+              ? 'Ocultar observaciones generales'
+              : 'Ver observaciones generales'}
+          </button>
+        </div>
+
         {/* Greeting */}
         <section className="mb-6">
           <p className="text-sm font-semibold text-[#0B5ED7]">
@@ -94,7 +182,6 @@ function HomePage() {
                 'linear-gradient(115deg, #4A0982 0%, #351D8E 24%, #19379D 50%, #0455A8 73%, #208E94 100%)',
             }}
           >
-            {/* Decoration */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
               <div className="absolute -right-16 -top-20 h-64 w-64 rounded-full border border-white/10" />
 
@@ -161,7 +248,10 @@ function HomePage() {
               </div>
 
               <span className="text-xs text-slate-400">
-                {new Date().toLocaleDateString('es-PA', { day: 'numeric', month: 'long' })}
+                {new Date().toLocaleDateString('es-PA', {
+                  day: 'numeric',
+                  month: 'long',
+                })}
               </span>
             </div>
 
@@ -179,7 +269,11 @@ function HomePage() {
               />
 
               <SummaryMetric
-                value={todayVisits.filter(v => v.syncStatus === 'pending').length}
+                value={
+                  todayVisits.filter(
+                    (v) => v.syncStatus === 'pending',
+                  ).length
+                }
                 label="Pendientes"
                 icon={<CheckCircle2 size={17} />}
                 success
@@ -194,7 +288,9 @@ function HomePage() {
           </div>
         </section>
 
-        <ObservationExplorer />
+        {/* Observaciones generales: ocultas hasta pulsar el botón */}
+        {showObservations && <ObservationExplorer />}
+
         {/* Main content */}
         <section className="mt-5 grid gap-5 lg:grid-cols-12">
           {/* Recent visits */}
@@ -206,7 +302,7 @@ function HomePage() {
                 </h2>
 
                 <p className="mt-1 text-sm text-slate-400">
-                  Actividad reciente · incluye visitas de ejemplo
+                  Actividad reciente
                 </p>
               </div>
 
@@ -220,11 +316,19 @@ function HomePage() {
             </div>
 
             <div className="overflow-hidden rounded-2xl border border-slate-200">
-              {recentVisits.length === 0 && <p className="p-5 text-sm text-slate-500">Aún no hay visitas. Comienza una nueva visita para registrar equipos.</p>}
+              {recentVisits.length === 0 && (
+                <p className="p-5 text-sm text-slate-500">
+                  Aún no hay visitas. Comienza una nueva visita para registrar
+                  equipos.
+                </p>
+              )}
+
               {recentVisits.map((visit, index) => (
                 <button
                   key={visit.id}
-                  onClick={() => navigate(`/visits/${visit.id}`)}
+                  onClick={() =>
+                    navigate(`/visits/${visit.id}`)
+                  }
                   className={`group flex w-full items-center gap-4 bg-white px-4 py-4 text-left transition hover:bg-slate-50 ${
                     index !== recentVisits.length - 1
                       ? 'border-b border-slate-100'
@@ -351,7 +455,11 @@ function HomePage() {
                     : 'bg-amber-50 text-amber-600'
                 }`}
               >
-                {isOnline ? <Cloud size={19} /> : <CloudOff size={19} />}
+                {isOnline ? (
+                  <Cloud size={19} />
+                ) : (
+                  <CloudOff size={19} />
+                )}
               </div>
 
               <div>
@@ -367,7 +475,9 @@ function HomePage() {
 
             <div
               className={`mt-5 rounded-2xl p-4 ${
-                isOnline && pendingCount === 0 ? 'bg-emerald-50' : 'bg-amber-50'
+                isOnline && pendingCount === 0
+                  ? 'bg-emerald-50'
+                  : 'bg-amber-50'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -388,7 +498,9 @@ function HomePage() {
                 <div>
                   <p
                     className={`text-sm font-semibold ${
-                      isOnline && pendingCount === 0 ? 'text-emerald-950' : 'text-amber-950'
+                      isOnline && pendingCount === 0
+                        ? 'text-emerald-950'
+                        : 'text-amber-950'
                     }`}
                   >
                     {isOnline
@@ -398,7 +510,9 @@ function HomePage() {
 
                   <p
                     className={`mt-0.5 text-xs ${
-                      isOnline && pendingCount === 0 ? 'text-emerald-700' : 'text-amber-700'
+                      isOnline && pendingCount === 0
+                        ? 'text-emerald-700'
+                        : 'text-amber-700'
                     }`}
                   >
                     {isOnline
@@ -416,7 +530,7 @@ function HomePage() {
                 </p>
 
                 <p className="mt-1 text-xs font-medium text-slate-700">
-                  No disponible en el prototipo
+                  SQLite local
                 </p>
               </div>
 
@@ -455,7 +569,10 @@ function HomePage() {
                 </p>
               </div>
 
-              <ChevronRight size={19} className="text-[#0B5ED7]" />
+              <ChevronRight
+                size={19}
+                className="text-[#0B5ED7]"
+              />
             </button>
           </section>
         )}
@@ -473,8 +590,8 @@ function HomePage() {
               </p>
 
               <p className="mt-1 text-xs text-slate-500">
-                Usa la captura por voz para registrar observaciones mientras te
-                desplazas por el hospital.
+                Registra observaciones claras y específicas para mejorar la
+                calidad de la información capturada.
               </p>
             </div>
           </div>
@@ -485,9 +602,6 @@ function HomePage() {
           </div>
         </section>
       </main>
-
-      {/* Mobile navigation */}
-
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import type { AnalysisResult, VisitSimilarity } from './observationApi'
 
 export type Equipment = {
+  estimatedInstallationYear?: number | null; installationYearStatus?: string
+  quantityStatus?: 'exact' | 'estimated' | 'unknown'
   reviewed?: boolean
   fieldStatuses?: Partial<Record<'modality' | 'manufacturer' | 'model' | 'configuration' | 'age' | 'condition' | 'quantity', 'Confirmed' | 'Reported' | 'Estimated' | 'Unknown'>>
   id: string; type: string; brand: string; model: string

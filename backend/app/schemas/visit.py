@@ -4,6 +4,7 @@ from app.schemas.observation import ObservationAnalysisResponse
 
 
 class EquipmentRecord(BaseModel):
+    quantityStatus: Literal['exact','estimated','unknown'] | None = None
     id: str = Field(min_length=1)
     type: str = Field(min_length=1)
     brand: str = ''

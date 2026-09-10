@@ -47,6 +47,31 @@ test('empty model result stays empty', () => {
   assert.deepEqual(toEquipmentDrafts({ original_text: 'Sala vacía', equipment: [] }), [])
 })
 
+test('merged review preserves AI age ranges and speech workflow metadata together', () => {
+  const reliability = { score: 60, level: 'Medium', reasons: [] }
+  const drafts = toEquipmentDrafts({
+    original_text: 'Observación transcrita',
+    equipment: [
+      { modality: 'MRI', manufacturer: 'GE', model: null, configuration: '1.5T', estimated_age_years: 11, age_description: 'Entre 10 y 12 años', condition: null },
+      { modality: 'Mammography', manufacturer: 'Hologic', model: null, configuration: null, estimated_age_years: 6, condition: null },
+    ],
+    equipment_metadata: [
+      { evidence_status: { age: 'Estimated', configuration: 'Reported', quantity: 'Confirmed' }, reliability, estimated_installation_year: 2015, installation_year_status: 'Estimated' },
+      { evidence_status: { age: 'Estimated' }, reliability },
+    ],
+  })
+  assert.equal(drafts[0].estimatedAge, 'Entre 10 y 12 años')
+  assert.equal(drafts[0].configuration, '1.5T')
+  assert.equal(drafts[0].fieldStatuses.age, 'Estimated')
+  assert.equal(drafts[0].fieldStatuses.quantity, 'Confirmed')
+  assert.equal(drafts[0].fieldStatuses.model, 'Unknown')
+  assert.equal(drafts[0].estimatedInstallationYear, 2015)
+  assert.deepEqual(drafts[0].reliability, reliability)
+  assert.deepEqual(drafts.map(item => item.sourceIndex), [0, 1])
+  assert.equal(drafts[1].type, 'Mamografía')
+  assert.equal(drafts[1].estimatedAge, '6 años')
+})
+
 test('backend errors and malformed responses do not create demo data', async t => {
   for (const result of [
     Response.json({ detail: 'QVAC no disponible' }, { status: 503 }),

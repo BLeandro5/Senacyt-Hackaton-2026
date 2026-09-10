@@ -5,6 +5,7 @@ from app.api.observations import router as observations_router
 from app.api.visits import router as visits_router
 from app.api.users import router as users_router
 from app.api.intelligence import router as intelligence_router
+from app.api.media import router as media_router
 
 
 # AplicaciÃ³n principal del backend
@@ -26,6 +27,7 @@ app.include_router(observations_router)
 app.include_router(visits_router)
 app.include_router(users_router)
 app.include_router(intelligence_router)
+app.include_router(media_router)
 
 
 @app.get("/")

@@ -24,7 +24,7 @@ function SuccessPage() {
   const handleFinishVisit = async () => {
     if (saving) return
     setSaving(true)
-    try { await persistVisit(true); navigate('/visits') }
+    try { const saved = await persistVisit(true); navigate(saved.hospitalId ? `/hospitals/${encodeURIComponent(saved.hospitalId)}` : '/visits') }
     catch (cause) { setSaving(false); setError(cause instanceof Error ? cause.message : 'No se pudo finalizar. Tus datos siguen abiertos; intenta de nuevo.') }
   }
 

@@ -46,6 +46,7 @@ export default function ObservationExplorer() {
         <p className="my-3 whitespace-pre-wrap break-words text-sm">{row.observation.originalText}</p>
         <details className="text-sm"><summary className="cursor-pointer text-blue-700">Ver {row.observation.equipment.length} registros de equipos</summary><ul className="mt-2 space-y-2">{row.observation.equipment.map(e => <li key={e.id}>{e.type} · {e.brand || 'Marca no informada'} · {e.model || 'Modelo no informado'} · {e.estimatedAge || 'Edad no informada'}</li>)}</ul></details>
         <Link className="mt-3 inline-block text-sm font-medium text-blue-700 underline" to={`/visits/${encodeURIComponent(row.visit.id)}`}>Ver visita completa</Link>
+        {row.hospitalId && <Link className="ml-4 mt-3 inline-block text-sm text-blue-700 underline" to={`/hospitals/${encodeURIComponent(row.hospitalId)}`}>Customer 360</Link>}
       </article>)}</div>
       {filtered.length > limit && <button className="mt-4 rounded-xl border px-4 py-2 text-blue-700" onClick={() => setLimit(n => n + 6)}>Mostrar más observaciones</button>}
     </>}

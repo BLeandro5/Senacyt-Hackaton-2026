@@ -35,6 +35,7 @@ def main():
                 response = client.post('/observations/analyze', json={'hospital_id':'HOSP-001','text':note})
                 check('real_extraction_http', response.status_code == 200)
                 analysis = response.json()
+                report['synthetic_analysis'] = analysis
                 expected = [('MRI','Siemens',None),('MRI','Siemens',None),('CT','Philips',7)]
                 actual = [(e['modality'],e['manufacturer'],e['estimated_age_years']) for e in analysis['equipment']]
                 check('real_extraction_values', sorted(actual,key=str) == sorted(expected,key=str))

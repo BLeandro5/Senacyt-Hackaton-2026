@@ -30,13 +30,19 @@ No añade datos de ensayo al inventario habitual.
 
 La base instalada ahora separa **activos canónicos** de **evidencias**. Las
 coincidencias requieren decisión humana; una evidencia puede enviarse a revisión.
-El supervisor usa `/supervisor`, `/supervisor/hospitals/:hospitalId` y
-`/supervisor/review`, con datos de API/SQLite, confiabilidad explicable,
+El colaborador usa `/hospitals`, `/hospitals/:hospitalId` y
+`/review`, con datos de API/SQLite, confiabilidad explicable,
 historial, frescura y señales de renovación por edad >7 años.
 La captura rápida exige confirmar hospital. Las ubicaciones no mencionadas se
 descartan y los idiomas ES/EN/PT se detectan localmente de forma conservadora.
 Settings permite apariencia e idioma de sus textos; la traducción del resto de
-la interfaz sigue pendiente. Voz/STT no está habilitada y no inserta datos ficticios.
+la interfaz sigue pendiente. Voz/STT local en español usa Vosk; la transcripción
+es editable y el audio no se guarda. OCR es opcional y requiere Tesseract instalado.
+
+Integración actual y límites: [INTEGRATION_REPORT.md](INTEGRATION_REPORT.md).
+Dashboard `/dashboard`, geografía esquemática offline `/map`, detalle/auditoría
+`/equipment/:assetId` y consultas `/analytics` están en la navegación del colaborador.
+No existe un rol supervisor activo.
 
 ### Ejecutar en Windows
 

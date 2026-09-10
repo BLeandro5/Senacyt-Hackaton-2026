@@ -12,6 +12,7 @@ from app.schemas.visit import VisitRecord
 from app.services.installed_base import assets, link_evidence, modality, known
 from app.services.evidence import evidence_metadata
 from app.services.visit_similarity import similar_visits
+from app.services.installation_year import installation_year
 
 router = APIRouter(tags=['Storage'])
 
@@ -44,14 +45,14 @@ def asset_decision(asset_id: str, payload: AssetDecision, db=Depends(get_db)):
             if payload.action == 'separate':
                 new_id = str(uuid.uuid4())
                 db.execute('''INSERT INTO installed_equipment
-                    (id,hospital_id,modality,manufacturer,model,configuration,estimated_age,condition,status,created_at,updated_at,last_observed_at)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''', (new_id,asset['hospital_id'],evidence['modality'],evidence['manufacturer'],
-                    evidence['model'],evidence['configuration'],evidence['estimated_age'],evidence['condition'],'Reported',now,now,asset['last_observed_at']))
+                    (id,hospital_id,modality,manufacturer,model,configuration,estimated_age,condition,status,created_at,updated_at,last_observed_at,estimated_installation_year,installation_year_status)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', (new_id,asset['hospital_id'],evidence['modality'],evidence['manufacturer'],
+                    evidence['model'],evidence['configuration'],evidence['estimated_age'],evidence['condition'],'Reported',now,now,asset['last_observed_at'],evidence['estimated_installation_year'],evidence['installation_year_status']))
                 db.execute('UPDATE equipment SET matched_equipment_id=? WHERE visit_id=? AND observation_id=? AND id=?',
                            (new_id,payload.visitId,payload.observationId,payload.equipmentId))
             else:
-                db.execute('UPDATE installed_equipment SET manufacturer=?,model=?,configuration=?,estimated_age=?,condition=?,updated_at=? WHERE id=?',
-                           (evidence['manufacturer'],evidence['model'],evidence['configuration'],evidence['estimated_age'],evidence['condition'],now,asset_id))
+                db.execute('UPDATE installed_equipment SET manufacturer=?,model=?,configuration=?,estimated_age=?,condition=?,updated_at=?,estimated_installation_year=?,installation_year_status=? WHERE id=?',
+                           (evidence['manufacturer'],evidence['model'],evidence['configuration'],evidence['estimated_age'],evidence['condition'],now,evidence['estimated_installation_year'],evidence['installation_year_status'],asset_id))
         else:
             db.execute('UPDATE installed_equipment SET status=?,updated_at=? WHERE id=?', (payload.action,now,asset_id))
         db.execute('INSERT INTO audit_events VALUES (?,?,?,?,?,?)',
@@ -145,6 +146,14 @@ def installed(hospital_id: str | None = None, db=Depends(get_db)):
     return assets(db, hospital_id)
 
 
+@router.get('/installed-equipment/{asset_id}/audit')
+def asset_audit(asset_id: str, db=Depends(get_db)):
+    return [dict(r) for r in db.execute('''SELECT a.changed_at,a.action,a.entity_id,
+        coalesce(u.first_name || ' ' || u.last_name, 'Colaborador histórico') AS collaborator
+        FROM audit_events a LEFT JOIN users u ON u.id=a.changed_by WHERE a.entity_id=?
+        ORDER BY a.changed_at DESC LIMIT 200''', (asset_id,))]
+
+
 @router.post('/equipment/candidates')
 def candidates(payload: VisitRecord, db=Depends(get_db)):
     available = assets(db, payload.hospitalId)
@@ -164,7 +173,8 @@ def read_visit(db, visit_id):
         equipment = [dict(id=e['id'], type=e['modality'], brand=e['manufacturer'], model=e['model'],
                           configuration=e['configuration'], estimatedAge=e['estimated_age'], status=e['condition'],
                           resolution=e['resolution'], matchedEquipmentId=e['matched_equipment_id'],
-                          reviewed=bool(e['reviewed']), evidenceStatus=json.loads(e['evidence_status'] or '{}'))
+                          reviewed=bool(e['reviewed']), evidenceStatus=json.loads(e['evidence_status'] or '{}'),
+                          estimatedInstallationYear=e['estimated_installation_year'], installationYearStatus=e['installation_year_status'])
                      for e in db.execute('SELECT * FROM equipment WHERE visit_id=? AND observation_id=? ORDER BY position', (visit_id, obs['id']))]
         observations.append(dict(id=obs['id'], visitId=visit_id, title=obs['title'], captureMode=obs['capture_mode'],
                                  capturedAt=obs['captured_at'], originalText=obs['original_text'],
@@ -247,9 +257,11 @@ def hospital_overview(hospital_id: str, db=Depends(get_db)):
             'lastUpdated': max(group['dates']) if group['dates'] else None,
         })
     landscape.sort(key=lambda row: row['modality'])
-    return dict(hospital=dict(hospital), visits=visits, equipment=records, assets=canonical_assets, landscape=landscape,
+    return dict(hospital=dict(hospital), visits=visits, equipment=records, assets=canonical_assets, installedEquipment=canonical_assets, landscape=landscape,
                 summary=dict(visits=len(visits), observations=sum(v['observationCount'] for v in visits),
                              equipmentRecords=len(records), canonicalEquipment=len(canonical_assets),
+                             needsReview=sum(a['hasConflict'] or a['status']=='Needs verification' or a['reliability']['level']=='Low' for a in canonical_assets),
+                             opportunities=sum(a['potentialOpportunity'] for a in canonical_assets),
                              lastVisit=visits[0]['completedAt'] if visits else None))
 
 
@@ -295,8 +307,9 @@ def dashboard(db=Depends(get_db)):
         return {k: len(v) if isinstance(v, set) else v for k, v in group.items()}
     def series(groups):
         return sorted([counts(g) for g in groups.values()], key=lambda g: (-g['equipmentRecords'], g['label']))
+    from app.services.inventory_summary import inventory_summary
     return dict(summary=counts(total), byHospital=series(by_hospital), byRegion=series(by_region),
-                byProvince=series(by_province), byModality=series(by_modality))
+                intelligence=inventory_summary(db), byProvince=series(by_province), byModality=series(by_modality))
 
 
 @router.put('/visits/{visit_id}')
@@ -327,6 +340,8 @@ def save_visit(visit_id: str, payload: VisitRecord, db=Depends(get_db)):
                 for j, eq in enumerate(obs.equipment):
                     canonical_id = link_evidence(db, payload, obs, eq)
                     statuses, score = evidence_metadata(eq, obs)
+                    year, year_status = installation_year(obs.originalText,eq.estimatedAge,obs.capturedAt or payload.startedAt,eq.type,eq.brand,eq.reviewed)
+                    statuses['installation_year'] = year_status
                     db.execute('''INSERT INTO equipment
                         (visit_id, observation_id, id, modality, manufacturer, model, configuration,
                          estimated_age, condition, resolution, matched_equipment_id, position)
@@ -336,6 +351,11 @@ def save_visit(visit_id: str, payload: VisitRecord, db=Depends(get_db)):
                                (int(eq.reviewed), json.dumps(statuses), visit_id, obs.id, eq.id))
                     db.execute('UPDATE equipment SET reliability_score=?, reliability_level=?, reliability_factors=? WHERE visit_id=? AND observation_id=? AND id=?',
                                (score['score'], score['level'], json.dumps(score), visit_id, obs.id, eq.id))
+                    db.execute('UPDATE equipment SET estimated_installation_year=?,installation_year_status=? WHERE visit_id=? AND observation_id=? AND id=?',
+                               (year,year_status,visit_id,obs.id,eq.id))
+                    if canonical_id and eq.resolution=='new':
+                        db.execute('UPDATE installed_equipment SET estimated_installation_year=coalesce(estimated_installation_year,?),installation_year_status=CASE WHEN estimated_installation_year IS NULL THEN ? ELSE installation_year_status END WHERE id=?',
+                                   (year,year_status,canonical_id))
     except sqlite3.Error as exc:
         raise HTTPException(503, 'No se pudo guardar en SQLite. Reintenta sin cerrar la visita.') from exc
     return read_visit(db, visit_id)

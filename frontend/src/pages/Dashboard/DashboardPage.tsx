@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { storageRequest } from '../../data/storageApi'
+import type { InventorySummary } from '../../data/inventorySummary'
 
 type Totals = { label: string; visits: number; observations: number; hospitals: number; equipmentRecords: number }
 type Group = Totals & { id?: string; region?: string }
-type Dashboard = { summary: Totals; byHospital: Group[]; byRegion: Group[]; byProvince: Group[]; byModality: Group[] }
+type Dashboard = { intelligence: InventorySummary; summary: Totals; byHospital: Group[]; byRegion: Group[]; byProvince: Group[]; byModality: Group[] }
 
 export default function DashboardPage() {
   const [data, setData] = useState<Dashboard | null>(null)
@@ -19,6 +20,7 @@ export default function DashboardPage() {
       .finally(() => { if (active) setLoading(false) })
     return () => { active = false }
   }, [attempt])
+  const intelligence = data?.intelligence
   const refresh = () => { setLoading(true); setAttempt(n => n + 1) }
   return <main className="mx-auto max-w-[1380px] px-4 py-8 pb-28 sm:px-6">
     <header className="flex flex-wrap items-center justify-between gap-4">
@@ -28,11 +30,13 @@ export default function DashboardPage() {
     {error && <p role="alert" className="storage-error mt-5">{error}</p>}
     {loading && <p role="status" className="mt-4">Consultando registros guardados...</p>}
     {data && !error && <>
-      <section className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {([['Hospitales con visitas', data.summary.hospitals], ['Visitas', data.summary.visits], ['Observaciones', data.summary.observations], ['Registros de equipos', data.summary.equipmentRecords]] as const).map(([label, value]) =>
-          <div className="panel" key={label}><p className="text-3xl font-semibold text-blue-800">{value}</p><p className="mt-2 text-sm text-slate-500">{label}</p></div>)}
-      </section>
-      <p className="my-5 text-sm text-slate-500">Se cuentan registros de equipos, no equipos físicos únicos. Un equipo observado en varias visitas puede aparecer varias veces.</p>
+      {intelligence && <>
+        <section className="my-6 grid grid-cols-2 gap-3 lg:grid-cols-4">{[['Hospitales observados','hospitals'],['Activos canónicos','assets'],['Registros / evidencias','evidence'],['Observaciones','observations'],['Visitas','visits'],['Stale','stale'],['Posibles oportunidades','opportunities'],['Datos incompletos','incomplete']].map(([label,key])=><div className="panel" key={key}><p className="text-3xl font-semibold text-blue-800">{intelligence.summary[key!] || 0}</p><p className="mt-2 text-sm">{label}</p></div>)}</section>
+        <div className="mb-5 flex flex-wrap gap-3"><Link className="text-blue-700 underline" to="/opportunities">Ver oportunidades</Link><Link className="text-blue-700 underline" to="/review">Información por revisar</Link><Link className="text-blue-700 underline" to="/map">Explorar geografía</Link></div>
+        <div className="grid gap-4 lg:grid-cols-2">{[['Modalidad',intelligence.byModality],['Confiabilidad',intelligence.byReliability],['Frescura',intelligence.byFreshness],['Antigüedad',intelligence.byAge]].map(([title,groups])=><CanonicalChart key={title as string} title={title as string} groups={groups as {label:string;assets:number}[]}/>)}</div>
+        <div className="my-5 grid gap-4 lg:grid-cols-3">{(['country','region','city'] as const).map((field,index)=><CanonicalChart key={field} title={['País','Región / provincia','Ciudad'][index]!} groups={intelligence.geography[field]}/>)}</div>
+      </>}
+      <details className="mt-5"><summary className="cursor-pointer text-blue-700">Actividad histórica: visitas y evidencias (no activos únicos)</summary>
       {!data.summary.visits ? <section className="panel"><h2 className="text-xl font-semibold">Aún no hay visitas finalizadas</h2><p className="my-3">Finaliza una visita para incluirla en estos totales.</p><Link className="text-blue-700 underline" to="/visits/new">Nueva visita</Link></section> : <>
         <label className="mb-5 block text-sm">Comparar por
           <select value={metric} onChange={e => setMetric(e.target.value as typeof metric)} className="ml-3 rounded-xl border border-slate-200 bg-white p-3">
@@ -51,6 +55,7 @@ export default function DashboardPage() {
           </table></div></section>
         <p className="mt-4 text-xs text-slate-500">Una visita con varias modalidades cuenta en cada modalidad correspondiente; esos subtotales de visitas no se suman.</p>
       </>}
+      </details>
     </>}
   </main>
 }
@@ -63,3 +68,5 @@ function Chart({ title, groups, metric }: { title: string; groups: Group[]; metr
     </li>)}
   </ul></section>
 }
+
+function CanonicalChart({title,groups}:{title:string;groups:{label:string;assets:number}[]}) { const max=Math.max(1,...groups.map(g=>g.assets)); return <section className="panel"><h2 className="font-semibold">{title} · activos canónicos</h2><ul className="mt-4 space-y-3">{groups.map(g=><li key={g.label}><p className="flex justify-between text-sm"><span>{g.label}</span><strong>{g.assets}</strong></p><div className="mt-1 h-2 rounded bg-blue-50"><div className="h-2 rounded bg-blue-600" style={{width:`${g.assets/max*100}%`}}/></div></li>)}</ul>{!groups.length && <p className="mt-3 text-sm text-slate-500">Sin activos consolidados.</p>}</section> }

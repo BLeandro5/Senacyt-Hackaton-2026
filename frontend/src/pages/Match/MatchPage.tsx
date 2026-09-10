@@ -4,7 +4,7 @@ import VisitContext from '../../components/VisitContext'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ChevronRight, CirclePlus, SearchCheck, Sparkles } from 'lucide-react'
-import { rankCandidates, type AssetCandidate } from '../../data/equipmentMatching'
+import { candidateSimilarity, rankCandidates, type AssetCandidate } from '../../data/equipmentMatching'
 
 type Decision = {
   equipmentId: string
@@ -34,7 +34,7 @@ function MatchPage() {
       setAvailable(rows)
       setCandidates(equipment.map(item => {
         const asset = rankCandidates(rows, hospitalId || '', item).find(a => (!item.brand || !a.manufacturer || a.manufacturer.toLowerCase() === item.brand.toLowerCase()) && (!item.model || !a.model || a.model.toLowerCase() === item.model.toLowerCase()))
-        return { equipmentId: item.id, match: asset ? { id: asset.id, type: asset.modality, brand: asset.manufacturer || '', model: asset.model || '', lastSeen: asset.lastObservedAt, similarity: 0 } : null }
+        return { equipmentId: item.id, match: asset ? { id: asset.id, type: asset.modality, brand: asset.manufacturer || '', model: asset.model || '', lastSeen: asset.lastObservedAt, similarity: candidateSimilarity(asset, item) } : null }
       }))
     }).catch(cause => { if (active) setError(cause.message) })
       .finally(() => { if (active) setLoading(false) })
@@ -182,7 +182,7 @@ function MatchPage() {
                     {rankCandidates(available, hospitalId || '', item).length > 0 && <label className="mt-4 block text-sm">Revisar otro candidato del mismo hospital y modalidad
                       <select aria-label={`Candidato para equipo ${index + 1}`} value={match?.id || ''} className="mt-2 w-full rounded-xl border p-3" onChange={event => {
                         const asset = available.find(a => a.id === event.target.value)
-                        setCandidates(current => current.map(c => c.equipmentId !== item.id ? c : { equipmentId: item.id, match: asset ? { id: asset.id, type: asset.modality, brand: asset.manufacturer || '', model: asset.model || '', lastSeen: asset.lastObservedAt, similarity: 0 } : null }))
+                        setCandidates(current => current.map(c => c.equipmentId !== item.id ? c : { equipmentId: item.id, match: asset ? { id: asset.id, type: asset.modality, brand: asset.manufacturer || '', model: asset.model || '', lastSeen: asset.lastObservedAt, similarity: candidateSimilarity(asset, item) } : null }))
                         setDecisions(current => current.filter(d => d.equipmentId !== item.id))
                       }}><option value="">Sin candidato seleccionado</option>{rankCandidates(available, hospitalId || '', item).map(a => <option key={a.id} value={a.id}>{a.manufacturer || 'Marca no informada'} · {a.model || 'Modelo no informado'} · {a.id.slice(0, 8)}</option>)}</select>
                       <p className="mt-1 text-xs text-slate-500">La selección no fusiona equipos. Si los datos difieren, confirma solo si sabes que es el mismo activo; el conflicto quedará visible.</p>
@@ -206,7 +206,7 @@ function MatchPage() {
                           </div>
 
                           <span className="text-lg font-semibold text-[#4B1F91]">
-                            <span className="block text-xs font-normal">Mismo hospital y modalidad</span>
+                            <span className="block text-xs font-normal">{match.similarity}% de similitud · mismo hospital y modalidad</span>
                           </span>
 
                         </div>

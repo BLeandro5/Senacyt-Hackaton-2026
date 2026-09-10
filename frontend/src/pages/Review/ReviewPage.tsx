@@ -31,12 +31,16 @@ function ReviewPage() {
     field: keyof EquipmentDraft,
     value: string
   ) => {
+    const statusField: Partial<Record<keyof EquipmentDraft, 'modality' | 'manufacturer' | 'model' | 'configuration' | 'age' | 'condition'>> = {
+      type: 'modality', brand: 'manufacturer', model: 'model', configuration: 'configuration', estimatedAge: 'age', status: 'condition',
+    }
     setEquipment((current) =>
       current.map((item) =>
         item.id === id
           ? {
               ...item,
               [field]: value,
+              fieldStatuses: { ...item.fieldStatuses, ...(statusField[field] ? { [statusField[field]]: value.trim() && value !== 'Desconocido' ? 'Confirmed' : 'Unknown' } : {}) },
             }
           : item
       )
@@ -61,6 +65,7 @@ function ReviewPage() {
         configuration: '',
         estimatedAge: '',
         status: 'Desconocido',
+        fieldStatuses: { modality: 'Unknown', manufacturer: 'Unknown', model: 'Unknown', configuration: 'Unknown', age: 'Unknown', condition: 'Unknown', quantity: 'Unknown' },
       },
     ])
   }
@@ -120,6 +125,11 @@ function ReviewPage() {
                 observación. Revisa los datos antes de
                 continuar.
               </p>
+              {observation.visitSimilarity?.matches.length ? <div className={`mt-4 rounded-xl p-4 text-sm ${observation.visitSimilarity.isDuplicate ? 'bg-amber-50 text-amber-900' : 'bg-blue-50 text-blue-900'}`}>
+                <p className="font-semibold">{observation.visitSimilarity.isDuplicate ? 'Esta visita parece ya registrada.' : 'Hay una visita relacionada en este hospital.'}</p>
+                <p className="mt-1">Similitud más alta: {observation.visitSimilarity.highestSimilarity}% · visita {observation.visitSimilarity.matches[0].visitId}.</p>
+                <p className="mt-1">Revísala antes de continuar; el sistema no fusiona ni descarta observaciones automáticamente.</p>
+              </div> : null}
 
             </section>
 
@@ -326,6 +336,14 @@ function EquipmentCard({
           <Trash2 size={17} />
         </button>
 
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2 text-xs">
+        {([['Tipo', 'modality'], ['Marca', 'manufacturer'], ['Modelo', 'model'], ['Configuración', 'configuration'], ['Edad', 'age'], ['Estado', 'condition']] as const).map(([label, field]) => {
+          const status = item.fieldStatuses?.[field] || 'Unknown'
+          const color = status === 'Confirmed' ? 'bg-emerald-50 text-emerald-800' : status === 'Reported' ? 'bg-blue-50 text-blue-800' : status === 'Estimated' ? 'bg-amber-50 text-amber-800' : 'bg-slate-100 text-slate-600'
+          return <span key={field} className={`rounded-full px-2 py-1 ${color}`}>{label}: {status}</span>
+        })}
       </div>
 
       {/* Campos */}

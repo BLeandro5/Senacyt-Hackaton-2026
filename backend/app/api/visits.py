@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import re
 import uuid
 from pydantic import BaseModel, Field
 from typing import Literal
@@ -10,6 +11,7 @@ from app.db.database import get_db
 from app.schemas.visit import VisitRecord
 from app.services.installed_base import assets, link_evidence, modality, known
 from app.services.evidence import evidence_metadata
+from app.services.visit_similarity import similar_visits
 
 router = APIRouter(tags=['Storage'])
 
@@ -20,6 +22,11 @@ class AssetDecision(BaseModel):
     visitId: str | None = None
     observationId: str | None = None
     equipmentId: str | None = None
+
+
+class VisitSimilarityQuery(BaseModel):
+    hospitalId: str = Field(min_length=1)
+    text: str = Field(min_length=3, max_length=20_000)
 
 
 @router.put('/installed-equipment/{asset_id}/decision')
@@ -182,6 +189,13 @@ def visits(hospital_id: str | None = None, db=Depends(get_db)):
     return [read_visit(db, row['id']) for row in rows]
 
 
+@router.post('/visits/similarity')
+def visit_similarity(payload: VisitSimilarityQuery, db=Depends(get_db)):
+    matches = similar_visits(db, payload.hospitalId, payload.text)
+    highest = matches[0]['similarity'] if matches else 0
+    return {'isDuplicate': highest >= 80, 'highestSimilarity': highest, 'matches': matches[:5]}
+
+
 @router.get('/hospitals/{hospital_id}/overview')
 def hospital_overview(hospital_id: str, db=Depends(get_db)):
     hospital = db.execute('SELECT * FROM hospitals WHERE id=?', (hospital_id,)).fetchone()
@@ -204,9 +218,39 @@ def hospital_overview(hospital_id: str, db=Depends(get_db)):
         WHERE v.hospital_id=? AND v.completed_at != ''
         ORDER BY v.completed_at DESC, v.id, o.position, e.position
     ''', (hospital_id,))]
-    return dict(hospital=dict(hospital), visits=visits, equipment=records,
+    canonical_assets = assets(db, hospital_id)
+    grouped = {}
+    for asset in canonical_assets:
+        group = grouped.setdefault(asset['modality'], {'modality': asset['modality'], 'assets': [], 'scores': [], 'dates': []})
+        group['assets'].append(asset)
+        group['scores'].append(asset['reliability']['score'])
+        if asset['lastObservedAt']:
+            group['dates'].append(asset['lastObservedAt'])
+
+    landscape = []
+    for group in grouped.values():
+        ages = []
+        for asset in group['assets']:
+            match = re.search(r'\d+(?:[.,]\d+)?', asset.get('estimated_age') or '')
+            if match:
+                ages.append(float(match.group().replace(',', '.')))
+        if not ages:
+            age = 'Unknown'
+        elif min(ages) == max(ages):
+            age = f'{min(ages):g} years'
+        else:
+            age = f'{min(ages):g}–{max(ages):g} years'
+        score = round(sum(group['scores']) / len(group['scores']))
+        landscape.append({
+            'modality': group['modality'], 'quantity': len(group['assets']), 'approxAge': age,
+            'confidence': {'score': score, 'level': 'High' if score >= 75 else 'Medium' if score >= 50 else 'Low'},
+            'lastUpdated': max(group['dates']) if group['dates'] else None,
+        })
+    landscape.sort(key=lambda row: row['modality'])
+    return dict(hospital=dict(hospital), visits=visits, equipment=records, assets=canonical_assets, landscape=landscape,
                 summary=dict(visits=len(visits), observations=sum(v['observationCount'] for v in visits),
-                             equipmentRecords=len(records), lastVisit=visits[0]['completedAt'] if visits else None))
+                             equipmentRecords=len(records), canonicalEquipment=len(canonical_assets),
+                             lastVisit=visits[0]['completedAt'] if visits else None))
 
 
 @router.get('/visits/{visit_id}')

@@ -16,6 +16,8 @@ export type AnalysisResult = {
 export type EquipmentDraft = Equipment & {
   configuration: string; estimatedAge: string; status: string
 }
+export type SimilarVisit = { visitId: string; observationId: string; completedAt: string; originalText: string; similarity: number }
+export type VisitSimilarity = { isDuplicate: boolean; highestSimilarity: number; matches: SimilarVisit[] }
 
 export async function analyzeObservation(hospitalId: string, text: string, signal: AbortSignal): Promise<AnalysisResult> {
   const apiUrl = (import.meta.env?.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
@@ -41,13 +43,32 @@ export async function analyzeObservation(hospitalId: string, text: string, signa
   return data
 }
 
+export async function findSimilarVisits(hospitalId: string, text: string, signal: AbortSignal): Promise<VisitSimilarity> {
+  const apiUrl = (import.meta.env?.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
+  const response = await fetch(`${apiUrl}/visits/similarity`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ hospitalId, text }), signal,
+  })
+  const data = await response.json().catch(() => null)
+  if (!response.ok || !data || !Array.isArray(data.matches) || typeof data.highestSimilarity !== 'number') {
+    throw new Error('No se pudo comprobar si la visita ya existe.')
+  }
+  return data as VisitSimilarity
+}
+
 export function toEquipmentDrafts(analysis: AnalysisResult): EquipmentDraft[] {
-  const names: Record<string, string> = { MRI: 'Resonador', CT: 'Tomógrafo', Ultrasound: 'Ultrasonido', 'X-ray': 'Rayos X' }
+  const names: Record<string, string> = { MRI: 'Resonador', CT: 'Tomógrafo', Ultrasound: 'Ultrasonido', Mammography: 'Mamografía', 'X-ray': 'Rayos X' }
   return analysis.equipment.map(item => ({
     id: `MEDPSY-${crypto.randomUUID()}`,
     type: names[item.modality] || item.modality,
     brand: item.manufacturer ?? '', model: item.model ?? '', configuration: item.configuration ?? '',
     estimatedAge: item.estimated_age_years === null ? '' : `${item.estimated_age_years} años`,
     status: item.condition ?? 'Desconocido',
+    fieldStatuses: {
+      modality: 'Reported', manufacturer: item.manufacturer ? 'Reported' : 'Unknown',
+      model: item.model ? 'Reported' : 'Unknown', configuration: item.configuration ? 'Reported' : 'Unknown',
+      age: item.estimated_age_years === null ? 'Unknown' : 'Reported',
+      condition: item.condition ? 'Reported' : 'Unknown', quantity: 'Reported',
+    },
   }))
 }

@@ -108,6 +108,17 @@ class StorageTests(unittest.TestCase):
         self.assertIsNone(data['summary']['lastVisit'])
         self.assertEqual(self.client.get('/hospitals/missing/overview').status_code, 404)
 
+    def test_hospital_overview_groups_canonical_assets_by_modality(self):
+        self.payload['observations'][0]['equipment'][0]['resolution'] = 'new'
+        self.payload['observations'][0]['equipment'][1]['resolution'] = 'new'
+        self.assertEqual(self.client.put('/visits/v1', json=self.payload).status_code, 200)
+        data = self.client.get('/hospitals/HOSP-001/overview').json()
+        self.assertEqual(data['summary']['canonicalEquipment'], 2)
+        self.assertEqual(data['landscape'][0]['modality'], 'MRI')
+        self.assertEqual(data['landscape'][0]['quantity'], 2)
+        self.assertEqual(data['landscape'][0]['approxAge'], '7 years')
+        self.assertIn(data['landscape'][0]['confidence']['level'], ('High', 'Medium', 'Low'))
+
     def test_dashboard_totals_regions_and_modalities(self):
         import copy
         self.client.put('/visits/v1', json=self.payload)

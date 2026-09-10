@@ -30,6 +30,25 @@ class EvidenceTests(unittest.TestCase):
             ground_ages(text,[item])
             self.assertEqual(item.estimated_age_years,8,text)
 
+    def test_explicit_field_statuses_preserve_human_validation(self):
+        item = EquipmentRecord(
+            id='e', type='CT', brand='Philips', model='', reviewed=True,
+            fieldStatuses={'manufacturer': 'Confirmed', 'model': 'Unknown'},
+        )
+        observation = ObservationRecord(id='o', captureMode='chat', originalText='CT Philips reportado.', equipment=[item])
+        statuses, _ = evidence_metadata(item, observation)
+        self.assertEqual(statuses['manufacturer'], 'Confirmed')
+        self.assertEqual(statuses['model'], 'Unknown')
+
+    def test_qualified_age_remains_estimated_when_reported_by_ai(self):
+        item = EquipmentRecord(
+            id='e', type='CT', estimatedAge='6 aÃ±os',
+            fieldStatuses={'age': 'Reported'},
+        )
+        observation = ObservationRecord(id='o', captureMode='chat', originalText='Un CT de aproximadamente seis aÃ±os.', equipment=[item])
+        statuses, _ = evidence_metadata(item, observation)
+        self.assertEqual(statuses['age'], 'Estimated')
+
     def test_model_location_must_occur_in_note(self):
         raw='{"equipment":[],"facility":"Invented Hospital","city":"Madrid","country":"Spain"}'
         with patch('app.ai.extractor.generate_with_qvac',return_value=raw):

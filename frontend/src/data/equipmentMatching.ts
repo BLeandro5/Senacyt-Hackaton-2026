@@ -11,3 +11,13 @@ export function rankCandidates(rows: AssetCandidate[], hospitalId: string, item:
   return rows.filter(a => a.hospital_id === hospitalId && normalizeModality(a.modality) === normalizeModality(item.type))
     .sort((a, b) => rank(b) - rank(a) || a.id.localeCompare(b.id))
 }
+
+export function candidateSimilarity(candidate: AssetCandidate, item: { type: string; brand: string; model: string; configuration?: string }) {
+  const normal = (value?: string | null) => (value || '').trim().toLowerCase()
+  if (normalizeModality(candidate.modality) !== normalizeModality(item.type)) return 0
+  let score = 40
+  for (const [candidateValue, itemValue, weight] of [[candidate.manufacturer, item.brand, 35], [candidate.model, item.model, 20], [candidate.configuration, item.configuration, 5]] as const) {
+    if (itemValue && candidateValue) score += normal(candidateValue) === normal(itemValue) ? weight : -weight
+  }
+  return Math.max(0, Math.min(100, score))
+}

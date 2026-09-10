@@ -14,6 +14,7 @@ class EquipmentRecord(BaseModel):
     resolution: Literal['existing', 'new', 'review'] | None = None
     matchedEquipmentId: str | None = None
     reviewed: bool = False
+    fieldStatuses: dict[str, Literal['Confirmed', 'Reported', 'Estimated', 'Unknown']] = Field(default_factory=dict)
 
 
 class ObservationRecord(BaseModel):

@@ -19,6 +19,7 @@ MENTION = re.compile(
     r'\b(?P<MRI>resonador(?:es)?|resonancias?(?: magneticas?)?|ressonancias?(?: magneticas?)?|mri)\b|'
     r'\b(?P<CT>tomografos?|tomografias?|ct|tac)\b|'
     r'\b(?P<Ultrasound>ultrasonidos?|ecografos?|ultrasound|ultrassom)\b|'
+    r'\b(?P<Mammography>mamografias?|mamografos?|mammography)\b|'
     r'\b(?P<Xray>rayos x|x-ray)\b'
 )
 ONES = dict(zip(

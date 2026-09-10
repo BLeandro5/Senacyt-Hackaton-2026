@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { readStored, writeStored } from '../data/visitStore'
 import type { EquipmentDraft } from '../data/observationApi'
-import { nextFollowUp, followUpValue } from '../data/followUp'
+import { nextFollowUp, followUpAnswer } from '../data/followUp'
 
 export default function FollowUp({ observationId, equipment, update }: {
   observationId: string; equipment: EquipmentDraft[]; update: (id: string, field: keyof EquipmentDraft, value: string) => void
@@ -15,9 +15,9 @@ export default function FollowUp({ observationId, equipment, update }: {
   const respond = (unknown: boolean) => {
     const next = [...answered, question.id]
     try {
-      const value = unknown ? '' : followUpValue(question.field, answer)
+      const response = unknown ? { field: question.field, value: '' } : followUpAnswer(question.field, answer)
       writeStored(key, next)
-      update(question.item.id, question.field, value)
+      update(question.item.id, response.field, response.value)
       setAnswered(next); setAnswer('')
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'No se pudo guardar la respuesta.') }
   }

@@ -16,6 +16,7 @@ import SettingsPage from '../pages/Settings/SettingsPage'
 import HospitalsPage from '../pages/Hospitals/HospitalsPage'
 import DashboardPage from '../pages/Dashboard/DashboardPage'
 import InstalledBaseMapPage from '../pages/Map/InstalledBaseMapPage'
+import Customer360Page from '../pages/Customer360/Customer360Page'
 
 export const router = createBrowserRouter([
   { path: '/', element: <LoginPage /> },
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
       { path: '/dashboard', element: <DashboardPage /> },
       { path: '/map', element: <InstalledBaseMapPage /> },
       { path: '/hospitals', element: <HospitalsPage /> },
-      { path: '/hospitals/:hospitalId', element: <HospitalsPage /> },
+      { path: '/hospitals/:hospitalId', element: <Customer360Page /> },
       { path: '/visits', element: <VisitsPage /> },
       { path: '/visits/new', element: <NewVisitPage /> },
       { path: '/visits/new/capture', element: <CapturePage /> },

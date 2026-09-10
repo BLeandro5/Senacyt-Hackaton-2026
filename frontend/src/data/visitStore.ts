@@ -1,7 +1,8 @@
-import type { AnalysisResult } from './observationApi'
+import type { AnalysisResult, VisitSimilarity } from './observationApi'
 
 export type Equipment = {
   reviewed?: boolean
+  fieldStatuses?: Partial<Record<'modality' | 'manufacturer' | 'model' | 'configuration' | 'age' | 'condition' | 'quantity', 'Confirmed' | 'Reported' | 'Estimated' | 'Unknown'>>
   id: string; type: string; brand: string; model: string
   configuration?: string; estimatedAge?: string; status?: string; confidence?: number
   resolution?: 'existing' | 'new' | 'review'; matchedEquipmentId?: string
@@ -24,7 +25,7 @@ export type CurrentVisit = {
   startedAt?: string; observations?: Observation[]
 }
 export type Capture = CurrentVisit & {
-  analysis?: AnalysisResult
+  analysis?: AnalysisResult; visitSimilarity?: VisitSimilarity
   id?: string; visitId?: string; observation: string; captureMode: 'chat' | 'voice'
   capturedAt: string; photoName?: string | null; photoData?: string
 }

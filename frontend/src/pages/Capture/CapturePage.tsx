@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Camera, Check, ChevronRight, FileText, Keyboard, Mic, MicOff, Send, Sparkles, X } from 'lucide-react'
 
 type CaptureMode = 'chat' | 'voice'
-import { analyzeObservation, toEquipmentDrafts } from '../../data/observationApi'
+import { analyzeObservation, findSimilarVisits, toEquipmentDrafts } from '../../data/observationApi'
 
 function CapturePage() {
   const navigate = useNavigate()
@@ -127,7 +127,8 @@ function CapturePage() {
       const analysis = await analyzeObservation(visit.hospitalId, capture.observation,
         AbortSignal.any([controller.signal, AbortSignal.timeout(190_000)]))
       if (controller.signal.aborted) return
-      const analyzed = { ...capture, analysis }
+      const visitSimilarity = await findSimilarVisits(visit.hospitalId, capture.observation, controller.signal)
+      const analyzed = { ...capture, analysis, visitSimilarity }
       writeStored('current-observation', analyzed)
       writeStored('capture-draft', analyzed)
       writeStored('review-draft', toEquipmentDrafts(analysis))

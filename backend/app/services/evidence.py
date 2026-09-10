@@ -21,12 +21,21 @@ def evidence_metadata(equipment, observation):
     statuses = {key: 'Unknown' if normalize(value or '').strip() in UNKNOWN else
                 'Estimated' if attribute_uncertain(key, value) else
                 'Confirmed' if equipment.reviewed else 'Reported' for key, value in values.items()}
+    # AI extraction remains Reported until a user explicitly confirms a field.
+    # A status supplied by the review UI is accepted only for a known field.
+    for key, status in equipment.fieldStatuses.items():
+        if key in statuses and (status == 'Unknown' or normalize(values[key] or '').strip() not in UNKNOWN):
+            # Qualifying language and ranges make the value an estimate even
+            # when a person reviews the rest of the equipment record.
+            if statuses[key] != 'Estimated':
+                statuses[key] = status
     # A list of proposed devices is not itself proof of an exact observed count.
     count_prefixes = [source[:m.start()] for m in MENTION.finditer(source)]
     exact_prefixes = [prefix for prefix in count_prefixes if COUNT.search(prefix)]
     estimated_count = any(re.search(r'\b(unos|unas|aproximadamente|about|around|roughly|cerca de)\b[^.;!?]{0,18}$', prefix) for prefix in count_prefixes)
     quantity = 'estimated' if estimated_count else 'exact' if exact_prefixes else None
-    statuses['quantity'] = 'Estimated' if quantity == 'estimated' else ('Confirmed' if equipment.reviewed else 'Reported') if quantity else 'Unknown'
+    derived_quantity_status = 'Estimated' if quantity == 'estimated' else ('Confirmed' if equipment.reviewed else 'Reported') if quantity else 'Unknown'
+    statuses['quantity'] = 'Estimated' if derived_quantity_status == 'Estimated' else equipment.fieldStatuses.get('quantity', derived_quantity_status)
     score = reliability(modality=equipment.type, quantity_status=quantity,
         manufacturer=equipment.brand if statuses['manufacturer'] != 'Unknown' else None, model=equipment.model if statuses['model'] != 'Unknown' else None,
         age=equipment.estimatedAge if statuses['age'] != 'Unknown' else None, age_estimated=statuses['age'] == 'Estimated',

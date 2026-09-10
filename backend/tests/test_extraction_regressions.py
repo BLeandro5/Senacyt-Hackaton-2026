@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from app.ai.count_grounding import ground_counts
+from app.ai.count_grounding import complete_explicit_mentions, ground_counts
 from app.ai.extractor import extract_equipment, parse_extraction
 from app.schemas.equipment import EquipmentExtracted
 
@@ -45,6 +45,11 @@ class ExtractionRegressions(unittest.TestCase):
     def test_large_count_is_rejected(self):
         with self.assertRaises(ValueError):
             ground_counts('10000 CT.', [EquipmentExtracted(modality='CT')])
+
+    def test_explicit_missed_modality_is_kept_unknown_for_human_review(self):
+        result = complete_explicit_mentions('En mamografía hay un sistema Hologic.', [])
+        self.assertEqual([(item.modality, item.manufacturer, item.model) for item in result],
+                         [('Mammography', 'Hologic', None)])
 
 
 if __name__ == '__main__':

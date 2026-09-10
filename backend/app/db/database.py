@@ -34,7 +34,18 @@ CREATE TABLE IF NOT EXISTS equipment (
  PRIMARY KEY(visit_id, observation_id, id),
  FOREIGN KEY(visit_id, observation_id) REFERENCES observations(visit_id,id) ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS installed_equipment (
+ id TEXT PRIMARY KEY, hospital_id TEXT NOT NULL REFERENCES hospitals(id),
+ modality TEXT NOT NULL, manufacturer TEXT, model TEXT, configuration TEXT,
+ estimated_age TEXT, condition TEXT, status TEXT NOT NULL DEFAULT 'reported',
+ created_at TEXT NOT NULL, updated_at TEXT NOT NULL, last_observed_at TEXT NOT NULL
+);
 CREATE INDEX IF NOT EXISTS visits_hospital ON visits(hospital_id);
+CREATE INDEX IF NOT EXISTS installed_equipment_hospital ON installed_equipment(hospital_id);
+CREATE TABLE IF NOT EXISTS audit_events (
+ id TEXT PRIMARY KEY, changed_at TEXT NOT NULL, changed_by TEXT NOT NULL,
+ entity_id TEXT NOT NULL, action TEXT NOT NULL, details TEXT NOT NULL
+);
 '''
 
 
@@ -50,7 +61,22 @@ def connect():
     visit_columns = {row['name'] for row in db.execute('PRAGMA table_info(visits)')}
     if 'collaborator_id' not in visit_columns:
         db.execute('ALTER TABLE visits ADD COLUMN collaborator_id TEXT')
+    equipment_columns = {row['name'] for row in db.execute('PRAGMA table_info(equipment)')}
+    for name, declaration in {
+        'evidence_status': 'TEXT', 'reliability_score': 'INTEGER', 'reliability_level': 'TEXT',
+        'reviewed': 'INTEGER NOT NULL DEFAULT 0', 'reliability_factors': 'TEXT',
+    }.items():
+        if name not in equipment_columns:
+            db.execute(f'ALTER TABLE equipment ADD COLUMN {name} {declaration}')
     db.execute('CREATE INDEX IF NOT EXISTS visits_collaborator ON visits(collaborator_id)')
+    for table, additions in {
+        'observations': {'detected_language': "TEXT DEFAULT 'other'", 'analysis_json': 'TEXT'},
+        'hospitals': {'country': "TEXT DEFAULT ''", 'verification_status': "TEXT DEFAULT 'Reported'"},
+    }.items():
+        columns = {r['name'] for r in db.execute(f'PRAGMA table_info({table})')}
+        for column, declaration in additions.items():
+            if column not in columns:
+                db.execute(f'ALTER TABLE {table} ADD COLUMN {column} {declaration}')
     catalog = json.loads(Path(__file__).with_name('hospitals.json').read_text(encoding='utf-8'))
     db.executemany('INSERT OR IGNORE INTO hospitals(id,name,region,city) VALUES (:id,:name,:region,:city)', catalog)
     db.commit()

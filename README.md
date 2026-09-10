@@ -10,12 +10,31 @@ cuantización Q4_K_M con imatrix. En el SDK 0.19.0 su identificador es
 `HEALTHCARE_1_7B_MEDICAL_Q4_K_M`. MedPsy realiza toda la extracción de equipos
 del flujo principal: no hay fallback a MedGemma ni inferencia remota.
 El servicio verifica tamaño y SHA-256 de los pesos oficiales antes de cargar.
-La ficha declara inglés como idioma; la calidad en español debe medirse con
-nuestros casos. Para extracción usamos `reasoning_budget: 512`, temperatura
+La ficha declara inglés como idioma; la calidad en cada idioma debe medirse con
+nuestros casos. Para extracción usamos `reasoning_budget: 0`, temperatura
 0 y semilla 42. El SDK separa el razonamiento del texto final y Python valida
 el JSON; no usamos gramática JSON forzada, incompatible con el razonamiento
 en esta combinación de SDK y modelo. Esta configuración no reproduce los
-benchmarks médicos del autor.
+benchmarks médicos del autor. El razonamiento está desactivado para reducir la
+latencia de extracción; no se almacena razonamiento interno.
+
+### Versión para pruebas de integración
+
+Consulta [TESTING.md](TESTING.md) para el flujo de prueba completo y
+[PHASE2_STATUS.md](PHASE2_STATUS.md) para el alcance y las limitaciones.
+La prueba `backend/scripts/smoke_system.py` usa MedPsy real y una SQLite temporal:
+registro/login, extracción, persistencia, corroboración, conflicto y analytics.
+No añade datos de ensayo al inventario habitual.
+
+La base instalada ahora separa **activos canónicos** de **evidencias**. Las
+coincidencias requieren decisión humana; una evidencia puede enviarse a revisión.
+El supervisor usa `/supervisor`, `/supervisor/hospitals/:hospitalId` y
+`/supervisor/review`, con datos de API/SQLite, confiabilidad explicable,
+historial, frescura y señales de renovación por edad >7 años.
+La captura rápida exige confirmar hospital. Las ubicaciones no mencionadas se
+descartan y los idiomas ES/EN/PT se detectan localmente de forma conservadora.
+Settings permite apariencia e idioma de sus textos; la traducción del resto de
+la interfaz sigue pendiente. Voz/STT no está habilitada y no inserta datos ficticios.
 
 ### Ejecutar en Windows
 
@@ -62,7 +81,8 @@ se guarda con la observación y abre la pantalla de revisión, donde se pueden
 editar los equipos antes de continuar a coincidencias y guardar la visita.
 Las cantidades, marcas y edades provienen del backend; no se generan equipos
 demo ni porcentajes de confianza. Si el análisis falla, captura muestra el
-error y permite reintentar. `hospital_id: 1` sigue siendo fijo. Voz y fotos no tienen inferencia
+error y permite reintentar. El hospital seleccionado usa su ID real, por ejemplo `HOSP-001`.
+Voz y fotos no tienen inferencia
 real todavía. Revisar los datos extraídos antes de utilizarlos: pueden contener
 errores. Esta herramienta organiza inventario; no diagnostica ni recomienda
 tratamientos.
@@ -106,7 +126,7 @@ para consultar datos ya guardados.
 
 ### Vista consolidada por hospital
 
-Abrir **Hospitales** en la navegación o `/hospitals`, seleccionar un hospital
+Abrir **Hospitales** como supervisor en `/supervisor/hospitals`, seleccionar un hospital
 y consultar su resumen: visitas finalizadas, observaciones, registros de
 equipos y última visita. La tabla permite buscar por marca/modelo/estado y
 filtrar por área y tipo. Cada registro enlaza a su visita de origen y conserva
@@ -120,7 +140,7 @@ afirman contar equipos físicos únicos mientras la deduplicación esté pendien
 
 ### Dashboard
 
-Abrir **Dashboard** en el menú o `/dashboard`. Usa `GET /dashboard` para
+El endpoint compatible `GET /dashboard` conserva el resumen histórico para
 mostrar totales de visitas finalizadas, observaciones y registros de equipos
 por hospital, región y modalidad. Permite alternar las barras entre registros
 y visitas, consultar una tabla por hospital y abrir su vista consolidada.
@@ -164,7 +184,8 @@ La comprobación reconoce MRI, CT, ultrasonido y rayos X, discrimina fabricantes
 cuando es posible y deja `null` en casos ambiguos o no soportados. No calcula
 antigüedad a partir de garantías, fechas ni historial del hospital.
 
-La evaluación ampliada obtiene 8/8 casos correctos en los campos evaluados.
+La evaluación histórica ampliada obtuvo 8/8 casos en los campos evaluados;
+no debe confundirse con una evaluación general de la versión actual.
 El backend separa el razonamiento terminado en `</think>` del JSON final y
 valida este último; no acepta JSON incompleto ni texto arbitrario sobrante.
 También comprueba cantidades explícitas contra las menciones originales:

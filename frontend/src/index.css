@@ -66,3 +66,8 @@ button:not(:disabled):active { transform: scale(.99); }
 @media (hover: hover) { button.group:hover { box-shadow: 0 3px 12px #1720330a; } }
 @keyframes page-enter { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } button:not(:disabled):active { transform: none; } }
+html[data-theme='dark'] { color-scheme: dark; background: #0f172a; color: #e2e8f0; }
+html[data-theme='dark'] body, html[data-theme='dark'] main, html[data-theme='dark'] .app-shell { background: #0f172a; color: #e2e8f0; }
+html[data-theme='dark'] .panel, html[data-theme='dark'] .bg-white, html[data-theme='dark'] header, html[data-theme='dark'] aside { background-color: #1e293b; color: #e2e8f0; }
+html[data-theme='dark'] input, html[data-theme='dark'] textarea, html[data-theme='dark'] select { background-color: #172033; color: #f8fafc; border-color: #475569; }
+html[data-theme='dark'] [class*='text-slate-9'], html[data-theme='dark'] [class*='text-[#172033]'] { color: #f8fafc; }

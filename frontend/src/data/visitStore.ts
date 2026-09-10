@@ -1,11 +1,13 @@
 import type { AnalysisResult } from './observationApi'
 
 export type Equipment = {
+  reviewed?: boolean
   id: string; type: string; brand: string; model: string
   configuration?: string; estimatedAge?: string; status?: string; confidence?: number
-  resolution?: 'existing' | 'new'; matchedEquipmentId?: string
+  resolution?: 'existing' | 'new' | 'review'; matchedEquipmentId?: string
 }
 export type Observation = {
+  detectedLanguage?: string; analysis?: AnalysisResult
   id: string; title?: string; visitId?: string; captureMode: 'chat' | 'voice'
   capturedAt?: string; originalText: string; equipment: Equipment[]; photoName?: string | null; photoData?: string
 }
@@ -28,7 +30,7 @@ export type Capture = CurrentVisit & {
 export type RecordDraft = CurrentVisit & {
   originalObservation: string; equipment: Equipment[]; observationId?: string
 }
-export type Decision = { equipmentId: string; type: 'existing' | 'new'; matchedEquipmentId?: string; similarity?: number }
+export type Decision = { equipmentId: string; type: 'existing' | 'new' | 'review'; matchedEquipmentId?: string; similarity?: number }
 
 // Keep the original keys readable; do not delete malformed data or old backups.
 export function readStored<T>(key: string, fallback: T): T {
@@ -69,6 +71,7 @@ export function saveObservation() {
     id, visitId, title: observationTitle(record.equipment), captureMode: capture.captureMode,
     capturedAt: capture.capturedAt, originalText: record.originalObservation,
     photoName: capture.photoName, photoData: capture.photoData,
+    analysis: capture.analysis, detectedLanguage: capture.analysis?.detected_language || 'other',
     equipment: record.equipment.map(e => {
       const decision = result.decisions.find(d => d.equipmentId === e.id)!
       return { ...e, resolution: decision.type, matchedEquipmentId: decision.matchedEquipmentId }

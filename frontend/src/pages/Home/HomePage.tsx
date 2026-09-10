@@ -64,6 +64,8 @@ function HomePage() {
 
       <main className="mx-auto max-w-[1380px] px-4 pb-28 pt-7 sm:px-6 lg:px-8 lg:pb-10 lg:pt-9">
         {storageError && <p role="alert" className="storage-error">{storageError}</p>}
+        <button className="mb-5 rounded-xl bg-blue-700 px-5 py-3 text-white" onClick={() => navigate('/capture/quick')}>Captura rápida</button>
+        <button className="mb-5 ml-3 rounded-xl border border-blue-200 px-5 py-3" onClick={() => navigate('/settings')}>Configuración</button>
         {/* Greeting */}
         <section className="mb-6">
           <p className="text-sm font-semibold text-[#0B5ED7]">

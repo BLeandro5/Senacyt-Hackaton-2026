@@ -1,0 +1,160 @@
+{
+  "scope": "Synthetic inventory labels; not clinical validation",
+  "summary": {
+    "es": {
+      "passed": 1,
+      "total": 1
+    },
+    "en": {
+      "passed": 1,
+      "total": 1
+    },
+    "pt": {
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "results": [
+    {
+      "case": 1,
+      "language": "es",
+      "input": "Hay un tomógrafo Philips de ocho años.",
+      "expected": [
+        [
+          "CT",
+          "Philips",
+          null,
+          8
+        ]
+      ],
+      "actual": [
+        [
+          "CT",
+          "Philips",
+          null,
+          8.0
+        ]
+      ],
+      "detected_language": "es",
+      "checks": {
+        "quantity": true,
+        "language": true,
+        "modality": true,
+        "manufacturer": true,
+        "model": true,
+        "age": true,
+        "unknown_nulls": true
+      },
+      "passed": true,
+      "metrics": {
+        "model": "MedPsy-1.7B",
+        "quantization": "Q4_K_M (imatrix)",
+        "sdk_model": "HEALTHCARE_1_7B_MEDICAL_Q4_K_M",
+        "sha256": "41ee947d9cce72ec657577219fd1798fabeabf0d832217fe23c9d6d3d18d5880",
+        "reasoning_budget": 0,
+        "model_load_ms": 25157.279599999998,
+        "total_ms": 47300.625,
+        "ttft_ms": 23883.606400000164,
+        "prompt_tokens": 517,
+        "generated_tokens": 87,
+        "tokens_per_second": 3.73109924831216,
+        "backend_device": "gpu"
+      },
+      "total_ms": 47962.99
+    },
+    {
+      "case": 2,
+      "language": "en",
+      "input": "There is an eight-year-old Philips CT system.",
+      "expected": [
+        [
+          "CT",
+          "Philips",
+          null,
+          8
+        ]
+      ],
+      "actual": [
+        [
+          "CT",
+          "Philips",
+          null,
+          8.0
+        ]
+      ],
+      "detected_language": "en",
+      "checks": {
+        "quantity": true,
+        "language": true,
+        "modality": true,
+        "manufacturer": true,
+        "model": true,
+        "age": true,
+        "unknown_nulls": true
+      },
+      "passed": true,
+      "metrics": {
+        "model": "MedPsy-1.7B",
+        "quantization": "Q4_K_M (imatrix)",
+        "sdk_model": "HEALTHCARE_1_7B_MEDICAL_Q4_K_M",
+        "sha256": "41ee947d9cce72ec657577219fd1798fabeabf0d832217fe23c9d6d3d18d5880",
+        "reasoning_budget": 0,
+        "model_load_ms": 25157.279599999998,
+        "total_ms": 43417.258499999996,
+        "ttft_ms": 19876.496000000043,
+        "prompt_tokens": 514,
+        "generated_tokens": 84,
+        "tokens_per_second": 3.5843849342668603,
+        "backend_device": "gpu"
+      },
+      "total_ms": 43796.54
+    },
+    {
+      "case": 3,
+      "language": "pt",
+      "input": "Há um tomógrafo Philips com cerca de oito anos.",
+      "expected": [
+        [
+          "CT",
+          "Philips",
+          null,
+          8
+        ]
+      ],
+      "actual": [
+        [
+          "CT",
+          "Philips",
+          null,
+          8.0
+        ]
+      ],
+      "detected_language": "pt",
+      "checks": {
+        "quantity": true,
+        "language": true,
+        "modality": true,
+        "manufacturer": true,
+        "model": true,
+        "age": true,
+        "unknown_nulls": true
+      },
+      "passed": true,
+      "metrics": {
+        "model": "MedPsy-1.7B",
+        "quantization": "Q4_K_M (imatrix)",
+        "sdk_model": "HEALTHCARE_1_7B_MEDICAL_Q4_K_M",
+        "sha256": "41ee947d9cce72ec657577219fd1798fabeabf0d832217fe23c9d6d3d18d5880",
+        "reasoning_budget": 0,
+        "model_load_ms": 25157.279599999998,
+        "total_ms": 55358.27769999998,
+        "ttft_ms": 31236.857899999944,
+        "prompt_tokens": 519,
+        "generated_tokens": 77,
+        "tokens_per_second": 3.204346325417932,
+        "backend_device": "gpu"
+      },
+      "total_ms": 55885.46
+    }
+  ]
+}

@@ -621,7 +621,7 @@ function formatConfidence(confidence?: number) {
 }
 
 function resolutionLabel(
-  resolution?: 'existing' | 'new',
+  resolution?: 'existing' | 'new' | 'review',
 ) {
   if (resolution === 'existing') {
     return 'Vinculado a existente'

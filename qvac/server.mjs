@@ -12,7 +12,7 @@ const started = performance.now()
 const modelId = await loadModel({
   modelSrc: modelPath,
   modelType: 'llamacpp-completion',
-  modelConfig: { ctx_size: 4096, temp: 0, predict: 1024 },
+  modelConfig: { ctx_size: 4096, temp: 0, predict: 1024, reasoning_budget: 0 },
 })
 const modelLoadMs = performance.now() - started
 let busy = false
@@ -24,7 +24,7 @@ function send(res, status, body) {
 
 const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && req.url === '/health') {
-    return send(res, 200, { status: 'ok', model: modelName, quantization, sdk_model: descriptor.name, sha256: descriptor.sha256Checksum, model_load_ms: modelLoadMs })
+    return send(res, 200, { status: busy ? 'busy' : 'ready', model: modelName, quantization, sdk_model: descriptor.name, sha256: descriptor.sha256Checksum, model_load_ms: modelLoadMs })
   }
   if (req.method !== 'POST' || req.url !== '/generate') return send(res, 404, { error: 'Not found' })
   // Browser traffic must go through FastAPI, which owns the CORS policy.
@@ -48,7 +48,7 @@ const server = http.createServer(async (req, res) => {
     let ttft = null
     const run = completion({
       modelId, history: [{ role: 'user', content: payload.prompt }], stream: true,
-      generationParams: { temp: 0, seed: 42, predict: 2048, reasoning_budget: 512 },
+      generationParams: { temp: 0, seed: 42, predict: 2048, reasoning_budget: 0 },
       captureThinking: true,
     })
     // Attach rejection handling immediately; events and final share errors.
@@ -64,7 +64,7 @@ const server = http.createServer(async (req, res) => {
       output_text: final.contentText,
       metrics: {
         model: modelName, quantization, sdk_model: descriptor.name,
-        sha256: descriptor.sha256Checksum, reasoning_budget: 512, model_load_ms: modelLoadMs,
+        sha256: descriptor.sha256Checksum, reasoning_budget: 0, model_load_ms: modelLoadMs,
         total_ms: performance.now() - begin, ttft_ms: ttft,
         prompt_tokens: final.stats?.promptTokens ?? null,
         generated_tokens: final.stats?.generatedTokens ?? null,

@@ -1,6 +1,8 @@
 import type { Equipment } from './visitStore'
 
 export type AnalysisResult = {
+  detected_language?: 'es' | 'en' | 'pt' | 'other'
+  facility?: string | null; city?: string | null; country?: string | null
   original_text: string
   equipment: {
     modality: string
@@ -19,7 +21,7 @@ export async function analyzeObservation(hospitalId: string, text: string, signa
   const apiUrl = (import.meta.env?.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
   const response = await fetch(`${apiUrl}/observations/analyze`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    // Hospital API integration is pending; the extractor currently uses text only.
+    // The hospital is carried as context; final persistence validates its identity.
     body: JSON.stringify({ hospital_id: hospitalId, text }),
     signal,
   })

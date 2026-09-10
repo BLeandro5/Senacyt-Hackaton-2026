@@ -4,7 +4,7 @@ import { ArrowLeft, Building2, CalendarDays, CheckCircle2, Cloud, CloudOff, Cloc
 import { useVisits } from '../../data/useVisits'
 import { displayDate, observationTitle, type Equipment } from '../../data/visitStore'
 type SyncStatus = 'synced' | 'pending'
-type EquipmentResolution = 'existing' | 'new'
+type EquipmentResolution = 'existing' | 'new' | 'review'
 
 function VisitDetailPage() {
   const navigate = useNavigate()
@@ -373,6 +373,7 @@ function ResolutionBadge({
 }: {
   resolution: EquipmentResolution
 }) {
+  if (resolution === 'review') return <span className="rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs font-semibold text-amber-800">Por revisar</span>
   if (resolution === 'existing') {
     return (
       <span className="flex shrink-0 items-center gap-1.5 rounded-lg bg-blue-50 px-2.5 py-1.5 text-xs font-semibold text-blue-700">

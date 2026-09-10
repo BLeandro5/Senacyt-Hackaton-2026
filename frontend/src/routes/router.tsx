@@ -12,10 +12,9 @@ import MatchPage from '../pages/Match/MatchPage'
 import SuccessPage from '../pages/Success/SuccessPage'
 import VisitsPage from '../pages/Visits/VisitsPage'
 import VisitDetailPage from '../pages/VisitDetail/VisitDetailPage'
-import SupervisorDashboardPage from '../pages/SupervisorDashboard/SupervisorDashboardPage'
-import HospitalsPage from '../pages/Hospitals/HospitalsPage'
-import HospitalDetailPage from '../pages/HospitalDetail/HospitalDetailPage'
-import ReviewQueuePage from '../pages/ReviewQueue/ReviewQueuePage'
+import InstalledBasePage from '../pages/InstalledBase/InstalledBasePage'
+import QuickCapturePage from '../pages/QuickCapture/QuickCapturePage'
+import SettingsPage from '../pages/Settings/SettingsPage'
 
 export const router = createBrowserRouter([
   { path: '/', element: <LoginPage /> },
@@ -26,6 +25,8 @@ export const router = createBrowserRouter([
     errorElement: <RouteError />,
     children: [
       { path: '/home', element: <HomePage /> },
+      { path: '/capture/quick', element: <QuickCapturePage /> },
+      { path: '/settings', element: <SettingsPage /> },
       { path: '/visits', element: <VisitsPage /> },
       { path: '/visits/new', element: <NewVisitPage /> },
       { path: '/visits/new/capture', element: <CapturePage /> },
@@ -39,10 +40,11 @@ export const router = createBrowserRouter([
     element: <SupervisorLayout />,
     errorElement: <RouteError />,
     children: [
-      { path: '/supervisor', element: <SupervisorDashboardPage /> },
-      { path: '/supervisor/hospitals', element: <HospitalsPage /> },
-      { path: '/supervisor/hospitals/:hospitalId', element: <HospitalDetailPage /> },
-      { path: '/supervisor/review', element: <ReviewQueuePage /> },
+      { path: '/supervisor', element: <InstalledBasePage /> },
+      { path: '/supervisor/hospitals', element: <InstalledBasePage /> },
+      { path: '/supervisor/hospitals/:hospitalId', element: <InstalledBasePage /> },
+      { path: '/supervisor/review', element: <InstalledBasePage /> },
+      { path: '/supervisor/settings', element: <SettingsPage /> },
     ],
   },
   { path: '*', element: <RouteError /> },

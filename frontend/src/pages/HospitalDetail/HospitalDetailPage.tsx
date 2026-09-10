@@ -781,7 +781,7 @@ function EquipmentStatus({
 function ResolutionBadge({
   resolution,
 }: {
-  resolution?: 'existing' | 'new'
+  resolution?: 'existing' | 'new' | 'review'
 }) {
   if (resolution === 'existing') {
     return (

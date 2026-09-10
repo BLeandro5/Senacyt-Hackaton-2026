@@ -4,7 +4,7 @@ import { storageRequest } from '../../data/storageApi'
 
 type Totals = { label: string; visits: number; observations: number; hospitals: number; equipmentRecords: number }
 type Group = Totals & { id?: string; region?: string }
-type Dashboard = { summary: Totals; byHospital: Group[]; byRegion: Group[]; byModality: Group[] }
+type Dashboard = { summary: Totals; byHospital: Group[]; byRegion: Group[]; byProvince: Group[]; byModality: Group[] }
 
 export default function DashboardPage() {
   const [data, setData] = useState<Dashboard | null>(null)
@@ -39,8 +39,9 @@ export default function DashboardPage() {
             <option value="equipmentRecords">Registros de equipos</option><option value="visits">Visitas</option>
           </select>
         </label>
-        <div className="grid gap-5 lg:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-2">
           <Chart title="Por hospital" groups={data.byHospital} metric={metric} />
+          <Chart title="Por provincia" groups={data.byProvince} metric={metric} />
           <Chart title="Por región" groups={data.byRegion} metric={metric} />
           <Chart title="Por modalidad" groups={data.byModality} metric={metric} />
         </div>

@@ -20,6 +20,7 @@ export type Visit = {
 }
 export type CurrentVisit = {
   id?: string; hospitalId?: string; collaboratorId?: string; hospitalName: string; area?: string; region?: string
+  country?: string; province?: string; city?: string
   startedAt?: string; observations?: Observation[]
 }
 export type Capture = CurrentVisit & {

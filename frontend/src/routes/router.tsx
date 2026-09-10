@@ -13,6 +13,9 @@ import VisitsPage from '../pages/Visits/VisitsPage'
 import VisitDetailPage from '../pages/VisitDetail/VisitDetailPage'
 import QuickCapturePage from '../pages/QuickCapture/QuickCapturePage'
 import SettingsPage from '../pages/Settings/SettingsPage'
+import HospitalsPage from '../pages/Hospitals/HospitalsPage'
+import DashboardPage from '../pages/Dashboard/DashboardPage'
+import InstalledBaseMapPage from '../pages/Map/InstalledBaseMapPage'
 
 export const router = createBrowserRouter([
   { path: '/', element: <LoginPage /> },
@@ -25,6 +28,10 @@ export const router = createBrowserRouter([
       { path: '/home', element: <HomePage /> },
       { path: '/capture/quick', element: <QuickCapturePage /> },
       { path: '/settings', element: <SettingsPage /> },
+      { path: '/dashboard', element: <DashboardPage /> },
+      { path: '/map', element: <InstalledBaseMapPage /> },
+      { path: '/hospitals', element: <HospitalsPage /> },
+      { path: '/hospitals/:hospitalId', element: <HospitalsPage /> },
       { path: '/visits', element: <VisitsPage /> },
       { path: '/visits/new', element: <NewVisitPage /> },
       { path: '/visits/new/capture', element: <CapturePage /> },

@@ -147,7 +147,7 @@ def candidates(payload: VisitRecord, db=Depends(get_db)):
 
 
 def read_visit(db, visit_id):
-    row = db.execute('''SELECT v.*, h.name, h.region, u.first_name, u.last_name, u.cedula
+    row = db.execute('''SELECT v.*, h.name, h.region, h.country, h.province, h.city, u.first_name, u.last_name, u.cedula
         FROM visits v JOIN hospitals h ON h.id=v.hospital_id
         LEFT JOIN users u ON u.id=v.collaborator_id WHERE v.id=?''', (visit_id,)).fetchone()
     if row is None:
@@ -165,6 +165,7 @@ def read_visit(db, visit_id):
     collaborator = None if row['collaborator_id'] is None else dict(id=row['collaborator_id'],
         firstName=row['first_name'], lastName=row['last_name'], name=f"{row['first_name']} {row['last_name']}", cedula=row['cedula'])
     return dict(id=visit_id, hospitalId=row['hospital_id'], hospital=row['name'], region=row['region'],
+                country=row['country'], province=row['province'], city=row['city'],
                 area=row['area'], startedAt=row['started_at'], completedAt=row['completed_at'],
                 date=row['completed_at'] or row['started_at'], syncStatus='synced', collaboratorId=row['collaborator_id'],
                 collaborator=collaborator, observations=observations)
@@ -216,7 +217,7 @@ def visit(visit_id: str, db=Depends(get_db)):
 @router.get('/dashboard')
 def dashboard(db=Depends(get_db)):
     rows = db.execute('''
-        SELECT v.id AS visit_id, h.id AS hospital_id, h.name, h.region,
+        SELECT v.id AS visit_id, h.id AS hospital_id, h.name, h.region, h.province,
                o.id AS observation_id, e.id AS equipment_id, e.modality
         FROM visits v JOIN hospitals h ON h.id=v.hospital_id
         LEFT JOIN observations o ON o.visit_id=v.id
@@ -226,7 +227,7 @@ def dashboard(db=Depends(get_db)):
     def bucket(label):
         return dict(label=label, visits=set(), observations=set(), hospitals=set(), equipmentRecords=0)
     total = bucket('Total')
-    by_hospital, by_region, by_modality = {}, {}, {}
+    by_hospital, by_region, by_province, by_modality = {}, {}, {}, {}
     aliases = {'resonador': 'MRI', 'resonancia': 'MRI', 'mri': 'MRI',
                'tomógrafo': 'CT', 'tomografo': 'CT', 'ct': 'CT', 'tac': 'CT',
                'ultrasonido': 'Ultrasound', 'ecógrafo': 'Ultrasound', 'ultrasound': 'Ultrasound',
@@ -234,7 +235,8 @@ def dashboard(db=Depends(get_db)):
     for row in rows:
         hospital = by_hospital.setdefault(row['hospital_id'], {**bucket(row['name']), 'id': row['hospital_id'], 'region': row['region']})
         region = by_region.setdefault(row['region'] or 'No indicada', bucket(row['region'] or 'No indicada'))
-        targets = [total, hospital, region]
+        province = by_province.setdefault(row['province'] or 'No indicada', bucket(row['province'] or 'No indicada'))
+        targets = [total, hospital, region, province]
         if row['equipment_id'] is not None:
             name = (row['modality'] or '').strip()
             modality = aliases.get(name.lower(), name or 'No indicada')
@@ -249,7 +251,8 @@ def dashboard(db=Depends(get_db)):
         return {k: len(v) if isinstance(v, set) else v for k, v in group.items()}
     def series(groups):
         return sorted([counts(g) for g in groups.values()], key=lambda g: (-g['equipmentRecords'], g['label']))
-    return dict(summary=counts(total), byHospital=series(by_hospital), byRegion=series(by_region), byModality=series(by_modality))
+    return dict(summary=counts(total), byHospital=series(by_hospital), byRegion=series(by_region),
+                byProvince=series(by_province), byModality=series(by_modality))
 
 
 @router.put('/visits/{visit_id}')

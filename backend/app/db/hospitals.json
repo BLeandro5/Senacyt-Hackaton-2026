@@ -1,37 +1,38 @@
 [
-  {
-    "id": "HOSP-001",
-    "name": "Hospital Santo Tomás",
-    "region": "Panamá Metro",
-    "city": "Ciudad de Panamá",
-    "country": "Panamá"
-  },
-  {
-    "id": "HOSP-002",
-    "name": "Hospital Nacional",
-    "region": "Panamá Metro",
-    "city": "Ciudad de Panamá",
-    "country": "Panamá"
-  },
-  {
-    "id": "HOSP-003",
-    "name": "Hospital Paitilla",
-    "region": "Panamá Metro",
-    "city": "Ciudad de Panamá",
-    "country": "Panamá"
-  },
-  {
-    "id": "HOSP-004",
-    "name": "Hospital San Fernando",
-    "region": "Panamá Metro",
-    "city": "Ciudad de Panamá",
-    "country": "Panamá"
-  },
-  {
-    "id": "HOSP-005",
-    "name": "Hospital Punta Pacífica",
-    "region": "Panamá Metro",
-    "city": "Ciudad de Panamá",
-    "country": "Panamá"
-  }
+  {"id":"0101010501","name":"Hospital Guillermo Sánchez Borbón","country":"Panamá","province":"Bocas del Toro","region":"Bocas del Toro","city":"Bocas del Toro","district":"Bocas del Toro","facilityType":"Hospital de área","dependency":"MINSA","latitude":9.340,"longitude":-82.241},
+  {"id":"0102010401","name":"Hospital de Changuinola","country":"Panamá","province":"Bocas del Toro","region":"Bocas del Toro","city":"Changuinola","district":"Changuinola","facilityType":"Hospital regional","dependency":"CSS","latitude":9.433,"longitude":-82.516},
+  {"id":"0103012501","name":"Hospital de Chiriquí Grande","country":"Panamá","province":"Bocas del Toro","region":"Bocas del Toro","city":"Chiriquí Grande","district":"Chiriquí Grande","facilityType":"Hospital sectorial","dependency":"CSS","latitude":8.950,"longitude":-82.117},
+  {"id":"0104012501","name":"Hospital de Almirante","country":"Panamá","province":"Bocas del Toro","region":"Bocas del Toro","city":"Almirante","district":"Almirante","facilityType":"Hospital sectorial","dependency":"CSS","latitude":9.300,"longitude":-82.402},
+  {"id":"0201012501","name":"Hospital Rafael Estévez","country":"Panamá","province":"Coclé","region":"Coclé","city":"Aguadulce","district":"Aguadulce","facilityType":"Hospital sectorial","dependency":"CSS","latitude":8.242,"longitude":-80.546},
+  {"id":"0206010401","name":"Hospital Aquilino Tejeira","country":"Panamá","province":"Coclé","region":"Coclé","city":"Penonomé","district":"Penonomé","facilityType":"Hospital regional","dependency":"MINSA","latitude":8.517,"longitude":-80.357},
+  {"id":"0301020401","name":"Hospital Manuel Amador Guerrero","country":"Panamá","province":"Colón","region":"Colón","city":"Colón","district":"Colón","facilityType":"Hospital regional","dependency":"CSS","latitude":9.359,"longitude":-79.901},
+  {"id":"0402012501","name":"Hospital Dionisio Arrocha","country":"Panamá","province":"Chiriquí","region":"Chiriquí","city":"Puerto Armuelles","district":"Barú","facilityType":"Hospital sectorial","dependency":"CSS","latitude":8.283,"longitude":-82.864},
+  {"id":"0406010401","name":"Hospital José Domingo de Obaldía","country":"Panamá","province":"Chiriquí","region":"Chiriquí","city":"San Pablo Viejo","district":"David","facilityType":"Hospital regional","dependency":"Patronato","latitude":8.430,"longitude":-82.457},
+  {"id":"0406100401","name":"Hospital Regional Dr. Rafael Hernández","country":"Panamá","province":"Chiriquí","region":"Chiriquí","city":"San Pablo Viejo","district":"David","facilityType":"Hospital regional","dependency":"CSS","latitude":8.430,"longitude":-82.457},
+  {"id":"0411040501","name":"Hospital General Oriente Chiricano Dr. Francisco Pérez","country":"Panamá","province":"Ngäbe-Buglé","region":"Ngäbe-Buglé","city":"San Félix","district":"San Félix","facilityType":"Hospital de área","dependency":"MINSA","latitude":8.292,"longitude":-81.868},
+  {"id":"0501010401","name":"Hospital San José de La Palma","country":"Panamá","province":"Darién","region":"Darién","city":"La Palma","district":"Chepigana","facilityType":"Hospital regional","dependency":"MINSA","latitude":8.401,"longitude":-78.140},
+  {"id":"0502010501","name":"Hospital El Real","country":"Panamá","province":"Darién","region":"Darién","city":"El Real","district":"Pinogana","facilityType":"Hospital de área","dependency":"MINSA","latitude":8.120,"longitude":-77.728},
+  {"id":"0502070501","name":"Hospital Yaviza (Manuel Nieto)","country":"Panamá","province":"Darién","region":"Darién","city":"Yaviza","district":"Pinogana","facilityType":"Hospital de área","dependency":"MINSA","latitude":8.158,"longitude":-77.689},
+  {"id":"0601010401","name":"Hospital Cecilio Castillero","country":"Panamá","province":"Herrera","region":"Herrera","city":"Chitré","district":"Chitré","facilityType":"Hospital regional","dependency":"MINSA","latitude":7.966,"longitude":-80.429},
+  {"id":"0601040401","name":"Hospital Gustavo Nelson Collado","country":"Panamá","province":"Herrera","region":"Herrera","city":"Llano Bonito","district":"Chitré","facilityType":"Hospital regional","dependency":"CSS","latitude":7.966,"longitude":-80.429},
+  {"id":"0604010501","name":"Hospital Sergio Núñez","country":"Panamá","province":"Herrera","region":"Herrera","city":"Ocú","district":"Ocú","facilityType":"Hospital de área","dependency":"MINSA","latitude":7.941,"longitude":-80.780},
+  {"id":"0702010401","name":"Hospital Joaquín P. Franco S.","country":"Panamá","province":"Los Santos","region":"Los Santos","city":"Las Tablas","district":"Las Tablas","facilityType":"Hospital regional","dependency":"MINSA","latitude":7.765,"longitude":-80.275},
+  {"id":"0703150401","name":"Hospital Regional de Azuero Anita Moreno","country":"Panamá","province":"Los Santos","region":"Los Santos","city":"Santa Ana","district":"Los Santos","facilityType":"Hospital regional","dependency":"MINSA","latitude":7.944,"longitude":-80.263},
+  {"id":"0707010501","name":"Hospital Rural de Tonosí","country":"Panamá","province":"Los Santos","region":"Los Santos","city":"Tonosí","district":"Tonosí","facilityType":"Hospital de área","dependency":"MINSA","latitude":7.407,"longitude":-80.444},
+  {"id":"0805010401","name":"Hospital Regional de Chepo","country":"Panamá","province":"Panamá","region":"Panamá Este","city":"Chepo","district":"Chepo","facilityType":"Hospital regional","dependency":"CSS","latitude":9.170,"longitude":-79.096},
+  {"id":"0808040201","name":"Hospital Santo Tomás","country":"Panamá","province":"Panamá","region":"Panamá Metro","city":"Ciudad de Panamá","district":"Panamá","facilityType":"Hospital nacional","dependency":"Patronato","latitude":8.970,"longitude":-79.536},
+  {"id":"0808040202","name":"Hospital del Niño","country":"Panamá","province":"Panamá","region":"Panamá Metro","city":"Ciudad de Panamá","district":"Panamá","facilityType":"Hospital nacional","dependency":"Patronato","latitude":8.970,"longitude":-79.536},
+  {"id":"0808070201","name":"Hospital Dr. Arnulfo A. Madrid","country":"Panamá","province":"Panamá","region":"Panamá Metro","city":"Ciudad de Panamá","district":"Panamá","facilityType":"Hospital nacional","dependency":"CSS","latitude":8.981,"longitude":-79.520},
+  {"id":"0808080201","name":"Hospital de Especialidades Pediátricas Omar Torrijos Herrera","country":"Panamá","province":"Panamá","region":"Panamá Metro","city":"Ciudad de Panamá","district":"Panamá","facilityType":"Hospital nacional","dependency":"CSS","latitude":9.014,"longitude":-79.508},
+  {"id":"0808140201","name":"Hospital Oncológico","country":"Panamá","province":"Panamá","region":"Panamá Metro","city":"Ciudad de Panamá","district":"Panamá","facilityType":"Hospital nacional","dependency":"Patronato","latitude":8.949,"longitude":-79.548},
+  {"id":"0808190401","name":"Hospital Regional Irma Tzanetatos","country":"Panamá","province":"Panamá","region":"Panamá Metro","city":"24 de Diciembre","district":"Panamá","facilityType":"Hospital regional","dependency":"CSS","latitude":9.117,"longitude":-79.312},
+  {"id":"0810030402","name":"Hospital San Judas Tadeo (Dra. Susana Jones Cano)","country":"Panamá","province":"Panamá","region":"San Miguelito","city":"La Pulida","district":"San Miguelito","facilityType":"Hospital regional","dependency":"CSS","latitude":9.046,"longitude":-79.496},
+  {"id":"0810050401","name":"Hospital San Miguel Arcángel","country":"Panamá","province":"Panamá","region":"San Miguelito","city":"El Bosque","district":"San Miguelito","facilityType":"Hospital regional","dependency":"MINSA","latitude":9.043,"longitude":-79.506},
+  {"id":"0901050401","name":"Hospital Santiago Luis Chicho Fábrega","country":"Panamá","province":"Veraguas","region":"Veraguas","city":"San Antonio","district":"Atalaya","facilityType":"Hospital regional","dependency":"MINSA","latitude":8.107,"longitude":-80.985},
+  {"id":"0903010501","name":"Hospital Francisco Javier de Cañazas","country":"Panamá","province":"Veraguas","region":"Veraguas","city":"Cañazas","district":"Cañazas","facilityType":"Hospital de área","dependency":"MINSA","latitude":8.322,"longitude":-81.210},
+  {"id":"0911012501","name":"Hospital Dr. Ezequiel Abadía","country":"Panamá","province":"Veraguas","region":"Veraguas","city":"Soná","district":"Soná","facilityType":"Hospital sectorial","dependency":"CSS","latitude":8.013,"longitude":-81.326},
+  {"id":"1001020401","name":"Hospital Marvel Iglesias (Ailigandí)","country":"Panamá","province":"Guna Yala","region":"Guna Yala","city":"Ailigandí","district":"Guna Yala","facilityType":"Hospital regional","dependency":"MINSA","latitude":9.233,"longitude":-78.029},
+  {"id":"1001040501","name":"Hospital Mulatupu Sarandí (Inabaguinya)","country":"Panamá","province":"Guna Yala","region":"Guna Yala","city":"Sasardí Nuevo","district":"Guna Yala","facilityType":"Hospital de área","dependency":"MINSA","latitude":8.966,"longitude":-77.787},
+  {"id":"1301050302","name":"Hospital Hogar de la Esperanza","country":"Panamá","province":"Panamá Oeste","region":"Panamá Metro","city":"Veracruz","district":"Arraiján","facilityType":"Hospital crónico","dependency":"CSS","latitude":8.886,"longitude":-79.618},
+  {"id":"1307160401","name":"Hospital Nicolás A. Solano","country":"Panamá","province":"Panamá Oeste","region":"Panamá Oeste","city":"Playa Leona","district":"La Chorrera","facilityType":"Hospital regional","dependency":"MINSA","latitude":8.881,"longitude":-79.783}
 ]

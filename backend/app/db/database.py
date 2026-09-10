@@ -6,7 +6,10 @@ import sqlite3
 
 SCHEMA = '''
 CREATE TABLE IF NOT EXISTS hospitals (
- id TEXT PRIMARY KEY, name TEXT NOT NULL, region TEXT NOT NULL, city TEXT NOT NULL DEFAULT ''
+ id TEXT PRIMARY KEY, name TEXT NOT NULL, region TEXT NOT NULL, city TEXT NOT NULL DEFAULT '',
+ country TEXT NOT NULL DEFAULT 'Panamá', province TEXT NOT NULL DEFAULT '', district TEXT NOT NULL DEFAULT '',
+ facility_type TEXT NOT NULL DEFAULT 'Hospital', dependency TEXT NOT NULL DEFAULT '',
+ latitude REAL, longitude REAL, source TEXT NOT NULL DEFAULT 'Catálogo local', source_year INTEGER
 );
 CREATE TABLE IF NOT EXISTS visits (
  id TEXT PRIMARY KEY, hospital_id TEXT NOT NULL REFERENCES hospitals(id),
@@ -48,6 +51,14 @@ CREATE TABLE IF NOT EXISTS audit_events (
 );
 '''
 
+LEGACY_HOSPITALS = [
+    ('HOSP-001', 'Hospital Santo Tomás', 'Panamá Metro', 'Ciudad de Panamá'),
+    ('HOSP-002', 'Hospital Nacional', 'Panamá Metro', 'Ciudad de Panamá'),
+    ('HOSP-003', 'Hospital Paitilla', 'Panamá Metro', 'Ciudad de Panamá'),
+    ('HOSP-004', 'Hospital San Fernando', 'Panamá Metro', 'Ciudad de Panamá'),
+    ('HOSP-005', 'Hospital Punta Pacífica', 'Panamá Metro', 'Ciudad de Panamá'),
+]
+
 
 def connect():
     target = Path(os.environ.get('APP_DATABASE_PATH', Path(__file__).resolve().parents[2] / 'data' / 'inventory.sqlite3'))
@@ -71,18 +82,32 @@ def connect():
     db.execute('CREATE INDEX IF NOT EXISTS visits_collaborator ON visits(collaborator_id)')
     for table, additions in {
         'observations': {'detected_language': "TEXT DEFAULT 'other'", 'analysis_json': 'TEXT'},
-        'hospitals': {'country': "TEXT DEFAULT ''", 'verification_status': "TEXT DEFAULT 'Reported'"},
+        'hospitals': {
+            'country': "TEXT DEFAULT ''", 'verification_status': "TEXT DEFAULT 'Reported'",
+            'province': "TEXT NOT NULL DEFAULT ''", 'district': "TEXT NOT NULL DEFAULT ''",
+            'facility_type': "TEXT NOT NULL DEFAULT 'Hospital'", 'dependency': "TEXT NOT NULL DEFAULT ''",
+            'latitude': 'REAL', 'longitude': 'REAL', 'source': "TEXT NOT NULL DEFAULT 'Catálogo local'",
+            'source_year': 'INTEGER',
+        },
     }.items():
         columns = {r['name'] for r in db.execute(f'PRAGMA table_info({table})')}
         for column, declaration in additions.items():
             if column not in columns:
                 db.execute(f'ALTER TABLE {table} ADD COLUMN {column} {declaration}')
     catalog = json.loads(Path(__file__).with_name('hospitals.json').read_text(encoding='utf-8'))
-    db.executemany('INSERT OR IGNORE INTO hospitals(id,name,region,city) VALUES (:id,:name,:region,:city)', catalog)
-    # Complete geography only for the known seed catalog, never infer country
-    # from a user's note or overwrite a country already supplied by the user.
-    db.executemany("UPDATE hospitals SET country=:country WHERE id=:id AND (country IS NULL OR trim(country)='')",
-                   [h for h in catalog if h.get('country')])
+    for hospital in catalog:
+        hospital['source'] = 'MINSA — Listado de instalaciones de salud 2024'
+        hospital['source_year'] = 2024
+    db.executemany('''
+        INSERT INTO hospitals (id,name,region,city,country,province,district,facility_type,dependency,latitude,longitude,source,source_year)
+        VALUES (:id,:name,:region,:city,:country,:province,:district,:facilityType,:dependency,:latitude,:longitude,:source,:source_year)
+        ON CONFLICT(id) DO UPDATE SET
+          name=excluded.name, region=excluded.region, city=excluded.city, country=excluded.country,
+          province=excluded.province, district=excluded.district, facility_type=excluded.facility_type,
+          dependency=excluded.dependency, latitude=excluded.latitude, longitude=excluded.longitude,
+          source=excluded.source, source_year=excluded.source_year
+    ''', catalog)
+    db.executemany('INSERT OR IGNORE INTO hospitals(id,name,region,city) VALUES (?,?,?,?)', LEGACY_HOSPITALS)
     db.commit()
     return db
 

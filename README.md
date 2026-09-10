@@ -155,6 +155,28 @@ antigua de FastAPI ejecutándose: detenerla y usar el comando con `--reload`
 indicado arriba. La API actual debe mostrar `/visits` y `/dashboard` en `/docs`.
 El frontend conserva el borrador ante errores y muestra el motivo del backend.
 
+### Mapa geográfico y catálogo de Panamá
+
+Abrir **Mapa** en la navegación o `/map` para recorrer la base instalada por
+**País → Provincia → Ciudad → Hospital**. El mapa permite filtrar, abrir la
+vista consolidada de cada hospital y comenzar una visita con ese hospital ya
+seleccionado. Las visitas y sus observaciones permanecen asociadas al código
+del hospital en SQLite.
+
+El catálogo inicial contiene 36 hospitales del *Listado de instalaciones de
+salud, año 2024* de MINSA. Incluye hospital, provincia, distrito, localidad,
+tipo de instalación, dependencia y el identificador oficial. Las coordenadas
+son aproximadas a la localidad y sirven para la visualización; no sustituyen
+una dirección o coordenada validada de la instalación. La fuente, su alcance y
+fecha de actualización deben revisarse antes de usar el catálogo como padrón
+oficial definitivo: [MINSA — Instalaciones de salud](https://www.minsa.gob.pa/informacion-salud/instalaciones).
+
+El modelo de SQLite permite extender el catálogo a Latinoamérica sin cambiar
+la relación visitas → observaciones → equipos. Para cada país se necesita una
+fuente institucional de establecimientos, normalización de país/provincia/ciudad,
+identificadores estables y geocodificación validada. Después se puede cargar
+el catálogo con el mismo esquema y activar el país en el mapa.
+
 ### Pruebas automáticas
 
 Frontend: `npm.cmd test --prefix frontend`, `npm.cmd run build --prefix frontend`

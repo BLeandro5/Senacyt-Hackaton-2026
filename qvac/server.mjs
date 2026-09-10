@@ -22,6 +22,40 @@ function send(res, status, body) {
   res.end(JSON.stringify(body))
 }
 
+// Some local models finish JSON and then emit extra tokens until their limit.
+// Recover only a complete object; incomplete output remains an error.
+function firstJsonObject(text) {
+  let start = -1
+  let depth = 0
+  let quoted = false
+  let escaped = false
+  for (let index = 0; index < text.length; index += 1) {
+    const character = text[index]
+    if (quoted) {
+      if (escaped) escaped = false
+      else if (character === '\\') escaped = true
+      else if (character === '"') quoted = false
+      continue
+    }
+    if (character === '"') { quoted = true; continue }
+    if (character === '{') {
+      if (start === -1) start = index
+      depth += 1
+    } else if (character === '}' && start !== -1) {
+      depth -= 1
+      if (depth === 0) {
+        const candidate = text.slice(start, index + 1)
+        try {
+          const value = JSON.parse(candidate)
+          if (value && typeof value === 'object' && !Array.isArray(value)) return candidate
+        } catch { /* Keep scanning in case this object was malformed. */ }
+        start = -1
+      }
+    }
+  }
+  return null
+}
+
 const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && req.url === '/health') {
     return send(res, 200, { status: busy ? 'busy' : 'ready', model: modelName, quantization, sdk_model: descriptor.name, sha256: descriptor.sha256Checksum, model_load_ms: modelLoadMs })
@@ -57,11 +91,12 @@ const server = http.createServer(async (req, res) => {
       if (event.type === 'contentDelta' && event.text && ttft === null) ttft = performance.now() - begin
     }
     const final = await run.final
-    if (final.stopReason === 'length' || final.stopReason === 'cancelled') {
+    const recoveredJson = final.stopReason === 'length' ? firstJsonObject(final.contentText || '') : null
+    if ((final.stopReason === 'length' || final.stopReason === 'cancelled') && !recoveredJson) {
       return send(res, 502, { error: 'Incomplete model output; shorten the observation' })
     }
     send(res, 200, {
-      output_text: final.contentText,
+      output_text: recoveredJson || final.contentText,
       metrics: {
         model: modelName, quantization, sdk_model: descriptor.name,
         sha256: descriptor.sha256Checksum, reasoning_budget: 0, model_load_ms: modelLoadMs,

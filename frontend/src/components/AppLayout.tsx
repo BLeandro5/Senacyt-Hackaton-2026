@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate, useRouteError } from 'react-router-dom'
-import { Building2, ClipboardList, Cloud, CloudOff, LogOut, Plus } from 'lucide-react'
+import { Building2, ClipboardList, Cloud, CloudOff, LogOut, Map, Plus } from 'lucide-react'
 import { readStored, type Capture, type CurrentVisit, type Decision, type RecordDraft } from '../data/visitStore'
 
 export function AppLayout() {
@@ -36,6 +36,7 @@ export function AppLayout() {
         <nav className="desktop-nav" aria-label="Navegación principal">
           <NavLink to="/home"><Building2 size={18} />Inicio</NavLink>
           <NavLink to="/visits" end><ClipboardList size={18} />Mis visitas</NavLink>
+          <NavLink to="/map"><Map size={18} />Mapa</NavLink>
         </nav>
         <div className="flex items-center gap-3">
           <span role="status" aria-label={online ? 'En línea' : 'Sin conexión'} className={`connection ${online ? 'online' : 'offline'}`}>{online ? <Cloud size={15} /> : <CloudOff size={15} />}<span>{online ? 'En línea' : 'Sin conexión'}</span></span>
@@ -50,6 +51,7 @@ export function AppLayout() {
       <NavLink to="/home"><Building2 size={21} />Inicio</NavLink>
       <NavLink to="/visits/new"><Plus size={23} />Nueva visita</NavLink>
       <NavLink to="/visits" end><ClipboardList size={21} />Mis visitas</NavLink>
+      <NavLink to="/map"><Map size={21} />Mapa</NavLink>
     </nav>
   </div>
 }

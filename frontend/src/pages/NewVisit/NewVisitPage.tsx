@@ -1,11 +1,12 @@
 import { readStored, writeStored, resumePath, clearObservation, type CurrentVisit } from '../../data/visitStore'
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Building2, Check, ChevronRight, CircleCheck, Clock3, MapPin, Search, Sparkles } from 'lucide-react'
 
 import { hospitals as cachedHospitals } from '../../data/hospitals'
 import { storageRequest } from '../../data/storageApi'
 import type { CurrentUser } from '../../data/userApi'
+import type { Hospital } from '../../data/hospitalOverview'
 
 const areas = [
   'Radiología',
@@ -19,18 +20,19 @@ const areas = [
 
 function NewVisitPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   const current = readStored<CurrentVisit | null>('current-visit', null)
   const [error, setError] = useState('')
-  const [hospitals, setHospitals] = useState(cachedHospitals)
+  const [hospitals, setHospitals] = useState<Hospital[]>(cachedHospitals as Hospital[])
   useEffect(() => {
     let active = true
-    storageRequest<typeof cachedHospitals>('/hospitals').then(data => { if (active) setHospitals(data) })
+    storageRequest<Hospital[]>('/hospitals').then(data => { if (active) setHospitals(data) })
       .catch(() => { if (active) setError('No se pudo cargar el catálogo de SQLite. Mostrando hospitales locales; comprueba el backend antes de guardar.') })
     return () => { active = false }
   }, [])
   const [search, setSearch] = useState('')
-  const [selectedHospitalId, setSelectedHospitalId] = useState('')
+  const [selectedHospitalId, setSelectedHospitalId] = useState(() => searchParams.get('hospital') || '')
   const [area, setArea] = useState('')
 
   const filteredHospitals = useMemo(() => {
@@ -65,6 +67,9 @@ function NewVisitPage() {
       hospitalId: selectedHospital.id,
       hospitalName: selectedHospital.name,
       region: selectedHospital.region,
+      country: selectedHospital.country,
+      province: selectedHospital.province,
+      city: selectedHospital.city,
       area: area || '',
       startedAt: new Date().toISOString(),
       collaboratorId: user?.role === 'field' ? user.id : undefined,

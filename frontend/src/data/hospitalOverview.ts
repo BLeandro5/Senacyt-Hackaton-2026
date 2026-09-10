@@ -1,4 +1,8 @@
-export type Hospital = { id: string; name: string; region: string; city: string }
+export type Hospital = {
+  id: string; name: string; region: string; city: string; country: string; province: string
+  district: string; facility_type: string; dependency: string; latitude: number | null; longitude: number | null
+  source: string; source_year: number | null
+}
 export type HospitalEquipment = {
   id: string; type: string; brand: string; model: string; estimatedAge: string
   status: string; configuration: string; observationId: string; visitId: string

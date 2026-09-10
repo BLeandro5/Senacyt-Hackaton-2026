@@ -1,6 +1,8 @@
 import io
 import unittest
 import wave
+import base64
+from types import SimpleNamespace
 from unittest.mock import patch
 from fastapi import HTTPException
 from app.services.local_media import transcribe, recognize_photo, validate_model
@@ -9,6 +11,27 @@ from app.schemas.equipment import EquipmentExtracted
 from app.schemas.follow_up import FollowUpCandidate
 
 class LocalMediaTests(unittest.TestCase):
+    def test_ocr_uses_installed_languages_and_selected_layout(self):
+        photo = 'data:image/png;base64,' + base64.b64encode(b'\x89PNG\r\n\x1a\nfixture').decode()
+        with patch('app.services.local_media.ocr_executable', return_value='tesseract'), patch('app.services.local_media.prepare_photo_for_ocr'), patch(
+            'app.services.local_media.subprocess.run', side_effect=[
+                SimpleNamespace(returncode=0, stdout='Languages:\neng\nspa\n'),
+                SimpleNamespace(returncode=0, stdout='Philips\nModel: ABC123'),
+            ]) as run, patch.dict('os.environ', {'OCR_LANGUAGES': ''}):
+            result = recognize_photo(photo, 'block')
+        self.assertEqual(result['text'], 'Philips\nModel: ABC123')
+        self.assertEqual(result['languages'], ['spa', 'eng'])
+        self.assertTrue(result['requiresConfirmation'])
+        command = run.call_args.args[0]
+        self.assertEqual(command[command.index('--psm') + 1], '6')
+
+    def test_ocr_missing_language_does_not_run_recognition(self):
+        with patch('app.services.local_media.ocr_executable', return_value='tesseract'), patch(
+            'app.services.local_media.subprocess.run', return_value=SimpleNamespace(returncode=0, stdout='Languages:\neng\n')) as run, patch.dict('os.environ', {'OCR_LANGUAGES': 'spa'}):
+            with self.assertRaises(HTTPException) as error: recognize_photo('data:image/png;base64,AAA=')
+        self.assertEqual(error.exception.status_code, 503)
+        self.assertEqual(run.call_count, 1)
+
     def test_invalid_audio_never_reaches_model(self):
         with self.assertRaises(HTTPException) as error: transcribe(b'not audio')
         self.assertEqual(error.exception.status_code,415)
@@ -18,7 +41,7 @@ class LocalMediaTests(unittest.TestCase):
         with self.assertRaises(HTTPException) as error: transcribe(audio.getvalue())
         self.assertEqual(error.exception.status_code,415)
     def test_missing_ocr_is_explicit(self):
-        with patch('app.services.local_media.shutil.which',return_value=None):
+        with patch('app.services.local_media.ocr_executable',return_value=None):
             with self.assertRaises(HTTPException) as error: recognize_photo('data:image/png;base64,AAA=')
         self.assertEqual(error.exception.status_code,503)
         self.assertFalse(validate_model('/nonexistent/local/model'))

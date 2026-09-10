@@ -1,0 +1,40 @@
+﻿{
+    "captured_at":  "2026-09-10T19:07:17.7484070Z",
+    "operating_system":  {
+                             "Caption":  "Microsoft Windows 11 Home",
+                             "Version":  "10.0.26200",
+                             "OSArchitecture":  "64-bit"
+                         },
+    "computer":  {
+                     "manufacturer":  "LENOVO",
+                     "model":  "82Y3",
+                     "memory_bytes":  34070388736
+                 },
+    "cpu":  {
+                "name":  "13th Gen Intel(R) Core(TM) i9-13900H",
+                "cores":  14,
+                "logical_processors":  20
+            },
+    "graphics":  [
+                     {
+                         "name":  "NVIDIA GeForce RTX 4070 Laptop GPU",
+                         "memory_bytes":  4293918720,
+                         "driver_version":  "32.0.16.1062"
+                     },
+                     {
+                         "name":  "Intel(R) Iris(R) Xe Graphics",
+                         "memory_bytes":  134217728,
+                         "driver_version":  "31.0.101.5333"
+                     }
+                 ],
+    "node":  "v24.20.0",
+    "python":  "Python 3.14.7",
+    "qvac_health":  {
+                        "status":  "ready",
+                        "model":  "MedPsy-1.7B",
+                        "quantization":  "Q4_K_M (imatrix)",
+                        "sdk_model":  "HEALTHCARE_1_7B_MEDICAL_Q4_K_M",
+                        "sha256":  "41ee947d9cce72ec657577219fd1798fabeabf0d832217fe23c9d6d3d18d5880",
+                        "model_load_ms":  3122.3583
+                    }
+}

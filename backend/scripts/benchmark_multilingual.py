@@ -34,14 +34,18 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--limit',type=int,default=len(CASES))
     args=parser.parse_args()
+    health=httpx.get('http://127.0.0.1:11500/health',timeout=10).json()
+    if health.get('model')!='MedPsy-1.7B': raise RuntimeError('Start the local MedPsy service with npm.cmd run qvac:start.')
     results=[]
     for index,(language,note,expected) in enumerate(CASES[:max(1,args.limit)]):
         metrics={}; started=time.perf_counter()
         def real_generate(prompt):
+            row['prompt']=prompt
             response=httpx.post('http://127.0.0.1:11500/generate',json={'prompt':prompt},timeout=180)
             response.raise_for_status()
             data=response.json(); metrics.update(data.get('metrics') or {})
             if metrics.get('model')!='MedPsy-1.7B': raise ValueError('Unexpected model')
+            row['output_text']=data['output_text']
             return data['output_text']
         row={'case':index+1,'language':language,'input':note,'expected':expected}
         try:
@@ -59,7 +63,7 @@ def main():
     summary={language:{'passed':sum(r['passed'] for r in results if r['language']==language),'total':sum(r['language']==language for r in results)} for language in ['es','en','pt']}
     target=Path(__file__).resolve().parents[2]/'benchmarks/results/multilingual.json'
     target.parent.mkdir(parents=True,exist_ok=True)
-    target.write_text(json.dumps({'scope':'Synthetic inventory labels; not clinical validation','summary':summary,'results':results},ensure_ascii=False,indent=2),encoding='utf-8')
+    target.write_text(json.dumps({'created_at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'runner':'backend/scripts/benchmark_multilingual.py','scope':'Synthetic inventory labels; count, modality, manufacturer, model and age. Not clinical validation.','qvac_health':health,'summary':summary,'results':results},ensure_ascii=False,indent=2),encoding='utf-8')
     print(target)
     return 0 if all(r['passed'] for r in results) else 1
 

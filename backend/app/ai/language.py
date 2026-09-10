@@ -6,7 +6,7 @@ import re
 from app.ai.age_grounding import normalize
 
 MARKERS = {
-    'es': {'hay','veo','estoy','tiene','tienen','dos','siete','ocho','nueve','una','unos','las','los','del','sin','resonador','resonadores'},
+    'es': {'hay','veo','estoy','tiene','tienen','un','dos','siete','ocho','nueve','una','unos','las','los','del','sin','modelo','resonador','resonadores'},
     'en': {'there','the','an','one','two','three','eight','years','year','old','with','from','manufacturer','equipment','system','systems','unknown'},
     'pt': {'ha','um','uma','dois','duas','oito','nao','com','sem','ressonancia','equipamentos','desconhecido','desconhecida','salao'},
 }

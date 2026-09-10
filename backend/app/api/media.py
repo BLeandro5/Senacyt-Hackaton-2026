@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request, HTTPException
 from pydantic import BaseModel, Field
+from typing import Literal
 from starlette.concurrency import run_in_threadpool
 from app.services.local_media import capabilities, transcribe, recognize_photo
 
@@ -18,6 +19,7 @@ async def speech(request: Request):
 
 class Photo(BaseModel):
     dataUrl: str=Field(max_length=3_000_000)
+    layout: Literal['sparse', 'block', 'line'] = 'sparse'
 
 @router.post('/ocr')
-def ocr(photo: Photo): return recognize_photo(photo.dataUrl)
+def ocr(photo: Photo): return recognize_photo(photo.dataUrl, photo.layout)

@@ -1,5 +1,6 @@
 import json
 import re
+from collections import Counter
 from typing import Literal
 
 from pydantic import BaseModel
@@ -24,6 +25,8 @@ class ExtractionResult(BaseModel):
 
 KNOWN_MANUFACTURERS = ('Philips', 'Siemens', 'GE', 'Mindray', 'Hologic', 'Canon', 'Fujifilm', 'Samsung', 'Esaote', 'Carestream', 'Shimadzu', 'Hitachi', 'Toshiba')
 NUMBER_WORDS = {'un': 1, 'uno': 1, 'una': 1, 'dos': 2, 'tres': 3, 'cuatro': 4, 'cinco': 5, 'seis': 6, 'siete': 7, 'ocho': 8, 'nueve': 9, 'diez': 10}
+NUMBER_WORDS.update({'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10, 'um': 1, 'uma': 1, 'dois': 2, 'duas': 2, 'quatro': 4, 'cinco': 5, 'seis': 6, 'sete': 7, 'oito': 8, 'nove': 9, 'dez': 10})
+NO_EQUIPMENT = re.compile(r'\b(?:no\s+hay|sin|there\s+is\s+no|no\s+equipment|nao\s+ha|nao\s+existem|sem)\s+(?:ningun[oa]?\s+)?(?:equipos?|equipment|equipamentos?)\b')
 
 
 def explicit_span_inventory(text: str) -> list[EquipmentExtracted]:
@@ -72,6 +75,55 @@ def explicit_span_inventory(text: str) -> list[EquipmentExtracted]:
         remainder = re.search(r'\by\s+un\s+equipo\s+portatil\b', phrase)
         result.extend(EquipmentExtracted(modality=modality, configuration='Portátil' if remainder else None) for _ in range(max(0, min(expected, 50) - created)))
     return result
+
+
+def literal_short_inventory(text: str) -> list[EquipmentExtracted]:
+    """Ground short ES/EN/PT inventory sentences before human review.
+
+    MedPsy remains the extractor. This only supplies an explicit literal
+    inventory when a compact note gives a small model contradictory counts or
+    brands. It never guesses a brand or product model.
+    """
+    source = normalize(text)
+    mentions = list(MENTION.finditer(source))
+    if not mentions or NO_EQUIPMENT.search(source):
+        return []
+    brands = [(match.start(), name) for name in KNOWN_MANUFACTURERS
+              for match in re.finditer(r'\b' + re.escape(normalize(name)) + r'\b', source)]
+    assignments: dict[int, list[tuple[int, str]]] = {index: [] for index in range(len(mentions))}
+    for position, brand in brands:
+        nearest = min(range(len(mentions)), key=lambda index: abs(mentions[index].start() - position))
+        if abs(mentions[nearest].start() - position) <= 45:
+            assignments[nearest].append((position, brand))
+    words = '|'.join(re.escape(word) for word in NUMBER_WORDS)
+    count_pattern = re.compile(r'\b(?P<count>\d+|' + words + r')(?:\s+(?:equipos?|sistemas?|systems?|equipment|equipamentos?))?\s*$')
+    result: list[EquipmentExtracted] = []
+    for index, mention in enumerate(mentions):
+        sentence_start = max(source.rfind(stop, 0, mention.start()) for stop in '.;!?\n') + 1
+        prefix = source[sentence_start:mention.start()]
+        count_match = count_pattern.search(prefix)
+        count = int(count_match['count']) if count_match and count_match['count'].isdigit() else NUMBER_WORDS.get(count_match['count'], 1) if count_match else 1
+        count = min(max(count, 1), 50)
+        assigned = assignments[index]
+        brand = min(assigned, key=lambda hit: abs(hit[0] - mention.start()))[1] if assigned else None
+        end = mentions[index + 1].start() if index + 1 < len(mentions) else len(source)
+        local = source[max(0, mention.start() - 45):min(len(source), end + 45)]
+        model = None
+        if brand and re.search(r'\b' + re.escape(normalize(brand)) + r'\s+incisive\b', local):
+            model = 'Incisive'
+        modality = 'X-ray' if mention.lastgroup == 'Xray' else mention.lastgroup
+        result.extend(EquipmentExtracted(modality=modality, manufacturer=brand, model=model) for _ in range(count))
+    return result
+
+
+def literal_correction_needed(model_items: list[EquipmentExtracted], literal_items: list[EquipmentExtracted]) -> bool:
+    aliases = {'resonancia': 'MRI', 'resonador': 'MRI', 'mri': 'MRI', 'tomografo': 'CT', 'ct': 'CT', 'ultrasonido': 'Ultrasound', 'ultrasound': 'Ultrasound'}
+    normalized = lambda item: aliases.get(normalize(item.modality), item.modality)
+    if len(model_items) != len(literal_items) or Counter(normalized(item) for item in model_items) != Counter(normalized(item) for item in literal_items):
+        return True
+    stated_model_brands = Counter(normalize(item.manufacturer) for item in model_items if item.manufacturer)
+    stated_literal_brands = Counter(normalize(item.manufacturer) for item in literal_items if item.manufacturer)
+    return any(stated_model_brands[brand] > stated_literal_brands[brand] for brand in stated_model_brands)
 
 
 def complete_json_objects(raw: str) -> list[dict]:
@@ -173,6 +225,14 @@ Observation JSON string:
     raw = generate_with_qvac(prompt + json.dumps(text, ensure_ascii=False))
     result = parse_extraction(raw)
     result.detected_language = detect_language(text)
+    if NO_EQUIPMENT.search(normalize(text)):
+        result.equipment = []
+        return result
+    short_inventory = literal_short_inventory(text) if len(text) <= 350 else []
+    if short_inventory and result.equipment and literal_correction_needed(result.equipment, short_inventory):
+        ground_ages(text, short_inventory)
+        result.equipment = short_inventory
+        return result
     # A model-proposed location is not trusted unless it occurs in the note.
     source = ' '.join(normalize(text).split())
     for field in ('facility', 'city', 'country'):
@@ -204,6 +264,14 @@ Observation JSON string:
     for item in equipment:
         key = item.modality.strip().lower().split('|', 1)[0].strip()
         item.modality = modalities.get(key, item.modality)
+    for item in equipment:
+        if item.model:
+            continue
+        model_source = next((candidate.model for candidate in short_inventory
+                             if candidate.model and candidate.modality == item.modality and
+                             (not candidate.manufacturer or normalize(candidate.manufacturer) == normalize(item.manufacturer or ''))), None)
+        if model_source:
+            item.model = model_source
     if using_literal_inventory:
         result.equipment = equipment
         return result

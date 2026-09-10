@@ -103,7 +103,7 @@ function CapturePage() {
 
     if (!file) return
 
-    if (!file.type.startsWith('image/')) { setError('Selecciona una imagen.'); return }
+    if (!['image/png', 'image/jpeg'].includes(file.type)) { setError('Selecciona una fotografía PNG o JPEG para leer su texto.'); return }
     if (file.size > 2 * 1024 * 1024) { setError('La foto debe pesar menos de 2 MB para guardarla en este dispositivo.'); return }
     const reader = new FileReader()
     reader.onload = () => { setPhotoName(file.name); setPhotoData(String(reader.result)); setError('') }
@@ -342,14 +342,14 @@ function CapturePage() {
 
             {error && <p role="alert" className="storage-error">{error}</p>}
             {photoData && <img src={photoData} alt="Fotografía adjunta" className="mt-5 max-h-48 rounded-xl" />}
-            {photoData && !isProcessing && <PhotoOcr dataUrl={photoData} onConfirm={text=>setObservation(current=>current ? current+'\n'+text : text)} />}
+            {photoData && !isProcessing && <PhotoOcr key={photoData} dataUrl={photoData} onConfirm={text=>setObservation(current=>current ? current+'\n'+text : text)} />}
             {/* FOTO OPCIONAL */}
             <section className="mt-5">
 
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/png,image/jpeg"
                 capture="environment"
                 onChange={handlePhoto}
                 className="hidden"

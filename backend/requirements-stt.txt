@@ -1,2 +1,4 @@
 # Optional local/offline speech recognition. Core text capture does not need this.
 vosk==0.3.45
+# Local preprocessing to correct EXIF orientation, normalize contrast, and enlarge label text.
+Pillow

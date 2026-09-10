@@ -1,19 +1,24 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Hospital } from '../data/hospitalOverview'
+import { panamaBoundary } from '../data/panamaBoundary'
 
 export default function HospitalMap({ hospitals }: { hospitals: Hospital[] }) {
   const container = useRef<HTMLDivElement>(null)
-  const [tileError, setTileError] = useState(false)
   useEffect(() => {
     if (!container.current) return
     const map = L.map(container.current, { scrollWheelZoom: false }).setView([8.6, -80], 7)
-    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    L.control.scale({ imperial: false }).addTo(map)
+    const country = L.geoJSON(panamaBoundary, {
+      interactive: false,
+      style: {
+        color: '#4f86c6',
+        weight: 2,
+        fillColor: '#b9dcff',
+        fillOpacity: 0.9,
+      },
     }).addTo(map)
-    tiles.on('tileerror', () => setTileError(true))
-    tiles.on('tileload', () => setTileError(false))
     const groups = new Map<string, Hospital[]>()
     for (const hospital of hospitals) {
       const { latitude: lat, longitude: lon } = hospital
@@ -51,14 +56,18 @@ export default function HospitalMap({ hospitals }: { hospitals: Hospital[] }) {
         title: group.map(h => h.name).join(', '),
       }).addTo(map).bindPopup(content, { maxWidth: 320, maxHeight: 260 })
     }
-    if (positions.length) map.fitBounds(L.latLngBounds(positions), { padding: [35, 35], maxZoom: 13 })
+    const countryBounds = country.getBounds()
+    if (countryBounds.isValid()) {
+      map.fitBounds(countryBounds, { padding: [35, 35], maxZoom: 8 })
+    } else if (positions.length) {
+      map.fitBounds(L.latLngBounds(positions), { padding: [35, 35], maxZoom: 13 })
+    }
     const observer = new ResizeObserver(() => map.invalidateSize())
     observer.observe(container.current)
     return () => { observer.disconnect(); map.remove() }
   }, [hospitals])
   return <div className="hospital-map-frame">
-    <p className="px-5 py-3 text-sm">Coordenadas del catálogo; algunas corresponden al centro de la ciudad. Los puntos agrupados permiten seleccionar cada hospital.</p>
-    {tileError && <p role="status" className="px-5 py-3 text-sm">No se pudo cargar la cartografía. Comprueba Internet; puedes seguir usando la lista de hospitales.</p>}
+    <p className="px-5 py-3 text-sm">Base geográfica de Panamá incluida localmente. Funciona sin red; algunas coordenadas corresponden al centro de la ciudad. Los puntos agrupados permiten seleccionar cada hospital.</p>
     <div ref={container} className="hospital-map" aria-label="Mapa geográfico de hospitales" />
   </div>
 }

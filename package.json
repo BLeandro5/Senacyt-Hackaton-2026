@@ -2,10 +2,13 @@
   "name": "senacyt-hackaton",
   "version": "1.0.0",
   "description": "",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "qvac:start": "node qvac/server.mjs",
     "qvac:download": "node qvac/download-model.mjs",
+    "qvac:benchmark": "backend\\.venv\\Scripts\\python.exe backend\\scripts\\benchmark_multilingual.py",
+    "qvac:hardware": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\capture-hardware.ps1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

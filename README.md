@@ -1,246 +1,360 @@
-# Senacyt-Hackaton-2026
+# Installed Base Intelligence
 
-La consulta general ahora está en **Inicio → Observaciones generales**, para todos los colaboradores: filtros por país y hospital, búsqueda por nota/equipo/colaborador y detalle de visita. El módulo supervisor está retirado de la interfaz; las referencias posteriores a sus pantallas son históricas. No se borraron los datos guardados.
+Aplicación local para transformar observaciones de campo sobre equipos hospitalarios en evidencia estructurada, revisable y útil para construir una vista de base instalada por hospital.
 
-## Prototipo local con MedPsy
+El flujo es completo: **capturar → extraer → revisar → comparar → guardar → visualizar → identificar oportunidades**. La extracción central usa MedPsy local con QVAC; SQLite conserva los registros finalizados y el usuario decide coincidencias o conflictos antes de consolidar activos.
 
-Flujo actual: captura → `POST /observations/analyze` → FastAPI → extractor →
-servicio local en `127.0.0.1:11500` → `@qvac/sdk` → MedPsy.
+> Esta herramienta organiza información de inventario. No diagnostica, no recomienda tratamiento, no certifica el estado clínico de un equipo y no sustituye una inspección técnica. Todo resultado de IA requiere revisión humana.
 
-Modelo oficial: [QVAC MedPsy-1.7B](https://huggingface.co/qvac/MedPsy-1.7B-GGUF),
-cuantización Q4_K_M con imatrix. En el SDK 0.19.0 su identificador es
-`HEALTHCARE_1_7B_MEDICAL_Q4_K_M`. MedPsy realiza toda la extracción de equipos
-del flujo principal: no hay fallback a MedGemma ni inferencia remota.
-El servicio verifica tamaño y SHA-256 de los pesos oficiales antes de cargar.
-La ficha declara inglés como idioma; la calidad en cada idioma debe medirse con
-nuestros casos. Para extracción usamos `reasoning_budget: 0`, temperatura
-0 y semilla 42. El SDK separa el razonamiento del texto final y Python valida
-el JSON; no usamos gramática JSON forzada, incompatible con el razonamiento
-en esta combinación de SDK y modelo. Esta configuración no reproduce los
-benchmarks médicos del autor. El razonamiento está desactivado para reducir la
-latencia de extracción; no se almacena razonamiento interno.
+## Contenido
 
-### Versión para pruebas de integración
+- [Qué resuelve](#qué-resuelve)
+- [Arquitectura local](#arquitectura-local)
+- [Requisitos](#requisitos)
+- [Instalación desde cero](#instalación-desde-cero)
+- [Ejecutar la aplicación](#ejecutar-la-aplicación)
+- [Tutorial de uso](#tutorial-de-uso)
+- [Funciones](#funciones)
+- [Voz y fotografías](#voz-y-fotografías)
+- [Datos, privacidad y red](#datos-privacidad-y-red)
+- [Pruebas y rendimiento](#pruebas-y-rendimiento)
+- [API local](#api-local)
+- [Solución de problemas](#solución-de-problemas)
+- [Entrega Track 02](#entrega-track-02)
 
-Consulta [TESTING.md](TESTING.md) para el flujo de prueba completo y
-[PHASE2_STATUS.md](PHASE2_STATUS.md) para el alcance y las limitaciones.
-La prueba `backend/scripts/smoke_system.py` usa MedPsy real y una SQLite temporal:
-registro/login, extracción, persistencia, corroboración, conflicto y analytics.
-No añade datos de ensayo al inventario habitual.
+## Qué resuelve
 
-La base instalada ahora separa **activos canónicos** de **evidencias**. Las
-coincidencias requieren decisión humana; una evidencia puede enviarse a revisión.
-El colaborador usa `/hospitals`, `/hospitals/:hospitalId` y
-`/review`, con datos de API/SQLite, confiabilidad explicable,
-historial, frescura y señales de renovación por edad >7 años.
-La captura rápida exige confirmar hospital. Las ubicaciones no mencionadas se
-descartan y los idiomas ES/EN/PT se detectan localmente de forma conservadora.
-Settings permite apariencia e idioma de sus textos; la traducción del resto de
-la interfaz sigue pendiente. Voz/STT local en español usa Vosk; la transcripción
-es editable y el audio no se guarda. OCR es opcional y requiere Tesseract instalado.
+Un colaborador de campo puede escribir o dictar una observación como:
 
-Integración actual y límites: [INTEGRATION_REPORT.md](INTEGRATION_REPORT.md).
-Dashboard `/dashboard`, geografía esquemática offline `/map`, detalle/auditoría
-`/equipment/:assetId` y consultas `/analytics` están en la navegación del colaborador.
-No existe un rol supervisor activo.
+```text
+Dos resonadores Siemens y un tomógrafo Philips de siete años.
+```
 
-### Ejecutar en Windows
+MedPsy propone una estructura con modalidad, fabricante, modelo, configuración, edad y condición solamente cuando esos datos aparecen en el texto. La persona revisa la evidencia, confirma una coincidencia o un equipo nuevo, y finaliza la visita. La aplicación actualiza las vistas por hospital, región, modalidad, antigüedad y oportunidad.
 
-Requisitos: Node.js 24, Python con las dependencias de `backend/requirements.txt`
-y los pesos MedPsy descargados. Instalar dependencias JS con
-`npm.cmd ci` en la raíz y `npm.cmd ci --prefix frontend`.
+La aplicación diferencia entre:
 
-Descargar una sola vez los pesos oficiales (~1,28 GB):
+- **Evidencia:** lo observado en una visita concreta, con su nota original y trazabilidad.
+- **Activo canónico:** equipo consolidado del hospital, vinculado a una o más evidencias tras una decisión humana.
+- **Confiabilidad:** cálculo determinista basado en completitud, revisión, frescura, corroboración y conflictos. No es una probabilidad generada por IA.
+
+## Arquitectura local
+
+```mermaid
+flowchart LR
+    A[Captura web React/Vite] --> B[FastAPI local]
+    B --> C[Extractor y validación]
+    C --> D[QVAC SDK local]
+    D --> E[MedPsy-1.7B Q4_K_M]
+    C --> F[SQLite local]
+    F --> G[Customer 360, dashboard y mapa]
+    H[Vosk opcional] --> A
+    I[Tesseract/Pillow opcional] --> A
+```
+
+El flujo principal de IA usa exclusivamente `@qvac/sdk` y el modelo oficial `HEALTHCARE_1_7B_MEDICAL_Q4_K_M` de MedPsy. QVAC escucha en `127.0.0.1:11500`; FastAPI se comunica con esa dirección local. No hay inferencia en la nube ni RAG implementado.
+
+| Componente | Puerto | Propósito |
+| --- | ---: | --- |
+| QVAC / MedPsy | 11500 | Inferencia local mediante `@qvac/sdk` |
+| FastAPI | 8000 | API, SQLite, extracción y validación |
+| Vite | 5173 | Interfaz web local |
+| SQLite | archivo | `backend/data/inventory.sqlite3` |
+
+## Requisitos
+
+La configuración de referencia y el benchmark incluido se ejecutaron en:
+
+| Recurso | Especificación registrada |
+| --- | --- |
+| Sistema | Windows 11 Home, 64 bits |
+| Equipo | Lenovo 82Y3 |
+| CPU | Intel Core i9-13900H, 14 núcleos / 20 hilos |
+| GPU | NVIDIA GeForce RTX 4070 Laptop GPU |
+| RAM | 32 GB |
+| Node.js | 24.20.0 |
+| Python | 3.14.7 |
+
+El detalle reproducible de la máquina se genera en `benchmarks/results/hardware.json`. MedPsy Q4 está diseñado para hardware de consumo; el rendimiento variará según CPU, GPU, memoria, drivers y configuración del SDK.
+
+Necesitas:
+
+- Windows 10/11, PowerShell y Git.
+- Node.js 24 o una versión compatible con la versión fijada en `package-lock.json`.
+- Python 3.14 o compatible.
+- Espacio para dependencias y los pesos MedPsy, aproximadamente 1.3 GB.
+- Internet solo durante instalaciones o descargas explícitas. La aplicación puede usarse sin Internet una vez preparada.
+
+Opcional:
+
+- Micrófono y navegador con `getUserMedia` para dictado.
+- Tesseract OCR para leer placas fotográficas.
+
+## Instalación desde cero
+
+Ejecuta los comandos desde la raíz del repositorio en PowerShell.
+
+### 1. Clonar e instalar dependencias
+
+```powershell
+git clone <URL-DEL-REPOSITORIO>
+cd Senacyt-Hackaton
+
+npm.cmd ci
+npm.cmd ci --prefix frontend
+
+py -3.14 -m venv backend/.venv
+.\backend\.venv\Scripts\python.exe -m pip install -r backend/requirements.txt
+```
+
+Si `py -3.14` no existe, usa la ruta de tu instalación de Python. El entorno virtual debe quedar en `backend/.venv`.
+
+### 2. Descargar MedPsy explícitamente
 
 ```powershell
 npm.cmd run qvac:download
 ```
 
-La descarga usa Hugging Face con revisión fija y verifica SHA-256.
-Los pesos quedan en `models/`, ignorado por Git.
+Este comando descarga una vez los pesos oficiales de MedPsy desde Hugging Face y verifica tamaño y SHA-256. Los pesos van a `models/`, directorio ignorado por Git. El servidor no descarga modelos automáticamente.
 
-En tres terminales desde la raíz:
+Si ya tienes el mismo GGUF oficial en otra ubicación:
 
 ```powershell
-# 1. Carga los pesos una vez; no necesita qvac serve.
+$env:QVAC_MODEL_PATH = 'D:\modelos\medpsy-1.7b-q4_k_m-imat.gguf'
+```
+
+No uses otro modelo bajo ese nombre: el servicio valida la huella del peso oficial.
+
+### 3. Opcional: dictado local
+
+```powershell
+.\backend\.venv\Scripts\python.exe -m pip install -r backend/requirements-stt.txt
+.\backend\.venv\Scripts\python.exe backend/scripts/install_stt_model.py
+```
+
+Instala Vosk y el modelo local español `vosk-model-small-es-0.42`. La transcripción funciona en memoria, es editable y el audio no se guarda.
+
+### 4. Opcional: OCR local de placas
+
+Instala el ejecutable de Tesseract:
+
+```powershell
+winget install --id UB-Mannheim.TesseractOCR --exact --source winget
+```
+
+Instala Pillow y los archivos de idioma local inglés y español:
+
+```powershell
+.\backend\.venv\Scripts\python.exe -m pip install -r backend/requirements-stt.txt
+.\backend\.venv\Scripts\python.exe backend/scripts/install_ocr_languages.py
+```
+
+El instalador guarda `eng.traineddata` y `spa.traineddata` en `models/tessdata/` con un manifiesto de hashes. No se invoca en el arranque. Si Tesseract está en una ruta no estándar, define antes de iniciar FastAPI:
+
+```powershell
+$env:TESSERACT_COMMAND = 'D:\ruta\a\tesseract.exe'
+```
+
+## Ejecutar la aplicación
+
+Abre tres terminales en la raíz del repositorio.
+
+**Terminal 1 — MedPsy local**
+
+```powershell
 npm.cmd run qvac:start
 ```
 
-El servicio busca `models/medpsy-1.7b-q4_k_m-imat.gguf` en el proyecto.
-Si está en otra ubicación, definir antes `$env:QVAC_MODEL_PATH` con la ruta
-absoluta al mismo GGUF oficial de MedPsy. No acepta pesos de otro modelo ni
-descarga modelos automáticamente al iniciar el servidor.
-Evitar mantener otro servidor con el mismo modelo cargado para no duplicar memoria.
+Espera el mensaje `QVAC SDK ready`. Solo debe haber una instancia cargando los pesos, para no duplicar el uso de memoria.
+
+**Terminal 2 — API y SQLite**
 
 ```powershell
-# 2. API
 cd backend
-.venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
+**Terminal 3 — interfaz**
+
 ```powershell
-# 3. Interfaz
 cd frontend
 npm.cmd run dev -- --port 5173 --strictPort
 ```
 
-Escribir una observación en captura y analizar. La respuesta real de MedPsy
-se guarda con la observación y abre la pantalla de revisión, donde se pueden
-editar los equipos antes de continuar a coincidencias y guardar la visita.
-Las cantidades, marcas y edades provienen del backend; no se generan equipos
-demo ni porcentajes de confianza. Si el análisis falla, captura muestra el
-error y permite reintentar. El hospital seleccionado usa su ID real, por ejemplo `HOSP-001`.
-Voz y fotos no tienen inferencia
-real todavía. Revisar los datos extraídos antes de utilizarlos: pueden contener
-errores. Esta herramienta organiza inventario; no diagnostica ni recomienda
-tratamientos.
+Abre [http://localhost:5173](http://localhost:5173). La documentación de la API queda en [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
-### Persistencia SQLite
-
-FastAPI crea `backend/data/inventory.sqlite3` al consultar o guardar datos.
-El archivo está ignorado por Git. Se puede cambiar su ubicación con la variable
-`APP_DATABASE_PATH` antes de iniciar el backend. El catálogo inicial de cinco
-hospitales está en `backend/app/db/hospitals.json`.
-
-Tablas: `hospitals`, `visits`, `observations` y `equipment`, relacionadas con
-claves foráneas. Cada fila de equipo representa un equipo observado en una
-observación; todavía no es un inventario físico deduplicado. Las coincidencias
-de la interfaz siguen siendo demostrativas y no se usan como claves de SQLite.
-Las edades revisadas se conservan como texto para respetar valores desconocidos
-o aproximados introducidos por el usuario.
-
-Al confirmar las decisiones se guarda la visita en curso en SQLite. Finalizar
-la visita confirma el guardado y entonces limpia el borrador. Los reintentos
-con el mismo ID no duplican observaciones ni equipos; cada guardado es una
-transacción. Ante un fallo del backend, los borradores quedan abiertos.
-
-Inicio e historial consultan SQLite y mantienen una copia local de consulta.
-Las visitas terminadas se pueden recuperar desde el backend aunque se borren
-los datos del navegador. Los borradores de edición siguen siendo locales.
-Las visitas antiguas que solo están en el navegador se conservan, pero no se
-importan automáticamente; los ejemplos simulados tampoco se insertan.
-«Guardada» significa persistida en SQLite local, no sincronizada con una nube.
-
-API disponible en `/docs`:
-
-- `GET /hospitals`: catálogo persistido.
-- `PUT /visits/{id}`: guarda la visita y sus observaciones/equipos.
-- `GET /visits`: visitas finalizadas; acepta `hospital_id` como filtro.
-- `GET /visits/{id}`: detalle, incluida una visita en curso.
-
-Para probarlo: finalizar una visita, reiniciar FastAPI y volver al historial
-con «Mostrar visitas de ejemplo» desactivado. No es necesario iniciar MedPsy
-para consultar datos ya guardados.
-
-### Vista consolidada por hospital
-
-Abrir **Hospitales** como supervisor en `/supervisor/hospitals`, seleccionar un hospital
-y consultar su resumen: visitas finalizadas, observaciones, registros de
-equipos y última visita. La tabla permite buscar por marca/modelo/estado y
-filtrar por área y tipo. Cada registro enlaza a su visita de origen y conserva
-la observación original. También se muestra el historial completo del hospital.
-
-La vista consulta `GET /hospitals/{id}/overview` y utiliza exclusivamente datos
-de SQLite de visitas finalizadas, sin incorporar los ejemplos del navegador.
-Un hospital sin visitas muestra totales cero. Las visitas abiertas quedan fuera.
-Los registros repetidos en visitas distintas se conservan: estos totales no
-afirman contar equipos físicos únicos mientras la deduplicación esté pendiente.
-
-### Dashboard
-
-El endpoint compatible `GET /dashboard` conserva el resumen histórico para
-mostrar totales de visitas finalizadas, observaciones y registros de equipos
-por hospital, región y modalidad. Permite alternar las barras entre registros
-y visitas, consultar una tabla por hospital y abrir su vista consolidada.
-«Actualizar» vuelve a consultar SQLite. No se incluyen ejemplos del navegador
-ni visitas en curso. MRI/Resonador, CT/Tomógrafo y otros alias se agrupan.
-Un equipo registrado en visitas diferentes sigue siendo varios registros.
-
-Si guardar indica que el backend no reconoce la operación, hay una instancia
-antigua de FastAPI ejecutándose: detenerla y usar el comando con `--reload`
-indicado arriba. La API actual debe mostrar `/visits` y `/dashboard` en `/docs`.
-El frontend conserva el borrador ante errores y muestra el motivo del backend.
-
-### Mapa geográfico y catálogo de Panamá
-
-Abrir **Mapa** en la navegación o `/map` para recorrer la base instalada por
-**País → Provincia → Ciudad → Hospital**. El mapa permite filtrar, abrir la
-vista consolidada de cada hospital y comenzar una visita con ese hospital ya
-seleccionado. Las visitas y sus observaciones permanecen asociadas al código
-del hospital en SQLite.
-
-El catálogo inicial contiene 36 hospitales del *Listado de instalaciones de
-salud, año 2024* de MINSA. Incluye hospital, provincia, distrito, localidad,
-tipo de instalación, dependencia y el identificador oficial. Las coordenadas
-son aproximadas a la localidad y sirven para la visualización; no sustituyen
-una dirección o coordenada validada de la instalación. La fuente, su alcance y
-fecha de actualización deben revisarse antes de usar el catálogo como padrón
-oficial definitivo: [MINSA — Instalaciones de salud](https://www.minsa.gob.pa/informacion-salud/instalaciones).
-
-El modelo de SQLite permite extender el catálogo a Latinoamérica sin cambiar
-la relación visitas → observaciones → equipos. Para cada país se necesita una
-fuente institucional de establecimientos, normalización de país/provincia/ciudad,
-identificadores estables y geocodificación validada. Después se puede cargar
-el catálogo con el mismo esquema y activar el país en el mapa.
-
-### Pruebas automáticas
-
-Frontend: `npm.cmd test --prefix frontend`, `npm.cmd run build --prefix frontend`
-y `npm.cmd run lint --prefix frontend`. Las pruebas verifican petición,
-conversión de resultados y conservación de los equipos al guardar la visita.
-
-Desde `backend` y con el servicio SDK iniciado:
+Para comprobar el estado local:
 
 ```powershell
-.venv/Scripts/python.exe -m unittest discover -s tests
-$env:PYTHONPATH = '.'
-.venv/Scripts/python.exe tests/benchmark_local.py
+Invoke-RestMethod http://127.0.0.1:11500/health
+Invoke-RestMethod http://127.0.0.1:8000/status
+Invoke-RestMethod http://127.0.0.1:8000/media/status
 ```
 
-El segundo comando ejecuta ocho observaciones sintéticas a través de FastAPI
-y el SDK real. Guarda el prompt, resultado, modelo, cuantización, tiempo de
-carga, TTFT observado en el servicio, tiempo total y estadísticas de tokens
-del SDK en `benchmarks/results/medpsy-baseline.json`. El informe anterior
-`medgemma-baseline.json` se conserva únicamente como referencia histórica.
-Valores no disponibles
-se guardan como `null`; no se estiman tokens a partir de palabras. El tiempo
-de carga corresponde al arranque del servicio, no a cada petición. No es una
-evaluación clínica ni una medición representativa de calidad general.
+`/media/status` indicará `unavailable` para STT u OCR si no instalaste los componentes opcionales. La captura escrita con MedPsy sigue funcionando.
 
-Las edades se verifican contra las frases del texto original después de la
-extracción de MedPsy. Una edad local solo se asigna a la modalidad mencionada;
-«ambos» y «todos» permiten compartirla explícitamente dentro de una oración.
-La comprobación reconoce MRI, CT, ultrasonido y rayos X, discrimina fabricantes
-cuando es posible y deja `null` en casos ambiguos o no soportados. No calcula
-antigüedad a partir de garantías, fechas ni historial del hospital.
+## Tutorial de uso
 
-La evaluación histórica ampliada obtuvo 8/8 casos en los campos evaluados;
-no debe confundirse con una evaluación general de la versión actual.
-El backend separa el razonamiento terminado en `</think>` del JSON final y
-valida este último; no acepta JSON incompleto ni texto arbitrario sobrante.
-También comprueba cantidades explícitas contra las menciones originales:
-si «dos resonadores» produjo un solo registro, lo expande únicamente si sus
-atributos son idénticos. No inventa un equipo que MedPsy no haya detectado ni
-mezcla dispositivos con atributos diferentes. Cantidades ambiguas no se
-expanden; contradicciones con atributos distintos requieren separar la
-observación. Se permiten hasta 50 equipos por análisis.
-El reporte conserva la salida original del modelo y el resultado validado.
-Estos ocho ejemplos no equivalen a una garantía de extracción perfecta.
-El campo `ttft_ms` mide el primer contenido de respuesta visible; con
-razonamiento activado incluye la espera hasta terminar el razonamiento.
+1. Regístrate o inicia sesión como colaborador.
+2. En **Nueva visita**, busca y selecciona el hospital. Al seleccionar otro hospital, se descarta automáticamente el borrador de una visita pendiente; las visitas finalizadas no se borran.
+3. Elige un área e inicia la captura.
+4. Escribe una observación o usa el micrófono. Puedes adjuntar una placa PNG/JPEG y usar OCR local; revisa y confirma el texto antes de añadirlo a la nota.
+5. Pulsa **Analizar con MedPsy local**. MedPsy propone los equipos y deja en blanco los atributos no mencionados.
+6. En **Revisión**, corrige modalidad, marca, modelo, configuración, edad y estado. Responde hasta dos preguntas de seguimiento o marca el valor como desconocido.
+7. En **Coincidencias**, decide para cada evidencia: vincular a un activo existente, crear uno nuevo o enviar a revisión. El sistema propone; la persona decide.
+8. Finaliza la visita. Solo entonces se confirma el guardado en SQLite y se limpian los borradores.
+9. Abre **Hospitales / Customer 360**, **Dashboard**, **Mapa**, **Oportunidades** o **Analytics** para consultar los datos terminados.
 
-La inferencia usa pesos locales y no configura proveedores remotos. Las
-instalaciones iniciales requieren acceso a los registros de paquetes y a la
-fuente de los pesos. No se guardan prompts de usuarios en el servicio; solo
-el evaluador guarda sus ejemplos sintéticos. Dependencias y versiones están
-declaradas en los archivos de paquetes y requisitos. API del SDK consultada:
-[documentación oficial QVAC](https://docs.qvac.tether.io/introduction/),
-contrastada con la versión instalada 0.19.0.
+Ejemplo para probar:
 
-Pendiente para la entrega del reto: evaluación
-más amplia, medición y especificación completa del hardware, validación sin
-red, revisión de licencias y elección de licencia permisiva del proyecto,
-y vídeo de hasta cinco minutos. Esta implementación no declara cumplimiento
-completo del Track 02.
+```text
+Durante la visita se observaron dos resonadores Siemens y un tomógrafo Philips de siete años. El tomógrafo sigue operativo, pero el modelo no pudo confirmarse.
+```
 
-Construyendo un prototipo que convierta lo que un colaborador de campo observa en un hospital en datos estructurados y confiables sobre los equipos instalados, con captura tan simple como una conversación y con la inferencia corriendo en el dispositivo.
+Resultado esperado: dos equipos MRI Siemens sin edad explícita y un CT Philips con edad estimada de siete años. El modelo queda `null` porque no fue mencionado.
+
+## Funciones
+
+| Función | Comportamiento |
+| --- | --- |
+| Captura en lenguaje natural | Texto ES/EN/PT, con detección local conservadora de idioma. |
+| Extracción MedPsy | Modalidad, marca, modelo, configuración, edad, condición y ubicación solo si aparecen explícitamente. |
+| Validación | Reglas deterministas corrigen contradicciones explícitas de cantidad, marcas y ausencia de equipos; no inventan datos. |
+| Preguntas de seguimiento | Prioriza cantidad y atributos faltantes; máximo dos preguntas para evitar fatiga. |
+| Duplicados | Candidatos restringidos al mismo hospital y modalidad; la decisión es humana y auditable. |
+| Confiabilidad | Completitud, revisión, frescura, corroboración y conflicto; no es confianza del modelo. |
+| Frescura y oportunidades | Señales de información antigua, conflicto y equipos con edad mayor de siete años; no es recomendación clínica. |
+| Customer 360 | Activos, evidencias, visitas, nota fuente, colaboradores, conflictos y auditoría por hospital. |
+| Dashboard y mapa | Totales por hospital, región y modalidad; mapa local con contorno vectorial detallado de Panamá y coordenadas del catálogo, sin mosaicos remotos. |
+| Analítica natural | MedPsy convierte una pregunta en filtros JSON validados; nunca genera SQL. |
+
+## Voz y fotografías
+
+### Voz
+
+El botón **Comenzar a hablar** solicita permiso al micrófono. El navegador convierte la grabación a WAV mono de 16 kHz; Vosk la transcribe localmente y el usuario edita el texto antes de enviarlo a MedPsy. Máximo tres minutos por grabación.
+
+### Fotografías
+
+La captura acepta PNG y JPEG de hasta 2 MB. Tesseract y Pillow corrigen orientación, transparencia, contraste y escala antes de leer una placa. Se puede elegir:
+
+- Placa con campos separados.
+- Bloque de texto.
+- Una línea o código.
+
+El OCR identifica texto visible, por ejemplo marca, modelo y serie. No reconoce de manera fiable la condición operativa, antigüedad o tipo de un equipo solo por su apariencia. El resultado siempre es editable y requiere confirmación humana antes de pasar a MedPsy.
+
+Más detalle y plan de evaluación: [PHOTO_ANALYSIS.md](PHOTO_ANALYSIS.md).
+
+## Datos, privacidad y red
+
+- SQLite local es la fuente de verdad para visitas finalizadas.
+- Las observaciones, inventario, voz y fotografías no se envían a Internet durante el uso normal.
+- El mapa incluye un contorno vectorial detallado de Panamá y funciona con coordenadas locales; no solicita cartografía, geocodificación ni mosaicos remotos.
+- Las únicas conexiones externas son instalaciones explícitas de paquetes, pesos MedPsy, modelo Vosk o idiomas OCR.
+- Los benchmarks guardan prompts **sintéticos** para reproducibilidad; las métricas operativas no guardan observaciones reales.
+- No guardes contraseñas en texto plano ni compartas `backend/data/inventory.sqlite3` fuera de un contexto autorizado.
+
+La relación completa de componentes, licencias y destinos de red está en [THIRD_PARTY_AND_PRIVACY.md](THIRD_PARTY_AND_PRIVACY.md). El código del repositorio está bajo [MIT](LICENSE).
+
+### Base de datos y catálogo
+
+Por defecto la base está en `backend/data/inventory.sqlite3`. Para usar otra ubicación:
+
+```powershell
+$env:APP_DATABASE_PATH = 'D:\datos\inventory.sqlite3'
+```
+
+El catálogo de Panamá procede del listado de instalaciones de salud 2024 de MINSA y conserva país, provincia, distrito, ciudad, dependencia, tipo y coordenadas aproximadas de localidad. No debe tratarse como padrón oficial definitivo ni como geocodificación clínica. Las visitas usan IDs de hospital reales, por ejemplo `HOSP-001`.
+
+## Pruebas y rendimiento
+
+### Pruebas de código
+
+```powershell
+npm.cmd test --prefix frontend
+npm.cmd run build --prefix frontend
+npm.cmd run lint --prefix frontend
+
+cd backend
+.\.venv\Scripts\python.exe -m unittest discover -s tests
+```
+
+Las pruebas usan SQLite temporal. Los scripts de seed sintético solo se ejecutan de forma explícita y no deben usarse contra la base de inventario real sin intención deliberada.
+
+### Registro estructurado QVAC
+
+Con QVAC iniciado:
+
+```powershell
+cd ..
+npm.cmd run qvac:hardware
+npm.cmd run qvac:benchmark
+```
+
+Los resultados quedan en:
+
+- `benchmarks/results/hardware.json`: CPU, RAM, GPU, sistema, versiones y salud de MedPsy.
+- `benchmarks/results/multilingual.json`: prompts sintéticos, salidas, tokens, TTFT, throughput, carga del modelo, dispositivo y resultado por caso.
+
+La corrida incluida valida 15 casos sintéticos de inventario: cinco en español, cinco en inglés y cinco en portugués. Es una medición reproducible del alcance evaluado, no una garantía de precisión clínica o general.
+
+## API local
+
+Todos los endpoints se documentan interactivamente en `/docs`.
+
+| Método | Ruta | Uso |
+| --- | --- | --- |
+| POST | `/observations/analyze` | Extrae equipos con MedPsy. |
+| GET | `/status` | Estado de FastAPI, SQLite, QVAC, STT y OCR. |
+| GET | `/hospitals` | Catálogo persistido. |
+| GET | `/hospitals/{id}/overview` | Customer 360 de un hospital. |
+| PUT | `/visits/{id}` | Guarda una visita finalizada y su evidencia. |
+| GET | `/visits` | Lista visitas finalizadas. |
+| POST | `/visits/similarity` | Busca visitas similares dentro del hospital. |
+| POST | `/equipment/candidates` | Propone activos candidatos para decisión humana. |
+| GET | `/dashboard` | Agregaciones de SQLite. |
+| POST | `/analytics/query` | Convierte una pregunta a filtros seguros con MedPsy. |
+| POST | `/media/transcribe` | Transcribe WAV local con Vosk, si está disponible. |
+| POST | `/media/ocr` | Lee placa local con Tesseract, si está disponible. |
+
+Ejemplo de análisis:
+
+```powershell
+$body = @{ hospital_id = 'HOSP-001'; text = 'Un CT Philips de siete años.' } | ConvertTo-Json
+Invoke-RestMethod http://127.0.0.1:8000/observations/analyze -Method Post -ContentType 'application/json' -Body $body
+```
+
+## Solución de problemas
+
+| Síntoma | Acción |
+| --- | --- |
+| `QVAC no devolvió una respuesta estructurada válida` | Confirma que `npm.cmd run qvac:start` esté activo y reduce la observación a una nota clara. La nota no se borra. |
+| `No se pudo conectar con QVAC` | Consulta `http://127.0.0.1:11500/health`; verifica que el modelo oficial exista y tenga la huella correcta. |
+| El frontend no guarda | Confirma que FastAPI está en el puerto 8000 y abre `/docs`. Los borradores permanecen en pantalla para reintentar. |
+| El micrófono no inicia | Permite el permiso del navegador, usa HTTPS/localhost y verifica Vosk con `GET /media/status`. |
+| OCR no disponible | Instala Tesseract, Pillow y ejecuta `install_ocr_languages.py`. Comprueba `GET /media/status`. |
+| OCR lee mal la placa | Fotografía de cerca, enfocada, recta, sin brillo; prueba el modo de distribución adecuado y corrige el texto antes de confirmarlo. |
+| El puerto está ocupado | Cierra la instancia anterior del proceso correspondiente o cambia el puerto de forma consistente en frontend y backend. |
+| El mapa no muestra un hospital | Revisa filtros y confirma que el hospital tenga coordenadas en el catálogo; algunas ubicaciones son aproximadas a la ciudad. |
+
+## Entrega Track 02
+
+El paquete específico del concurso está en [TRACK02_SUBMISSION.md](TRACK02_SUBMISSION.md). Incluye la justificación del modelo Psy, evidencia de `@qvac/sdk`, hardware, benchmark, privacidad, licencia y un guion de vídeo de menos de cinco minutos.
+
+Antes de presentar:
+
+1. Ejecuta `npm.cmd run qvac:hardware` y `npm.cmd run qvac:benchmark` en la máquina que mostrarás.
+2. Confirma que los archivos en `benchmarks/results/` reflejen esa máquina y corrida.
+3. Graba el flujo completo sin Internet: captura, MedPsy, revisión humana, guardado, Customer 360 y dashboard.
+4. Muestra claramente el nombre del modelo, cuantización, hardware, TTFT, throughput y límites médicos.
+5. No afirmes una precisión fuera del conjunto sintético evaluado ni presentes una sugerencia de IA como confirmación técnica.
+
+## Documentación relacionada
+
+- [TRACK02_SUBMISSION.md](TRACK02_SUBMISSION.md): evidencia y guion de entrega QVAC Psy.
+- [THIRD_PARTY_AND_PRIVACY.md](THIRD_PARTY_AND_PRIVACY.md): red, componentes y privacidad.
+- [PHOTO_ANALYSIS.md](PHOTO_ANALYSIS.md): OCR fotográfico, límites y mejora futura.
+- [TESTING.md](TESTING.md): casos de prueba manuales.
+- [INTEGRATION_REPORT.md](INTEGRATION_REPORT.md): estado de integración y QA.
+- [PHASE2_STATUS.md](PHASE2_STATUS.md): historial y alcance técnico.

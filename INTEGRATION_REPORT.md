@@ -16,8 +16,8 @@
 ## Límites explícitos
 
 - Browser no pudo conectarse por una restricción de código confiable del plugin. QA visual, micrófono físico y sesión con red desconectada quedan pendientes; no se declaran aprobados.
-- La descarga cartográfica fue rechazada. `/map` es un esquema navegable rotulado, no un mapa territorial ni coordenadas reales de hospitales.
-- Tesseract no está instalado: infraestructura y error de indisponibilidad comprobados, OCR real pendiente. No se descargó ningún motor OCR.
+- `/map` usa Leaflet local y coordenadas del catálogo; no descarga mosaicos ni geocodificación. Las coordenadas de localidades siguen siendo aproximadas y no sustituyen ubicaciones validadas de cada instalación.
+- Tesseract y Pillow locales leen placas PNG/JPEG en español e inglés tras preparar orientación, contraste y tamaño. El texto es editable y requiere confirmación; la calidad sobre fotografías reales queda por medir.
 - STT instalado solo en español. Calidad con jerga, marcas o ruido requiere ensayo con el micrófono real.
 - Pedir preguntas adicionales en el prompt deterioró una extracción real. Se restauró el prompt estable: se admiten propuestas opcionales del modelo, pero normalmente las preguntas se generan con reglas contextuales sobre su extracción, sin llamada adicional.
 - Prototipo local, no autenticación/autorización endurecida para producción; interfaz mayormente española. No exponer la API a Internet.

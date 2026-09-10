@@ -45,11 +45,11 @@ Reporte reproducible: `benchmarks/results/system-smoke.json`; última ejecución
 | Metrics | PASS: métricas reales del SDK; sin notas de usuario en logs operativos |
 | Benchmark | PASS herramienta de 15 casos; solo 3/15 ejecutados en la verificación final, los tres pasaron |
 | Seed | PASS: dos ejecuciones en SQLite temporal; 3 hospitales, 5 activos y 7 evidencias |
-| Offline readiness | PASS inspección de dependencias; desconexión física pendiente de QA manual |
+| Offline readiness | PASS por arquitectura local y servicios en loopback; desconexión física pendiente de QA manual |
 
 Aceptar valores de una evidencia no elimina las evidencias históricas contrarias; el conflicto permanece visible. Separarlas resuelve la contradicción cuando eran activos diferentes.
 El supervisor es un acceso demo local, no autorización robusta de producción. No exponer la API en Internet.
-Voz/STT, OCR, visión y sincronización cloud están fuera de alcance y no se simulan.
+Voz/STT y OCR son asistencias locales opcionales; MedPsy continúa siendo el único modelo de IA central para extracción. Visión de equipos y sincronización cloud no están implementadas.
 
 ## C. SQLite
 

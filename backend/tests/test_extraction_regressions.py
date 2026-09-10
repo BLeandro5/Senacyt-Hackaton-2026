@@ -3,11 +3,22 @@ from pathlib import Path
 from unittest.mock import patch
 
 from app.ai.count_grounding import complete_explicit_mentions, ground_counts
-from app.ai.extractor import extract_equipment, parse_extraction, explicit_span_inventory
+from app.ai.extractor import extract_equipment, parse_extraction, explicit_span_inventory, literal_short_inventory
 from app.schemas.equipment import EquipmentExtracted
 
 
 class ExtractionRegressions(unittest.TestCase):
+    def test_short_multilingual_notes_ground_counts_brands_models_and_absence(self):
+        cases = {
+            'Two MRI systems from Siemens and one Philips CT aged seven years.': [('MRI', 'Siemens', None), ('MRI', 'Siemens', None), ('CT', 'Philips', None)],
+            'Dois equipamentos MRI Siemens e um CT Philips com sete anos.': [('MRI', 'Siemens', None), ('MRI', 'Siemens', None), ('CT', 'Philips', None)],
+            'Un CT Philips Incisive.': [('CT', 'Philips', 'Incisive')],
+            'No hay equipos en esta sala.': [],
+        }
+        for note, expected in cases.items():
+            with self.subTest(note=note):
+                self.assertEqual([(item.modality, item.manufacturer, item.model) for item in literal_short_inventory(note)], expected)
+
     @patch('app.ai.extractor.generate_with_qvac')
     def test_full_user_note_corrects_wrong_brands_even_with_equal_count(self, generate):
         import json

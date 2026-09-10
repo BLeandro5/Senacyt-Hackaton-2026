@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-.hospital-map { height: clamp(350px, 65vh, 650px); width: 100%; isolation: isolate; z-index: 0; }
+.hospital-map { height: clamp(350px, 65vh, 650px); width: 100%; isolation: isolate; z-index: 0; background: linear-gradient(180deg, #dff1ff 0%, #edf7ff 48%, #d6ecfb 100%) !important; }
+.hospital-map .leaflet-pane { background: transparent; }
+.hospital-map .leaflet-control-zoom a, .hospital-map .leaflet-control-scale-line { color: #172033; background: #ffffffed; border-color: #94a3b8; }
 .hospital-map-frame { overflow: hidden; border-radius: 20px; background: #eff6ff; color: #172033; }
 .hospital-map-marker span { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; background: #0759c9; color: white; font-weight: 700; box-shadow: 0 2px 6px #0005; }
 .hospital-map-popup section + section { border-top: 1px solid #cbd5e1; margin-top: 12px; padding-top: 12px; }

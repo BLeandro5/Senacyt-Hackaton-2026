@@ -12,7 +12,12 @@ const started = performance.now()
 const modelId = await loadModel({
   modelSrc: modelPath,
   modelType: 'llamacpp-completion',
-  modelConfig: { ctx_size: 4096, temp: 0, predict: 1024, reasoning_budget: 0 },
+  modelConfig: {
+    ctx_size: 2048,
+    temp: 0,
+    predict: 256,
+    reasoning_budget: 0,
+  },
 })
 const modelLoadMs = performance.now() - started
 let busy = false
@@ -48,8 +53,8 @@ const server = http.createServer(async (req, res) => {
     let ttft = null
     const run = completion({
       modelId, history: [{ role: 'user', content: payload.prompt }], stream: true,
-      generationParams: { temp: 0, seed: 42, predict: 2048, reasoning_budget: 0 },
-      captureThinking: true,
+      generationParams: { temp: 0, seed: 42, predict: 256, reasoning_budget: 0 },
+      captureThinking: false,
     })
     // Attach rejection handling immediately; events and final share errors.
     run.final.catch(() => {})

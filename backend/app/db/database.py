@@ -65,6 +65,7 @@ def connect():
     for name, declaration in {
         'evidence_status': 'TEXT', 'reliability_score': 'INTEGER', 'reliability_level': 'TEXT',
         'reviewed': 'INTEGER NOT NULL DEFAULT 0', 'reliability_factors': 'TEXT',
+        'estimated_installation_year': 'INTEGER', 'installation_year_status': "TEXT DEFAULT 'Unknown'",
     }.items():
         if name not in equipment_columns:
             db.execute(f'ALTER TABLE equipment ADD COLUMN {name} {declaration}')
@@ -72,6 +73,7 @@ def connect():
     for table, additions in {
         'observations': {'detected_language': "TEXT DEFAULT 'other'", 'analysis_json': 'TEXT'},
         'hospitals': {'country': "TEXT DEFAULT ''", 'verification_status': "TEXT DEFAULT 'Reported'"},
+        'installed_equipment': {'estimated_installation_year': 'INTEGER', 'installation_year_status': "TEXT DEFAULT 'Unknown'"},
     }.items():
         columns = {r['name'] for r in db.execute(f'PRAGMA table_info({table})')}
         for column, declaration in additions.items():

@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from app.db.database import get_db
 from app.ai.qvac_client import generate_with_qvac
 from app.services.installed_base import assets, modality
+from app.services.local_media import capabilities
 
 router = APIRouter(tags=['Intelligence'])
 
@@ -17,9 +18,11 @@ def status(db=Depends(get_db)):
         response = httpx.get('http://127.0.0.1:11500/health', timeout=3)
         response.raise_for_status()
         ai = response.json()
+        qvac_status = 'ready'
     except (httpx.HTTPError, ValueError):
         ai = {'status': 'unavailable'}
-    return {'sqlite': 'ready', 'ai': ai, 'inference': 'local', 'internetRequired': False}
+        qvac_status = 'unavailable'
+    return {'fastapi':'ready','sqlite': 'ready', 'qvac':qvac_status, 'ai': ai, **capabilities(), 'inference': 'local', 'internetRequired': False}
 
 
 class Query(BaseModel):

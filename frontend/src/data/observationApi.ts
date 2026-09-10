@@ -27,11 +27,14 @@ export type ReliabilityPreview = {
 }
 
 export type EquipmentAnalysisMetadata = {
+  estimated_installation_year?: number | null
+  installation_year_status?: EvidenceStatus
   evidence_status: Record<string, EvidenceStatus>
   reliability: ReliabilityPreview
 }
 
 export type AnalysisResult = {
+  follow_up_candidates?: { equipment_index: number; field: 'quantity' | 'manufacturer' | 'age' | 'model' | 'configuration' | 'condition'; question: string }[]
   detected_language?: 'es' | 'en' | 'pt' | 'other'
   facility?: string | null
   city?: string | null
@@ -49,6 +52,7 @@ export type AnalysisResult = {
 }
 
 export type EquipmentDraft = Equipment & {
+  sourceIndex?: number
   configuration: string
   estimatedAge: string
   status: string
@@ -179,6 +183,9 @@ export function toEquipmentDrafts(
     const metadata = analysis.equipment_metadata?.[index]
 
     return {
+      sourceIndex: index,
+      estimatedInstallationYear: metadata?.estimated_installation_year,
+      installationYearStatus: metadata?.installation_year_status,
       id: `MEDPSY-${crypto.randomUUID()}`,
       type: names[item.modality] || item.modality,
       brand: item.manufacturer ?? '',

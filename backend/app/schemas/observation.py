@@ -3,6 +3,7 @@ from typing import Dict, List, Literal
 from pydantic import BaseModel, Field
 
 from app.schemas.equipment import EquipmentExtracted
+from app.schemas.follow_up import FollowUpCandidate
 
 
 EvidenceStatus = Literal['Confirmed', 'Reported', 'Estimated', 'Unknown']
@@ -36,11 +37,14 @@ class ReliabilityPreview(BaseModel):
 
 
 class EquipmentAnalysisMetadata(BaseModel):
+    estimated_installation_year: int | None = None
+    installation_year_status: EvidenceStatus = 'Unknown'
     evidence_status: Dict[str, EvidenceStatus]
     reliability: ReliabilityPreview
 
 
 class ObservationAnalysisResponse(BaseModel):
+    follow_up_candidates: List[FollowUpCandidate] = Field(default_factory=list,max_length=2)
     detected_language: str = 'other'
     facility: str | None = None
     city: str | None = None

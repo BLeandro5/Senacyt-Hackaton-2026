@@ -1,6 +1,8 @@
 import type { AnalysisResult } from './observationApi'
 
 export type Equipment = {
+  estimatedInstallationYear?: number | null; installationYearStatus?: string
+  quantityStatus?: 'exact' | 'estimated' | 'unknown'
   reviewed?: boolean
   id: string; type: string; brand: string; model: string
   configuration?: string; estimatedAge?: string; status?: string; confidence?: number

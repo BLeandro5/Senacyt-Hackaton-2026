@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate, useRouteError } from 'react-router-dom'
 import { Building2, ClipboardList, Cloud, CloudOff, LogOut, Plus } from 'lucide-react'
 import { readStored, type Capture, type CurrentVisit, type Decision, type RecordDraft } from '../data/visitStore'
+import LocalStatus from './LocalStatus'
 
 export function AppLayout() {
   const location = useLocation()
@@ -44,7 +45,11 @@ export function AppLayout() {
         </div>
       </div>
     </header>
+    <nav aria-label="Inteligencia de inventario" className="flex gap-2 overflow-x-auto border-b border-slate-200 bg-white px-4 py-3 text-sm">
+      {[['/hospitals','Hospitales / Customer 360'],['/dashboard','Dashboard'],['/map','Mapa / geografía'],['/review','Por revisar'],['/opportunities','Oportunidades'],['/analytics','Analytics'],['/settings','Configuración']].map(([path,label]) => <NavLink key={path} to={path!} className={({ isActive }) => `shrink-0 rounded-xl px-3 py-2 ${isActive ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:bg-blue-50'}`}>{label}</NavLink>)}
+    </nav>
     {!online && <p className="offline-notice" role="status">Sin Internet. Puedes usar MedPsy y SQLite localmente si sus servicios siguen iniciados.</p>}
+    <LocalStatus />
     <div id="page-content" className="page-enter" key={location.pathname}><Outlet /></div>
     <nav className="mobile-nav" aria-label="Navegación móvil">
       <NavLink to="/home"><Building2 size={21} />Inicio</NavLink>

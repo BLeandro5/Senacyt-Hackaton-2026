@@ -65,6 +65,7 @@ def _derive_metadata(
     condition,
     reviewed: bool,
     observed_at: str,
+    quantity_override: str | None = None,
 ):
     source = normalize(source_text)
 
@@ -124,7 +125,7 @@ def _derive_metadata(
         else:
             statuses[key] = 'Reported'
 
-    quantity = _quantity_status(source_text)
+    quantity = quantity_override if quantity_override is not None else _quantity_status(source_text)
 
     if quantity == 'estimated':
         statuses['quantity'] = 'Estimated'
@@ -162,6 +163,7 @@ def evidence_metadata(equipment, observation):
         condition=equipment.status,
         reviewed=equipment.reviewed,
         observed_at=observation.capturedAt,
+        quantity_override=equipment.quantityStatus,
     )
 
 

@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from fastapi import HTTPException
 from app.ai.age_grounding import normalize
 from app.services.reliability import reliability
+from app.services.installation_year import installation_year
 
 
 def modality(value):
@@ -69,7 +70,8 @@ def assets(db, hospital_id=None):
             condition=row['condition'] if known(row['condition']) else None, reviewed=any(e['reviewed'] for e in evidence),
             observed_at=observed, corroborators=max(0, len(compatible_observers)-1), conflict=conflict)
         age_match = re.search(r'\d+(?:[.,]\d+)?', row['estimated_age'] or '')
-        result.append({**dict(row), 'reliability': score, 'hasConflict': conflict,
+        year,year_status=installation_year('',row['estimated_age'],observed,row['modality'],row['manufacturer']) if row['estimated_installation_year'] is None else (row['estimated_installation_year'],row['installation_year_status'])
+        result.append({**dict(row), 'estimated_installation_year':year,'installation_year_status':year_status,'reliability': score, 'hasConflict': conflict,
             'evidenceCount': len(evidence), 'independentCollaborators': len(observers), 'lastObservedAt': observed,
             'potentialOpportunity': bool(age_match and float(age_match[0].replace(',', '.')) > 7),
             'evidence': [{k: e[k] for k in ('id','visit_id','observation_id','original_text','captured_at','manufacturer','model')}

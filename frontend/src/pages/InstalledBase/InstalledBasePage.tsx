@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { storageRequest } from '../../data/storageApi'
 import { readStored } from '../../data/visitStore'
-import SupervisorQueue from '../../components/SupervisorQueue'
+import InformationReviewQueue from '../../components/InformationReviewQueue'
 import ObservationHistory from '../../components/ObservationHistory'
+import AssetAudit from '../../components/AssetAudit'
 
 type Asset = {
+  estimated_installation_year?: number | null; installation_year_status?: string
   id: string; hospital_id: string; modality: string; manufacturer: string | null; model: string | null
-  estimated_age: string | null; configuration: string | null; status: string
+  estimated_age: string | null; configuration: string | null; condition?: string | null; status: string
   hasConflict: boolean; evidenceCount: number; independentCollaborators: number; lastObservedAt: string; potentialOpportunity: boolean
   reliability: { score: number; level: string; freshness: string; breakdown: Record<string, number> }
   evidence: { id: string; visit_id: string; observation_id: string; original_text: string; captured_at: string; collaboratorName: string; evidenceStatus?: Record<string, string> }[]
@@ -15,9 +17,12 @@ type Asset = {
 type Hospital = { id: string; name: string; city: string; country: string; region: string; verification_status: string }
 
 export default function InstalledBasePage() {
-  const { hospitalId } = useParams()
+  const { hospitalId, assetId } = useParams()
   const { pathname } = useLocation()
-  const review = pathname.endsWith('/review')
+  const review = pathname === '/review'
+  const canReview = review || !!hospitalId || !!assetId
+  const opportunities = pathname === '/opportunities'
+  const [freshness, setFreshness] = useState('')
   const [data, setData] = useState<{ assets: Asset[]; hospitals: Hospital[] } | null>(null)
   const [error, setError] = useState('')
   const [attempt, setAttempt] = useState(0)
@@ -27,6 +32,8 @@ export default function InstalledBasePage() {
   const [asking, setAsking] = useState(false)
   const [answer, setAnswer] = useState<{ filters: Record<string, unknown>; equipment: Asset[] } | null>(null)
   const [queryError, setQueryError] = useState('')
+  const [overview,setOverview]=useState<{ summary: { visits: number; observations: number; lastVisit: string | null; needsReview: number } } | null>(null)
+  useEffect(()=>{ let active=true; if(hospitalId) storageRequest<NonNullable<typeof overview>>(`/hospitals/${hospitalId}/overview`).then(value=>{if(active)setOverview(value)}).catch(c=>{if(active)setError(c.message)}); return ()=>{active=false} },[hospitalId,attempt])
   const ask = async () => {
     setAsking(true)
     setQueryError('')
@@ -40,6 +47,7 @@ export default function InstalledBasePage() {
     try {
       const user = readStored<{ id: string }>('demo-user', { id: '' })
       await storageRequest(`/installed-equipment/${asset.id}/decision`, { method: 'PUT', body: JSON.stringify({ actorId: String(user.id), action, visitId: evidence?.visit_id, observationId: evidence?.observation_id, equipmentId: evidence?.id }) })
+      setAnswer(null)
       setAttempt(v => v + 1)
     } catch (cause) { setError((cause as Error).message) } finally { setSaving(false) }
   }
@@ -52,19 +60,24 @@ export default function InstalledBasePage() {
   }, [attempt])
   const hospital = data?.hospitals.find(h => h.id === hospitalId)
   const visible = (answer?.equipment ?? data?.assets ?? []).filter(a => (!hospitalId || a.hospital_id === hospitalId)
-    && (!review || a.hasConflict || a.reliability.level === 'Low' || a.reliability.freshness === 'Stale')
+    && (!assetId || a.id === assetId)
+    && (!opportunities || a.potentialOpportunity)
+    && (!freshness || a.reliability.freshness === freshness)
+    && (!review || a.hasConflict || a.status === 'Needs verification' || a.reliability.level === 'Low' || a.reliability.freshness === 'Stale')
     && [a.modality, a.manufacturer, a.model].join(' ').toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => Number(b.hasConflict) - Number(a.hasConflict))
   return <main className="mx-auto max-w-[1380px] p-4 sm:p-8">
     <div className="flex flex-wrap justify-between gap-3"><div><p className="text-sm font-semibold text-blue-700">Base instalada · SQLite local</p>
-      <Link className="text-sm text-blue-700 underline" to="/supervisor/settings">Configuración</Link>
-      <h1 className="mt-2 text-3xl font-semibold">{hospital?.name || (review ? 'Por revisar' : 'Base instalada consolidada')}</h1>
+      <Link className="text-sm text-blue-700 underline" to="/settings">Configuración</Link>
+      <h1 className="mt-2 text-3xl font-semibold">{hospital?.name || (review ? 'Por revisar' : opportunities ? 'Posibles oportunidades de renovación' : pathname === '/analytics' ? 'Analytics local' : 'Base instalada / Customer 360')}</h1>
       {hospital && <p className="mt-2 text-slate-500">{hospital.city} · {hospital.country} · {hospital.region} · {hospital.verification_status}</p>}</div>
       <button className="rounded-xl bg-blue-700 px-4 py-3 text-white" onClick={() => setAttempt(v => v + 1)}>Actualizar</button></div>
     {error && <p role="alert" className="storage-error mt-4">{error}</p>}
     {!data && !error && <p role="status">Consultando SQLite…</p>}
     {data && <>
-      {review && <SupervisorQueue onChange={() => { setAnswer(null); setAttempt(v => v + 1) }} />}
+      {hospitalId && overview && <p className="panel my-4">{overview.summary.visits} visitas · {overview.summary.observations} observaciones · {overview.summary.needsReview} activos por revisar · Última visita: {overview.summary.lastVisit ? new Date(overview.summary.lastVisit).toLocaleDateString() : 'No informada'}</p>}
+      {assetId && <AssetAudit key={`${assetId}:${attempt}`} assetId={assetId} />}
+      {canReview && <InformationReviewQueue hospitalId={hospitalId} onChange={() => { setAnswer(null); setAttempt(v => v + 1) }} />}
       <form className="panel mt-5" onSubmit={e => { e.preventDefault(); void ask() }}>
         <label className="block text-sm" htmlFor="inventory-question">Consultar inventario con MedPsy local</label>
         <input id="inventory-question" minLength={3} maxLength={2000} required className="my-3 w-full rounded-xl border p-3" value={question} onChange={e => setQuestion(e.target.value)} placeholder="Equipos CT Philips con más de 7 años" />
@@ -76,21 +89,25 @@ export default function InstalledBasePage() {
         ['Activos canónicos', visible.length], ['Evidencias', visible.reduce((n,a) => n + a.evidenceCount, 0)],
         ['Conflictos', visible.filter(a => a.hasConflict).length], ['Posibles renovaciones >7 años', visible.filter(a => a.potentialOpportunity).length],
       ].map(([label,value]) => <div className="panel" key={label}><p className="text-3xl font-semibold">{value}</p><p className="mt-2 text-sm text-slate-500">{label}</p></div>)}</section>
-      {!hospitalId && <nav className="mb-6 flex flex-wrap gap-2" aria-label="Hospitales">{data.hospitals.map(h => <Link className="rounded-xl border border-blue-100 bg-white p-3 text-blue-700" key={h.id} to={`/supervisor/hospitals/${h.id}`}>{h.name}</Link>)}</nav>}
+      {!hospitalId && <nav className="mb-6 flex flex-wrap gap-2" aria-label="Hospitales">{data.hospitals.map(h => <Link className="rounded-xl border border-blue-100 bg-white p-3 text-blue-700" key={h.id} to={`/hospitals/${h.id}`}>{h.name}</Link>)}</nav>}
+      <label className="mb-4 block text-sm">Frescura<select className="ml-3 rounded-xl border p-2" value={freshness} onChange={e => setFreshness(e.target.value)}><option value="">Todas</option>{['Fresh','Aging','Stale','Unknown'].map(s => <option key={s}>{s}</option>)}</select></label>
       <label className="block mb-5 text-sm">Buscar equipos<input className="mt-2 block w-full rounded-xl border border-slate-200 bg-white p-3" value={query} onChange={e => setQuery(e.target.value)} /></label>
       {!visible.length && <p className="panel">No hay activos consolidados para esta vista. Las observaciones históricas sin decisión de equipo permanecen en el historial.</p>}
       <section className="grid gap-4 lg:grid-cols-2">{visible.map(a => <article key={a.id} className="panel">
         <h2 className="text-xl font-semibold">{a.modality} · {a.manufacturer || 'Marca no informada'}</h2>
+        <p className="mt-2 text-sm">Antigüedad: {a.estimated_age || 'Unknown'} · Estado: {a.condition || 'Unknown'}</p>
+        <p className="mt-1 text-sm">Instalación: {a.estimated_installation_year ?? 'Unknown'} · {a.installation_year_status || 'Unknown'}</p>
         <p className="mt-1 text-sm text-slate-500">{a.model || 'Modelo no informado'} · {a.configuration || 'Configuración no informada'}</p>
-        <p className="mt-3">Confiabilidad {a.reliability.score}/100 · {a.reliability.level}</p>
+        <p className="mt-3">Confiabilidad de los datos {a.reliability.score}/100 · {a.reliability.level}</p>
+        <p className="mt-1 text-xs text-slate-500">Calculado mediante reglas deterministas, no es una probabilidad generada por IA.</p><Link className="mt-2 inline-block text-sm text-blue-700 underline" to={`/equipment/${a.id}`}>Detalle del activo</Link>
         <p className="mt-2 text-sm">Estado de revisión: {a.status}</p>
-        {review && <div className="my-3 flex flex-wrap gap-3">{(['Confirmed','Reported','Needs verification'] as const).map((action, index) => <button disabled={saving} className="rounded-lg border border-blue-100 p-2 text-blue-700" key={action} onClick={() => decide(a, action)}>{['Confirmar','Mantener reportado','Requiere verificación'][index]}</button>)}</div>}
+        {canReview && <div className="my-3 flex flex-wrap gap-3">{(['Confirmed','Reported','Needs verification'] as const).map((action, index) => <button disabled={saving} className="rounded-lg border border-blue-100 p-2 text-blue-700" key={action} onClick={() => decide(a, action)}>{['Confirmar','Mantener reportado','Requiere verificación'][index]}</button>)}</div>}
         <details className="mt-2 text-sm"><summary>Factores deterministas</summary><ul className="mt-2">{Object.entries(a.reliability.breakdown).map(([key,value]) => <li key={key}>{key}: {value}</li>)}</ul></details>
         <p className="mt-3 text-sm">{a.evidenceCount} evidencias · {a.independentCollaborators} colaboradores · {a.reliability.freshness}</p>
         <p className="mt-1 text-sm">Última observación: {a.lastObservedAt ? new Date(a.lastObservedAt).toLocaleDateString() : 'No informada'}</p>
         {a.hasConflict && <p className="mt-3 rounded-xl bg-amber-50 p-3 text-amber-800">Conflicto de información. Requiere verificación.</p>}
         {a.potentialOpportunity && <p className="mt-3 rounded-xl bg-blue-50 p-3 text-blue-800">Posible oportunidad de renovación: {a.estimated_age}. Priorizar validación y seguimiento comercial.</p>}
-        <details className="mt-4"><summary className="cursor-pointer text-blue-700">Historial de evidencias</summary>{a.evidence.map(e => <div className="mt-3 border-t border-slate-100 pt-3" key={`${e.visit_id}/${e.observation_id}/${e.id}`}><p className="text-sm font-semibold">Registrado por {e.collaboratorName || 'Colaborador histórico'}</p><p className="mt-2 whitespace-pre-wrap text-sm">{e.original_text}</p><dl className="mt-2 flex flex-wrap gap-2 text-xs">{Object.entries(e.evidenceStatus || {}).map(([field,status]) => <div className="rounded-lg border p-2" key={field}><dt>{field}</dt><dd>{status}</dd></div>)}</dl>{review && <div className="mt-3 flex gap-3"><button disabled={saving} className="text-blue-700" onClick={() => decide(a,'accept_evidence',e)}>Usar valores de esta evidencia</button><button disabled={saving} className="text-blue-700" onClick={() => decide(a,'separate',e)}>Separar como otro equipo</button></div>}</div>)}</details>
+        <details className="mt-4"><summary className="cursor-pointer text-blue-700">Historial de evidencias</summary>{a.evidence.map(e => <div className="mt-3 border-t border-slate-100 pt-3" key={`${e.visit_id}/${e.observation_id}/${e.id}`}><p className="text-sm font-semibold">Registrado por {e.collaboratorName || 'Colaborador histórico'} · {e.captured_at ? new Date(e.captured_at).toLocaleDateString() : 'Fecha no informada'}</p><p className="mt-2 whitespace-pre-wrap text-sm">{e.original_text}</p><dl className="mt-2 flex flex-wrap gap-2 text-xs">{Object.entries(e.evidenceStatus || {}).map(([field,status]) => <div className="rounded-lg border p-2" key={field}><dt>{field}</dt><dd>{status}</dd></div>)}</dl>{canReview && <div className="mt-3 flex gap-3"><button disabled={saving} className="text-blue-700" onClick={() => decide(a,'accept_evidence',e)}>Usar valores de esta evidencia</button><button disabled={saving} className="text-blue-700" onClick={() => decide(a,'separate',e)}>Separar como otro equipo</button></div>}</div>)}</details>
       </article>)}</section>
       {!review && <ObservationHistory key={`${hospitalId || 'all'}:${attempt}`} hospitalId={hospitalId} />}
     </>}

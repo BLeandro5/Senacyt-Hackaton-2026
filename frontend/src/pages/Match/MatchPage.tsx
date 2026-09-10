@@ -4,7 +4,7 @@ import VisitContext from '../../components/VisitContext'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ChevronRight, CirclePlus, SearchCheck, Sparkles } from 'lucide-react'
-import { rankCandidates, type AssetCandidate } from '../../data/equipmentMatching'
+import { candidateReasons, rankCandidates, type AssetCandidate } from '../../data/equipmentMatching'
 
 type Decision = {
   equipmentId: string
@@ -206,7 +206,7 @@ function MatchPage() {
                           </div>
 
                           <span className="text-lg font-semibold text-[#4B1F91]">
-                            <span className="block text-xs font-normal">Mismo hospital y modalidad</span>
+                            <span className="block text-xs font-normal">{available.find(a=>a.id===match.id) ? candidateReasons(available.find(a=>a.id===match.id)!, item).join(' · ') : 'Mismo hospital y modalidad'}</span>
                           </span>
 
                         </div>

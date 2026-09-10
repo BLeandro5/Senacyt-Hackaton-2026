@@ -9,6 +9,8 @@ from app.ai.age_grounding import ground_ages, normalize
 from app.ai.count_grounding import ground_counts
 from app.ai.language import detect_language
 from app.schemas.equipment import EquipmentExtracted
+from app.schemas.follow_up import FollowUpCandidate
+from pydantic import Field
 
 
 class ExtractionResult(BaseModel):
@@ -17,6 +19,7 @@ class ExtractionResult(BaseModel):
     facility: str | None = None
     city: str | None = None
     country: str | None = None
+    follow_up_candidates: list[FollowUpCandidate] = Field(default_factory=list, max_length=2)
 
 
 def parse_extraction(raw: str) -> ExtractionResult:

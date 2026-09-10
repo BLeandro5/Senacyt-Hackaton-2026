@@ -91,6 +91,147 @@
       "passed": true
     }
   ],
+  "synthetic_analysis": {
+    "follow_up_candidates": [
+      {
+        "equipment_index": 0,
+        "field": "age",
+        "question": "Para el equipo 1 (MRI Siemens), ¿conoces su antigüedad?"
+      },
+      {
+        "equipment_index": 1,
+        "field": "age",
+        "question": "Para el equipo 2 (MRI Siemens), ¿conoces su antigüedad?"
+      }
+    ],
+    "detected_language": "es",
+    "facility": null,
+    "city": null,
+    "country": null,
+    "original_text": "Dos resonadores Siemens y un tomógrafo Philips de siete años.",
+    "equipment": [
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 7.0,
+        "condition": null
+      }
+    ],
+    "equipment_metadata": [
+      {
+        "estimated_installation_year": null,
+        "installation_year_status": "Unknown",
+        "evidence_status": {
+          "modality": "Reported",
+          "manufacturer": "Reported",
+          "model": "Unknown",
+          "configuration": "Unknown",
+          "age": "Unknown",
+          "condition": "Unknown",
+          "quantity": "Reported"
+        },
+        "reliability": {
+          "score": 46,
+          "level": "Low",
+          "factors": [
+            "modality",
+            "manufacturer",
+            "exact_quantity"
+          ],
+          "breakdown": {
+            "informationQuality": 26,
+            "humanValidation": 5,
+            "freshness": 15,
+            "corroboration": 0,
+            "conflictPenalty": 0
+          },
+          "daysSinceObservation": 0,
+          "freshness": "Fresh"
+        }
+      },
+      {
+        "estimated_installation_year": null,
+        "installation_year_status": "Unknown",
+        "evidence_status": {
+          "modality": "Reported",
+          "manufacturer": "Reported",
+          "model": "Unknown",
+          "configuration": "Unknown",
+          "age": "Unknown",
+          "condition": "Unknown",
+          "quantity": "Reported"
+        },
+        "reliability": {
+          "score": 46,
+          "level": "Low",
+          "factors": [
+            "modality",
+            "manufacturer",
+            "exact_quantity"
+          ],
+          "breakdown": {
+            "informationQuality": 26,
+            "humanValidation": 5,
+            "freshness": 15,
+            "corroboration": 0,
+            "conflictPenalty": 0
+          },
+          "daysSinceObservation": 0,
+          "freshness": "Fresh"
+        }
+      },
+      {
+        "estimated_installation_year": 2019,
+        "installation_year_status": "Estimated",
+        "evidence_status": {
+          "modality": "Reported",
+          "manufacturer": "Reported",
+          "model": "Unknown",
+          "configuration": "Unknown",
+          "age": "Reported",
+          "condition": "Unknown",
+          "quantity": "Reported"
+        },
+        "reliability": {
+          "score": 52,
+          "level": "Medium",
+          "factors": [
+            "modality",
+            "manufacturer",
+            "exact_quantity",
+            "exact_age"
+          ],
+          "breakdown": {
+            "informationQuality": 32,
+            "humanValidation": 5,
+            "freshness": 15,
+            "corroboration": 0,
+            "conflictPenalty": 0
+          },
+          "daysSinceObservation": 0,
+          "freshness": "Fresh"
+        }
+      }
+    ]
+  },
   "analytics_filters": {
     "country": null,
     "city": null,
@@ -104,5 +245,5 @@
     "freshness": null,
     "has_conflict": null
   },
-  "elapsed_seconds": 56.02
+  "elapsed_seconds": 118.8
 }

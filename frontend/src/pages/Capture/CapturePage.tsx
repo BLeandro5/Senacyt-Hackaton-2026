@@ -1,8 +1,10 @@
 import { readStored, writeStored, type Capture, type CurrentVisit } from '../../data/visitStore'
 import VisitContext from '../../components/VisitContext'
+import LocalVoiceCapture from '../../components/LocalVoiceCapture'
+import PhotoOcr from '../../components/PhotoOcr'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Camera, Check, ChevronRight, FileText, Keyboard, Mic, MicOff, Send, Sparkles, X } from 'lucide-react'
+import { Camera, Check, ChevronRight, Keyboard, Mic, Send, Sparkles, X } from 'lucide-react'
 
 type CaptureMode = 'chat' | 'voice'
 import { analyzeObservation, toEquipmentDrafts } from '../../data/observationApi'
@@ -90,11 +92,7 @@ function CapturePage() {
     })
   }
 
-  const toggleVoice = () => {
-    setIsListening(false)
-    setMode('chat')
-    setError('La captura de voz no está habilitada en esta versión. Escribe la observación; no se generará una transcripción simulada.')
-  }
+  const toggleVoice = () => { setMode('voice'); setError('') }
 
   const handlePhoto = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -207,7 +205,7 @@ function CapturePage() {
 
               <p className="mt-3 max-w-xl text-[15px] leading-6 text-[#6F7A8A]">
                 Describe uno o varios equipos de forma natural por escrito.
-                La captura de voz no está habilitada en esta versión local.
+                También puedes dictar usando transcripción local y revisar el texto.
               </p>
 
             </section>
@@ -219,7 +217,8 @@ function CapturePage() {
 
                 <button
                   aria-pressed={mode === 'chat'}
-                  onClick={() => { setMode('chat'); setIsListening(false) }}
+                  disabled={isListening}
+                  onClick={() => setMode('chat')}
                   className={`flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-medium transition ${
                     mode === 'chat'
                       ? 'bg-white text-[#0B5ED7] shadow-sm'
@@ -240,7 +239,7 @@ function CapturePage() {
                   }`}
                 >
                   <Mic size={18} />
-                  Voz · No disponible
+                  Voz local
                 </button>
 
               </div>
@@ -328,101 +327,7 @@ function CapturePage() {
                   </div>
                 )}
 
-                {/* VOZ */}
-                {mode === 'voice' && (
-                  <div className="px-5 py-8 text-center sm:px-8 sm:py-10">
-
-                    <div
-                      className={`mx-auto flex h-24 w-24 items-center justify-center rounded-full transition duration-300 ${
-                        isListening
-                          ? 'scale-105 bg-[#4B1F91] text-white shadow-xl shadow-[#4B1F91]/25'
-                          : 'bg-gradient-to-br from-[#0B5ED7] to-[#4B1F91] text-white shadow-lg shadow-[#3437B8]/20'
-                      }`}
-                    >
-                      {isListening ? (
-                        <MicOff size={34} />
-                      ) : (
-                        <Mic size={34} />
-                      )}
-                    </div>
-
-                    <h2 className="mt-6 text-lg font-semibold text-[#172033]">
-                      {isListening
-                        ? 'Escuchando...'
-                        : 'Describe lo que estás viendo'}
-                    </h2>
-
-                    <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#8A96A6]">
-                      {isListening
-                        ? 'Habla con naturalidad. Puedes detener la captura cuando termines.'
-                        : 'La voz se convertirá en texto y podrás revisarla antes de analizar.'}
-                    </p>
-
-                    <p className="mt-3 text-xs text-amber-700" role="status">Voz demo: al detener se añade una transcripción de ejemplo. No se usa el micrófono.</p>
-                    {/* Onda visual */}
-                    {isListening && (
-                      <div className="mt-6 flex h-8 items-center justify-center gap-1">
-
-                        {[16, 26, 34, 22, 30, 18, 28].map(
-                          (height, index) => (
-                            <span
-                              key={index}
-                              className="w-1.5 rounded-full bg-gradient-to-t from-[#0B5ED7] to-[#4B1F91] animate-pulse"
-                              style={{
-                                height: `${height}px`,
-                                animationDelay: `${index * 90}ms`,
-                              }}
-                            />
-                          )
-                        )}
-
-                      </div>
-                    )}
-
-                    <button
-                      onClick={toggleVoice}
-                      className={`mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-2xl px-6 text-sm font-medium transition ${
-                        isListening
-                          ? 'bg-[#F3ECFF] text-[#4B1F91] hover:bg-[#ECE3FC]'
-                          : 'bg-[#172033] text-white hover:bg-[#232D42]'
-                      }`}
-                    >
-                      {isListening ? (
-                        <>
-                          <MicOff size={18} />
-                          Detener
-                        </>
-                      ) : (
-                        <>
-                          <Mic size={18} />
-                          Comenzar a hablar
-                        </>
-                      )}
-                    </button>
-
-                    {/* Transcripción */}
-                    {observation && (
-                      <div className="mt-8 border-t border-[#E9EDF2] pt-6 text-left">
-
-                        <div className="flex items-center gap-2">
-                          <FileText
-                            size={16}
-                            className="text-[#3437B8]"
-                          />
-
-                          <p className="text-xs font-medium text-[#7D8998]">
-                            Transcripción
-                          </p>
-                        </div>
-
-                        <textarea aria-label="Transcripción editable" className="mt-3 w-full rounded-xl border border-slate-200 p-4 text-sm" rows={5} disabled={isProcessing}
-                        value={observation} onChange={e => setObservation(e.target.value)} />
-
-                      </div>
-                    )}
-
-                  </div>
-                )}
+                {mode === 'voice' && <div className="p-5 space-y-4"><LocalVoiceCapture disabled={isProcessing} onBusy={setIsListening} onTranscript={text=>setObservation(current=>current ? current+'\n'+text : text)} /><label className="block text-sm">Transcripción editable<textarea aria-label="Transcripción editable" className="mt-2 w-full rounded-xl border p-4" rows={5} value={observation} disabled={isProcessing || isListening} onChange={e=>setObservation(e.target.value)} /></label></div>}
 
               </div>
 
@@ -430,6 +335,7 @@ function CapturePage() {
 
             {error && <p role="alert" className="storage-error">{error}</p>}
             {photoData && <img src={photoData} alt="Fotografía adjunta" className="mt-5 max-h-48 rounded-xl" />}
+            {photoData && !isProcessing && <PhotoOcr dataUrl={photoData} onConfirm={text=>setObservation(current=>current ? current+'\n'+text : text)} />}
             {/* FOTO OPCIONAL */}
             <section className="mt-5">
 

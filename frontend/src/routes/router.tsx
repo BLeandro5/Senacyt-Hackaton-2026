@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
 import { AppLayout, RouteError } from '../components/AppLayout'
 import LoginPage from '../pages/Login/LoginPage'
@@ -13,6 +13,9 @@ import VisitsPage from '../pages/Visits/VisitsPage'
 import VisitDetailPage from '../pages/VisitDetail/VisitDetailPage'
 import QuickCapturePage from '../pages/QuickCapture/QuickCapturePage'
 import SettingsPage from '../pages/Settings/SettingsPage'
+import InstalledBasePage from '../pages/InstalledBase/InstalledBasePage'
+import DashboardPage from '../pages/Dashboard/DashboardPage'
+import MapPage from '../pages/Map/MapPage'
 
 export const router = createBrowserRouter([
   { path: '/', element: <LoginPage /> },
@@ -25,6 +28,14 @@ export const router = createBrowserRouter([
       { path: '/home', element: <HomePage /> },
       { path: '/capture/quick', element: <QuickCapturePage /> },
       { path: '/settings', element: <SettingsPage /> },
+      { path: '/hospitals', element: <InstalledBasePage /> },
+      { path: '/hospitals/:hospitalId', element: <InstalledBasePage /> },
+      { path: '/equipment/:assetId', element: <InstalledBasePage /> },
+      { path: '/review', element: <InstalledBasePage /> },
+      { path: '/opportunities', element: <InstalledBasePage /> },
+      { path: '/analytics', element: <InstalledBasePage /> },
+      { path: '/dashboard', element: <DashboardPage /> },
+      { path: '/map', element: <MapPage /> },
       { path: '/visits', element: <VisitsPage /> },
       { path: '/visits/new', element: <NewVisitPage /> },
       { path: '/visits/new/capture', element: <CapturePage /> },
@@ -34,6 +45,5 @@ export const router = createBrowserRouter([
       { path: '/visits/:visitId', element: <VisitDetailPage /> },
     ],
   },
-  { path: '/supervisor/*', element: <Navigate to="/home" replace /> },
   { path: '*', element: <RouteError /> },
 ])

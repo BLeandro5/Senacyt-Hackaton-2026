@@ -6,6 +6,8 @@ from app.schemas.observation import (
     ObservationAnalysisResponse,
 )
 from app.services.evidence import preliminary_evidence_metadata
+from app.services.follow_up import validated_questions
+from app.services.installation_year import installation_year
 
 
 def analyze_observation(text: str) -> ObservationAnalysisResponse:
@@ -23,6 +25,8 @@ def analyze_observation(text: str) -> ObservationAnalysisResponse:
         )
         equipment_metadata.append(
             EquipmentAnalysisMetadata(
+                estimated_installation_year=installation_year(text,item.estimated_age_years,observed_at,item.modality,item.manufacturer)[0],
+                installation_year_status=installation_year(text,item.estimated_age_years,observed_at,item.modality,item.manufacturer)[1],
                 evidence_status=statuses,
                 reliability=score,
             )
@@ -32,6 +36,7 @@ def analyze_observation(text: str) -> ObservationAnalysisResponse:
         original_text=text,
         equipment=result.equipment,
         equipment_metadata=equipment_metadata,
+        follow_up_candidates=validated_questions(result.equipment,text,result.follow_up_candidates),
         detected_language=result.detected_language,
         facility=result.facility,
         city=result.city,

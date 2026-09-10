@@ -89,6 +89,8 @@ function ReviewPage() {
               // collaborator changes a field, the backend will calculate the
               // definitive reliability again when the visit is saved.
               reliability: undefined,
+              estimatedInstallationYear: undefined,
+              installationYearStatus: 'Unknown',
               evidenceStatus: undefined,
             }
           : item
@@ -234,6 +236,7 @@ function ReviewPage() {
             )}
 
             <FollowUp
+              candidates={observation.analysis?.follow_up_candidates}
               observationId={
                 observation.id ||
                 observation.capturedAt
@@ -504,6 +507,7 @@ function EquipmentCard({
         </div>
       </div>
 
+      <p className="my-3 text-sm text-slate-600">Año de instalación: {item.estimatedInstallationYear ?? 'Pendiente / no informado'} · {item.installationYearStatus || 'Unknown'}. Si se deriva de antigüedad, es una estimación.</p>
       {item.reliability ? (
         <ReliabilityPanel
           reliability={item.reliability}

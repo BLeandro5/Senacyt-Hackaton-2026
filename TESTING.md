@@ -2,7 +2,7 @@
 
 ## Cambio de navegación vigente
 
-El módulo supervisor fue retirado de la interfaz por decisión del usuario. Desde **Inicio → Observaciones generales** se consultan las notas de todos los colaboradores, filtradas por país, hospital y búsqueda. Cada nota permite abrir su visita completa. Las rutas antiguas `/supervisor/*` redirigen a Inicio y el login demo de supervisor se retiró. Las secciones de esta guía que describen acciones del antiguo supervisor son históricas y ya no forman parte de la prueba de interfaz vigente. Los datos y endpoints existentes se conservaron, sin borrar información.
+El módulo supervisor fue retirado de la interfaz por decisión del usuario. Desde **Inicio → Observaciones generales** se consultan las notas de todos los colaboradores, filtradas por país, hospital y búsqueda. Cada nota permite abrir su visita completa y Customer 360. Las rutas antiguas `/supervisor/*` ya no están registradas. Hospitales, Dashboard, Mapa, Revisar, Oportunidades y Analytics están en la navegación normal del colaborador. Los datos existentes se conservaron.
 
 Prueba actual: registra y finaliza visitas con dos colaboradores, entra en Inicio, filtra país y hospital, busca por marca/nombre y abre la visita. El catálogo inicial de cinco hospitales tiene país Panamá; otros registros sin país se muestran como **País no informado**, sin inferir ubicación.
 
@@ -55,9 +55,9 @@ Desde Inicio abre Captura rápida. Usa:
 
 `Estoy en Hospital Santo Tomás en Panamá. Vi un tomógrafo Philips que parece tener unos ocho años.`
 
-Confirma el hospital del catálogo antes de revisar. Sin hospital seleccionado no se puede continuar. Para un hospital inexistente usa Proponer nuevo hospital (nombre, ciudad, país): quedará Reported, no confirmado. Entra luego como supervisor para confirmarlo.
+Confirma el hospital del catálogo antes de revisar. Sin hospital seleccionado no se puede continuar. Para un hospital inexistente usa Proponer nuevo hospital (nombre, ciudad, país): quedará Reported, no confirmado. Abre Revisar para confirmarlo como colaborador.
 
-La nota rápida se conserva localmente al recargar. Si tienes otra visita activa, termínala antes de continuar la captura rápida. La fotografía es un adjunto; no hay OCR ni análisis visual. Voz está explícitamente no disponible.
+La nota rápida se conserva localmente al recargar. Si tienes otra visita activa, termínala antes de continuar la captura rápida. Voz local permite grabar español, detener y corregir la transcripción antes de analizar. La fotografía sigue siendo un adjunto; su lectura de texto es opcional y requiere Tesseract local. No hay interpretación visual ficticia.
 
 ## 3. Corroboración, conflicto y revisión
 
@@ -66,13 +66,11 @@ La nota rápida se conserva localmente al recargar. Si tienes otra visita activa
 - Un tercer colaborador puede reportar Siemens para ese mismo CT. Selecciona explícitamente el activo desde el selector del mismo hospital/modalidad y confirma solo para este ensayo de conflicto. El valor canónico no debe sobrescribirse; aparece conflicto y baja la confiabilidad.
 - También puedes elegir “No puedo decidir · Enviar a revisión”. La evidencia se guarda y aparece en la cola, sin crear un activo ficticio.
 
-Supervisor demo local: usuario `supervisor`, contraseña `demo123`. Es un acceso de prototipo, no autorización de producción.
-
-En `/supervisor/review`: confirmar hospital, mantener en verificación, vincular evidencia pendiente, crear activo, aceptar valores de una evidencia o separar como otro equipo. Los cambios se guardan en SQLite y generan eventos de auditoría. Aceptar valores no borra evidencias históricas contradictorias; separarlas resuelve la contradicción cuando eran equipos diferentes.
+En `/review`: confirmar hospital, mantener en verificación, vincular evidencia pendiente, crear activo, aceptar valores de una evidencia o separar como otro equipo. Los cambios se guardan en SQLite y generan eventos de auditoría. Aceptar valores no borra evidencias históricas contradictorias; separarlas resuelve la contradicción cuando eran equipos diferentes. Usa tu cuenta de colaborador; no hay login de supervisor.
 
 ## 4. Customer 360, oportunidades y consultas
 
-Abre un hospital desde `/supervisor/hospitals`. Verifica activos consolidados, evidencias, nombres de colaboradores, notas originales, fecha, factores de confiabilidad y frescura.
+Abre un hospital desde `/hospitals`. Verifica activos consolidados, evidencias, nombres de colaboradores, notas originales, fecha, factores de confiabilidad y frescura. Abre el detalle del activo para su auditoría. Dashboard cuenta activos por separado de las evidencias; Mapa permite país → región → ciudad → hospital sin servicios externos.
 
 Una edad mayor a 7 años activa “Posible oportunidad de renovación”. Es una señal de seguimiento comercial, no una recomendación clínica ni una orden de reemplazo.
 

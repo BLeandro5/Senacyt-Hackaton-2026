@@ -1,5 +1,9 @@
 # Estado de integración — listo para pruebas locales
 
+> Actualización de integración: consulta [INTEGRATION_REPORT.md](INTEGRATION_REPORT.md)
+> para el estado vigente. Las secciones siguientes conservan el checkpoint anterior;
+> voz y navegación Customer 360 ya fueron integradas en el colaborador, sin supervisor.
+
 **Cambio posterior de alcance:** supervisor retirado de la navegación y del login demo. La pantalla principal muestra Observaciones generales de todos los colaboradores, con filtros por país/hospital y búsqueda, y acceso a visitas completas. Las referencias al supervisor abajo describen la implementación anterior, no el flujo vigente. Datos y endpoints conservados; sin borrados.
 
 El flujo principal está preparado para QA manual. Esto NO declara terminada toda la Fase 2 ni lista una aplicación de producción.

@@ -1,4 +1,4 @@
-import { readStored, writeStored, resumePath, clearObservation, type CurrentVisit } from '../../data/visitStore'
+import { readStored, writeStored, resumePath, clearObservation, discardVisitForHospital, type CurrentVisit } from '../../data/visitStore'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Building2, Check, ChevronRight, CircleCheck, Clock3, MapPin, Search, Sparkles } from 'lucide-react'
@@ -20,7 +20,7 @@ const areas = [
 
 function NewVisitPage() {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const current = readStored<CurrentVisit | null>('current-visit', null)
   const [error, setError] = useState('')
@@ -60,11 +60,7 @@ function NewVisitPage() {
   const handleContinue = () => {
     if (!selectedHospital) return
 
-    if (current) {
-      if (current.hospitalId === selectedHospital.id) { navigate(resumePath()); return }
-      setError(`Hay una visita en curso para ${current.hospitalName}. Finalízala o descártala antes de cambiar de hospital.`)
-      return
-    }
+    if (current?.hospitalId === selectedHospital.id) { navigate(resumePath()); return }
     const user = readStored<CurrentUser | null>('demo-user', null)
     const visit = {
       id: crypto.randomUUID(),
@@ -93,7 +89,7 @@ function NewVisitPage() {
 
       <main className="mx-auto max-w-[1380px] px-4 pb-32 pt-7 sm:px-6 lg:px-8 lg:pb-10 lg:pt-9">
         {error && <p role="alert" className="storage-error">{error}</p>}
-        {current && <section className="panel mb-6"><h2 className="font-semibold">Ya tienes una visita en progreso</h2><p className="my-3 text-sm">{current.hospitalName}. Continúa esta visita y finalízala antes de comenzar otra.</p><div className="flex flex-wrap gap-3"><button className="rounded-xl bg-blue-700 px-4 py-3 text-white" onClick={() => navigate(resumePath())}>Continuar visita actual</button><button className="rounded-xl border border-slate-300 px-4 py-3 text-slate-700" onClick={() => { localStorage.removeItem('current-visit'); clearObservation(); navigate(`/visits/new${searchParams.toString() ? `?${searchParams}` : ''}`, { replace: true }) }}>Descartar visita y cambiar hospital</button></div></section>}
+        {current && <section className="panel mb-6"><h2 className="font-semibold">Visita en progreso: {current.hospitalName}</h2><p className="my-3 text-sm">Al continuar con otro hospital, esta visita sin finalizar se descartará automáticamente. Las visitas finalizadas se conservan.</p><button className="rounded-xl bg-blue-700 px-4 py-3 text-white" onClick={() => navigate(resumePath())}>Continuar visita actual</button></section>}
         {/* Progress */}
         <div className="mb-8">
           <div className="mb-3 flex items-center justify-between text-xs">
@@ -193,9 +189,12 @@ function NewVisitPage() {
                       key={hospital.id}
                       type="button"
                       aria-pressed={selected}
-                      onClick={() =>
+                      onClick={() => {
+                        try { discardVisitForHospital(hospital.id) }
+                        catch { setError('No se pudo descartar la visita anterior. Reintenta.'); return }
                         setSelectedHospitalId(hospital.id)
-                      }
+                        setSearchParams({ hospital: hospital.id }, { replace: true })
+                      }}
                       className={`group flex w-full items-center gap-4 px-4 py-4 text-left transition sm:px-5 ${
                         selected
                           ? 'bg-blue-50/70'

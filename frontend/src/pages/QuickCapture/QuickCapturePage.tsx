@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { storageRequest } from '../../data/storageApi'
 import { toEquipmentDrafts, type AnalysisResult } from '../../data/observationApi'
-import { readStored, writeStored, type CurrentVisit } from '../../data/visitStore'
+import { readStored, writeStored, discardVisitForHospital, type CurrentVisit } from '../../data/visitStore'
 import type { CurrentUser } from '../../data/userApi'
 import { resolveHospital } from '../../data/hospitalResolution'
 import LocalVoiceCapture from '../../components/LocalVoiceCapture'
@@ -40,7 +40,8 @@ export default function QuickCapturePage() {
       const hospital = hospitals.find(h => h.id === hospitalId)
       const user = readStored<CurrentUser | null>('demo-user', null)
       if (!hospital || !analysis || !user) return
-      if (readStored<CurrentVisit | null>('current-visit', null)) throw new Error('Finaliza la visita en curso antes de continuar esta captura.')
+      discardVisitForHospital(hospitalId)
+      if (readStored<CurrentVisit | null>('current-visit', null)) throw new Error('Ya tienes una visita en este hospital. Continúala desde Nueva visita.')
       const visit = { id: crypto.randomUUID(), hospitalId, hospitalName: hospital.name, region: hospital.region, area, collaboratorId: user.id, startedAt: new Date().toISOString(), observations: [] }
       writeStored('current-observation', { ...visit, id: crypto.randomUUID(), visitId: visit.id, observation: text, analysis, captureMode: 'chat', capturedAt: new Date().toISOString() })
       writeStored('review-draft', toEquipmentDrafts(analysis))

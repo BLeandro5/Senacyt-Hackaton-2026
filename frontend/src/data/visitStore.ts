@@ -44,6 +44,13 @@ export function readStored<T>(key: string, fallback: T): T {
 export function writeStored(key: string, value: unknown) {
   localStorage.setItem(key, JSON.stringify(value))
 }
+export function discardVisitForHospital(hospitalId: string) {
+  const current = readStored<CurrentVisit | null>('current-visit', null)
+  if (!current || current.hospitalId === hospitalId) return false
+  clearObservation()
+  localStorage.removeItem('current-visit')
+  return true
+}
 export function observationTitle(equipment: Equipment[]) {
   if (equipment.length === 1) return [equipment[0].type || 'Equipo no informado', equipment[0].brand, equipment[0].model].filter(v => v && !/desconocid|no informad/i.test(v)).join(' ')
   const counts = new Map<string, number>()

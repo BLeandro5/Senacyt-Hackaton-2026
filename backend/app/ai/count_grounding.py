@@ -34,6 +34,11 @@ def ground_counts(text: str, equipment: list[EquipmentExtracted]) -> list[Equipm
         modality = 'X-ray' if mention.lastgroup == 'Xray' else mention.lastgroup
         matching = [i for i, item in enumerate(result) if item.modality == modality]
         same_type = [m for m in mentions if m.lastgroup == mention.lastgroup]
+        if len(same_type) == 1 and re.search(
+            r'\b(?:y|and|e)\s+(?:\d+|' + WORDS + r')\s+(?:' + '|'.join(normalize(b) for b in KNOWN_BRANDS) + r')\b',
+            source[mention.end():],
+        ):
+            continue  # First brand's quantity is not the modality total.
         if len(same_type) > 1:
             if count == 1:
                 # An additional single mention is not a request to collapse

@@ -13,6 +13,7 @@ from app.services.installed_base import assets, link_evidence, modality, known
 from app.services.evidence import evidence_metadata
 from app.services.visit_similarity import similar_visits
 from app.services.installation_year import installation_year
+from app.services.training_feedback import save_training_feedback
 
 router = APIRouter(tags=['Storage'])
 
@@ -337,6 +338,8 @@ def save_visit(visit_id: str, payload: VisitRecord, db=Depends(get_db)):
                            (visit_id, obs.id, obs.title, obs.captureMode, obs.capturedAt, obs.originalText, obs.photoName, obs.photoData, i))
                 db.execute('UPDATE observations SET detected_language=?, analysis_json=? WHERE visit_id=? AND id=?',
                            (obs.detectedLanguage, obs.analysis.model_dump_json() if obs.analysis else None, visit_id, obs.id))
+                if payload.completedAt:
+                    save_training_feedback(db, obs)
                 for j, eq in enumerate(obs.equipment):
                     canonical_id = link_evidence(db, payload, obs, eq)
                     statuses, score = evidence_metadata(eq, obs)

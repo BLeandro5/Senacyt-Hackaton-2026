@@ -4,9 +4,10 @@ import { storageRequest } from '../../data/storageApi'
 import type { HospitalOverview } from '../../data/hospitalOverview'
 
 type Landscape = { modality: string; quantity: number; approxAge: string; confidence: { score: number; level: string }; lastUpdated: string | null }
-type Customer360 = HospitalOverview & { assets: unknown[]; landscape: Landscape[]; summary: HospitalOverview['summary'] & { canonicalEquipment: number } }
+type Asset = { id: string; modality: string; manufacturer: string | null; model: string | null; estimated_age: string | null; condition: string | null; evidenceCount: number; independentCollaborators: number; hasConflict: boolean; potentialOpportunity: boolean; reliability: { score: number; freshness: string } }
+type Customer360 = HospitalOverview & { assets: Asset[]; landscape: Landscape[]; summary: HospitalOverview['summary'] & { canonicalEquipment: number } }
 
-const date = (value: string | null | undefined) => value ? new Date(value).toLocaleDateString() : 'Unknown'
+const date = (value: string | null | undefined) => value ? new Date(value).toLocaleDateString() : 'Sin fecha'
 
 export default function Customer360Page() {
   const { hospitalId } = useParams()
@@ -17,13 +18,13 @@ export default function Customer360Page() {
     if (!hospitalId) return
     let active = true
     storageRequest<Customer360>(`/hospitals/${encodeURIComponent(hospitalId)}/overview`)
-      .then(value => { if (active) setData(value) })
+      .then(value => { if (active) { setData(value); setError('') } })
       .catch(cause => { if (active) setError(cause.message) })
     return () => { active = false }
   }, [hospitalId])
 
   if (error) return <main className="mx-auto max-w-6xl p-5 sm:p-8"><p role="alert" className="storage-error">{error}</p></main>
-  if (!data) return <main className="mx-auto max-w-6xl p-5 sm:p-8"><p role="status">Cargando perfil del hospital…</p></main>
+  if (!data || data.hospital.id !== hospitalId) return <main className="mx-auto max-w-6xl p-5 sm:p-8"><p role="status">Cargando perfil del hospital…</p></main>
   const { hospital, summary } = data
   return <main className="mx-auto max-w-6xl p-5 sm:p-8">
     <header className="flex flex-wrap items-start justify-between gap-4">
@@ -36,7 +37,7 @@ export default function Customer360Page() {
 
     <section className="my-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
       {[[summary.canonicalEquipment, 'Equipos canónicos'], [summary.visits, 'Visitas finalizadas'], [summary.observations, 'Observaciones'], [date(summary.lastVisit), 'Última actualización']].map(([value, label]) =>
-        <article className="panel" key={String(label)}><p className="text-2xl font-semibold">{value}</p><p className="mt-1 text-sm text-slate-500">{label}</p></article>)}
+        <article className="panel min-w-0" key={String(label)}><p className={`${typeof value === 'number' ? 'text-2xl' : 'text-lg'} font-semibold`}>{value}</p><p className="mt-1 text-sm text-slate-500">{label}</p></article>)}
     </section>
 
     <section className="panel overflow-x-auto">
@@ -46,6 +47,19 @@ export default function Customer360Page() {
         <tbody>{data.landscape.map(row => <tr className="border-b border-slate-100" key={row.modality}><td className="p-3 font-medium">{row.modality}</td><td className="p-3">{row.quantity}</td><td className="p-3">{row.approxAge}</td><td className="p-3">{row.confidence.level} ({row.confidence.score}/100)</td><td className="p-3">{date(row.lastUpdated)}</td></tr>)}</tbody></table>
         : <p className="mt-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-600">Aún no hay equipos canónicos. Revisa una observación y decide si cada equipo es nuevo o coincide con uno existente.</p>}
     </section>
+
+    <section className="mt-6"><h2 className="text-xl font-semibold">Activos instalados y evidencias</h2><div className="mt-4 grid gap-4 sm:grid-cols-2">
+      {data.assets.map(asset => <article className="panel min-w-0" key={asset.id}>
+        <h3 className="font-semibold">{asset.modality} · {asset.manufacturer || 'Marca desconocida'}</h3>
+        <p className="mt-2 text-sm">{asset.model || 'Modelo desconocido'} · {asset.estimated_age || 'Antigüedad desconocida'}</p>
+        <p className="mt-2 text-sm">{asset.condition || 'Estado desconocido'}</p>
+        <p className="mt-3 text-sm">Confiabilidad de los datos: {asset.reliability.score}/100 · {({Fresh:'Reciente', Aging:'Requiere actualización', Stale:'Desactualizado'} as Record<string,string>)[asset.reliability.freshness] || 'Fecha desconocida'}</p>
+        <p className="mt-2 text-sm text-slate-500">{asset.evidenceCount} evidencias · {asset.independentCollaborators} colaboradores</p>
+        {asset.hasConflict && <p className="mt-2 rounded-xl bg-amber-50 p-3 text-sm text-amber-800">Evidencias en conflicto · requiere revisión humana</p>}
+        {asset.potentialOpportunity && <p className="mt-2 text-sm text-blue-700">Posible oportunidad de renovación · requiere validación</p>}
+        <Link className="mt-3 inline-flex min-h-11 items-center rounded-xl border border-slate-200 px-4 text-sm text-blue-700" to={`/equipment/${encodeURIComponent(asset.id)}`}>Ver evidencias y trazabilidad</Link>
+      </article>)}
+    </div>{!data.assets.length && <p className="mt-3 text-sm text-slate-500">Los activos aparecerán al confirmar las coincidencias de una visita.</p>}</section>
 
     <section className="panel mt-6">
       <h2 className="text-xl font-semibold">Observaciones del hospital</h2>

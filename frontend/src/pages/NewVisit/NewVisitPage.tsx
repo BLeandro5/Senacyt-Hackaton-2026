@@ -130,7 +130,7 @@ function NewVisitPage() {
         {/* Desktop grid */}
         <section className="grid gap-5 lg:grid-cols-12 lg:items-start">
           {/* Hospital selector */}
-          <div className="rounded-[26px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6 lg:col-span-8">
+          <div className="min-w-0 rounded-[26px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6 lg:col-span-8">
             <div className="flex items-start justify-between gap-5">
               <div>
                 <h2 className="text-lg font-semibold text-slate-950">
@@ -178,7 +178,7 @@ function NewVisitPage() {
             </div>
 
             {/* Hospitals */}
-            <div className="overflow-hidden rounded-2xl border border-slate-200">
+            <div className="max-h-[55vh] overflow-y-auto rounded-2xl border border-slate-200">
               {filteredHospitals.length > 0 ? (
                 filteredHospitals.map((hospital, index) => {
                   const selected =

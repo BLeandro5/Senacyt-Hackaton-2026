@@ -1,0 +1,1269 @@
+{
+  "dataset": "backend\\training\\aegis_v1_v2_reviewed",
+  "counts": {
+    "train": 145,
+    "validation": 31,
+    "test": 31
+  },
+  "sha256": {
+    "train_raw.jsonl": "a85527f186fc70fb34373b3d5223a7d9aa11c03475173d3f8e03cb8435d1a22b",
+    "train_chat.jsonl": "a60ae0f1b152cdf503905106125adb3905589c3b774ce9f08deaaaa53248437c",
+    "validation_raw.jsonl": "a3fab129de79a848d00324bc0a422897c0e0f79dea51857ce41eb4578afe2933",
+    "validation_chat.jsonl": "69d7554572da4c08b026cb574d17937d4d5c75ac9bdf230359f96bbbbd6f7e9e",
+    "test_raw.jsonl": "6a8afeabf2ce55d7c5759b187acf5e4f3b1ef0511564aeaa431a8cf1a8ce3447",
+    "test_chat.jsonl": "ba317a22f5eb4efb1c77c94ed78cf1f00d5149ecb03a6a52e794be4332c9013d"
+  },
+  "classifications": {
+    "OK": 207
+  },
+  "cases": [
+    {
+      "id": "AEGIS-V2-0033",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0038",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0043",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0023",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0003",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0053",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0013",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0018",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0058",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0048",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0008",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0050",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0020",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0025",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0045",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0015",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0055",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0030",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0010",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0060",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0005",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0040",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0044",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0009",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0004",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0029",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0019",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0054",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0024",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0039",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0034",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0059",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0026",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0006",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0046",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0041",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0001",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0011",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0051",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0016",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0036",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0031",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0049",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0007",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0013",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0019",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0025",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0055",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0037",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0043",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0001",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0150",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0180",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0190",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0170",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0210",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0220",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0200",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0160",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0138",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0074",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0122",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0066",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0082",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0090",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0106",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0068",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0076",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0100",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0116",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0092",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0132",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0124",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0093",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0069",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0117",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0085",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0125",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0109",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0061",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0011",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0035",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0029",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0053",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0017",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0041",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0005",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0149",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0209",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0199",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0169",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0239",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0179",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0219",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0279",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0255",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0243",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0267",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0291",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0252",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0300",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0288",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0264",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0276",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0266",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0254",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0290",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0278",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0242",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0250",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0257",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0236",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0229",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0243",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0289",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0277",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0241",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0253",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0265",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0294",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0270",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0246",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0282",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0234",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0241",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0227",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0133",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0085",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0077",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0072",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0064",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0031",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0039",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0045",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0120",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0221",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0136",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0228",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0248",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0223",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0015",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0222",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0080",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0128",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0256",
+      "split": "train",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0232",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0202",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0192",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0162",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0172",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0269",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0245",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0281",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0257",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0247",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0254",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0240",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0226",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0114",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0098",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0125",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0061",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0027",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0047",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0249",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0112",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0255",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0242",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0233",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0251",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0033",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0051",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0104",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0130",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0117",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0003",
+      "split": "validation",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0244",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0256",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0280",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0292",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0268",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0298",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0274",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0262",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0250",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0258",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0237",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0230",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0037",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0017",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0057",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0022",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-V2-0002",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0096",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0225",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0093",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0023",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0088",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0101",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0224",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0027",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0057",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0109",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0244",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0021",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0069",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    },
+    {
+      "id": "AEGIS-0009",
+      "split": "test",
+      "classification": "OK",
+      "reasons": []
+    }
+  ],
+  "limitations": [
+    "Automatic audit, not human certification.",
+    "Literal support cannot prove correct attribution across multiple devices.",
+    "Existing synthetic labels omit some reported/observed distinctions.",
+    "No labels or splits changed. Test remains held out."
+  ]
+}

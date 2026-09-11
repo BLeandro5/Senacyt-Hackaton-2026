@@ -8,6 +8,12 @@ SQLite, el frontend y el mapa por coordenadas locales funcionan sin Internet una
 
 ## Componentes opcionales locales
 
+Las correcciones revisadas se conservan en `training_feedback` dentro de SQLite.
+Incluyen texto de observación, propuesta y resultado humano; no incluyen audio,
+contraseñas ni identificadores personales adicionales. La exportación es explícita
+y local, y debe revisarse/anonimizarse antes de construir un dataset futuro.
+No hay entrenamiento online ni cambio automático de pesos.
+
 - Vosk: transcripción de voz en español. El audio se procesa en memoria y no se guarda.
 - Tesseract + Pillow: lectura y preparación de placas fotográficas. El OCR añade texto editable; no identifica el estado de un equipo por imagen ni toma decisiones clínicas.
 

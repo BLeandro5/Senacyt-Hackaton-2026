@@ -49,6 +49,14 @@ CREATE TABLE IF NOT EXISTS audit_events (
  id TEXT PRIMARY KEY, changed_at TEXT NOT NULL, changed_by TEXT NOT NULL,
  entity_id TEXT NOT NULL, action TEXT NOT NULL, details TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS training_feedback (
+ id TEXT PRIMARY KEY,
+ observation_text TEXT NOT NULL,
+ original_prediction TEXT NOT NULL,
+ human_corrected_output TEXT NOT NULL,
+ created_at TEXT NOT NULL,
+ review_status TEXT NOT NULL DEFAULT 'pending'
+);
 '''
 
 LEGACY_HOSPITALS = [

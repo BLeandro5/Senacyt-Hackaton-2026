@@ -36,9 +36,12 @@ class DatasetAdaptationTests(unittest.TestCase):
         prediction['equipment'].append(copy.deepcopy(prediction['equipment'][0]))
         result = evaluate([gold], [{'id': gold['id'], 'prediction': prediction}])
         self.assertEqual(result['device_exact_precision'], 0.5)
+        self.assertEqual(result['invented_devices'], 1)
+        self.assertEqual(result['omitted_devices'], 0)
         self.assertEqual(result['fields']['modality']['accuracy'], 0.5)
         missing = evaluate([gold], [])
         self.assertEqual(missing['device_exact_recall'], 0)
+        self.assertEqual(missing['omitted_devices'], 1)
         self.assertEqual(missing['fields']['modality']['accuracy'], 0)
 
     def test_missing_prediction_does_not_pass_a_negative_case(self):

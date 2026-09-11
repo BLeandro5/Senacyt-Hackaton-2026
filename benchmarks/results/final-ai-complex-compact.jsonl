@@ -1,0 +1,1 @@
+{"error": "HTTPStatusError: Server error '502 Bad Gateway' for url 'http://127.0.0.1:11500/generate'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502", "case": 3, "latency_ms": 170456.630199973}

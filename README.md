@@ -8,6 +8,27 @@ El flujo es completo: **capturar → extraer → revisar → comparar → guarda
 
 ## Contenido
 
+**Preparación de la demo y resultados reales:** [reporte de verificación](benchmarks/FINAL_READINESS.md).
+El aprendizaje futuro consiste en conservar localmente la observación, la propuesta
+de MedPsy y la revisión humana. No hay entrenamiento durante las visitas ni un LoRA
+activado. El modelo actual sigue siendo MedPsy base.
+
+Al finalizar una visita revisada, `training_feedback` guarda un paquete pendiente
+de revisión, sin audio ni credenciales. Para exportarlo desde la raíz:
+
+```powershell
+.\backend\.venv\Scripts\python.exe backend/scripts/export_training_feedback.py --output feedback-para-revisar.jsonl
+```
+
+Este archivo puede contener observaciones reales: mantenerlo local, fuera de Git.
+Revisar y anonimizar los textos, convertir las correcciones al esquema de extracción
+y separar futuros splits antes de un entrenamiento offline explícito. Guardar feedback
+no cambia por sí solo el comportamiento del modelo.
+
+En el equipo Intel i3/Intel UHD comprobado, iniciar QVAC con `$env:QVAC_DEVICE='cpu'`.
+`MODEL_MODE=base` fuerza el modelo base. `MODEL_MODE=lora` requiere una ruta
+`QVAC_LORA_PATH` y un adaptador evaluado; los checkpoints experimentales no son aptos.
+
 - [Qué resuelve](#qué-resuelve)
 - [Arquitectura local](#arquitectura-local)
 - [Requisitos](#requisitos)

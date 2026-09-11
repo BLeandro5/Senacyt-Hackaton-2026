@@ -8,6 +8,7 @@ from collections import Counter
 import json
 from pathlib import Path
 import sys
+import statistics
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app.ai.extractor import ExtractionResult
@@ -105,6 +106,7 @@ def evaluate(gold, predictions):
     fields = {field: {'correct': 0, 'slots': 0, 'invented': 0, 'omitted': 0} for field in FIELDS}
     totals = Counter()
     cases = []
+    latencies = []
     for row in gold:
         expected = valid_prediction(row['expected'])
         prediction = indexed.get(row['id'])
@@ -117,6 +119,13 @@ def evaluate(gold, predictions):
         except (ValueError, TypeError) as exc:
             error = str(exc)
         left, right = expected['equipment'], actual['equipment'] if actual else []
+        left_counts, right_counts = Counter(e['modality'] for e in left), Counter(e['modality'] for e in right)
+        omitted = sum((left_counts - right_counts).values())
+        invented = sum((right_counts - left_counts).values())
+        totals['omitted_devices'] += omitted
+        totals['invented_devices'] += invented
+        if prediction and isinstance(prediction.get('latency_ms'), (int, float)):
+            latencies.append(prediction['latency_ms'])
         totals['expected_devices'] += len(left)
         totals['predicted_devices'] += len(right)
         exact_devices = sum((Counter(map(signature, left)) & Counter(map(signature, right))).values())
@@ -137,11 +146,18 @@ def evaluate(gold, predictions):
                 fields[field]['invented'] += av is not None and ev is None
                 fields[field]['omitted'] += ev is not None and av is None
         cases.append({'id': row['id'], 'counts_match': bool(count_ok), 'exact_extraction': bool(full_ok),
+                      'omitted_devices': omitted, 'invented_devices': invented,
+                      'multiple_modalities': len(left_counts) > 1,
+                      'multiple_same_modality': any(count > 1 for count in left_counts.values()),
                       'expected_count': len(left), 'actual_count': len(right) if actual is not None else None, 'error': error})
     for values in fields.values():
         values['accuracy'] = values['correct'] / values['slots'] if values['slots'] else None
     return {
         'examples': len(gold), 'schema_valid_rate': totals['schema_valid'] / len(gold),
+        'schema_valid': totals['schema_valid'], 'counts_match': totals['counts_match'],
+        'omitted_devices': totals['omitted_devices'], 'invented_devices': totals['invented_devices'],
+        'median_latency_ms': statistics.median(latencies) if latencies else None,
+        'mean_latency_ms': statistics.mean(latencies) if latencies else None,
         'modality_counts_rate': totals['counts_match'] / len(gold),
         'exact_extraction_rate': totals['exact_extraction'] / len(gold),
         'device_exact_precision': totals['exact_devices'] / totals['predicted_devices'] if totals['predicted_devices'] else None,

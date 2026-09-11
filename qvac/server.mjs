@@ -2,7 +2,7 @@ import http from 'node:http'
 import { performance } from 'node:perf_hooks'
 import { stat } from 'node:fs/promises'
 import path from 'node:path'
-import { loadModel, completion, unloadModel, close } from '@qvac/sdk'
+import { loadModel, completion, unloadModel, close, cancel } from '@qvac/sdk'
 import { descriptor, modelName, quantization, verifyModel } from './model.mjs'
 
 // Use the installed weights. Starting the service never downloads a model.
@@ -10,20 +10,25 @@ const modelPath = await verifyModel().catch(error => {
   throw new Error(`Run npm run qvac:download first. ${error.message}`)
 })
 const loraPath = process.env.QVAC_LORA_PATH ? path.resolve(process.env.QVAC_LORA_PATH) : null
-if (loraPath) await stat(loraPath).catch(() => { throw new Error(`QVAC_LORA_PATH does not exist: ${loraPath}`) })
+const modelMode = process.env.MODEL_MODE || (loraPath ? 'lora' : 'base')
+if (!['base', 'lora'].includes(modelMode)) throw new Error('MODEL_MODE must be base or lora')
+if (modelMode === 'lora' && !loraPath) throw new Error('MODEL_MODE=lora requires QVAC_LORA_PATH')
+if (modelMode === 'lora') await stat(loraPath).catch(() => { throw new Error(`QVAC_LORA_PATH does not exist: ${loraPath}`) })
 
 const started = performance.now()
 const modelId = await loadModel({
   modelSrc: modelPath,
   modelType: 'llamacpp-completion',
   modelConfig: {
-    ctx_size: 2048,
-    ...(loraPath ? { lora: loraPath } : {}),
+    // Long multi-device JSON needs room for both the observation and output.
+    ctx_size: 4096,
+    ...(process.env.QVAC_DEVICE ? { device: process.env.QVAC_DEVICE } : {}),
+    ...(modelMode === 'lora' ? { lora: loraPath } : {}),
     temp: 0,
     predict: 256,
     reasoning_budget: 0,
   },
-})
+}, { timeout: 180_000 })
 const modelLoadMs = performance.now() - started
 let busy = false
 
@@ -68,13 +73,14 @@ function firstJsonObject(text) {
 
 const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && req.url === '/health') {
-    return send(res, 200, { status: busy ? 'busy' : 'ready', model: modelName, quantization, sdk_model: descriptor.name, sha256: descriptor.sha256Checksum, model_load_ms: modelLoadMs })
+    return send(res, 200, { status: busy ? 'busy' : 'ready', model: modelName, model_mode: modelMode, quantization, sdk_model: descriptor.name, sha256: descriptor.sha256Checksum, model_load_ms: modelLoadMs })
   }
   if (req.method !== 'POST' || req.url !== '/generate') return send(res, 404, { error: 'Not found' })
   // Browser traffic must go through FastAPI, which owns the CORS policy.
   if (req.headers.origin) return send(res, 403, { error: 'Use the FastAPI endpoint' })
   if (busy) return send(res, 503, { error: 'Model busy; retry when the current analysis finishes' })
   busy = true
+  let deadline
   try {
     const chunks = []
     let size = 0
@@ -90,25 +96,42 @@ const server = http.createServer(async (req, res) => {
     }
     const begin = performance.now()
     let ttft = null
+    const outputBudget = payload.prompt.length < 2200 ? 768 : payload.prompt.length < 3000 ? 1280 : 2048
     const run = completion({
       modelId, history: [{ role: 'user', content: payload.prompt }], stream: true,
-      generationParams: { temp: 0, seed: 42, predict: 256, reasoning_budget: 0 },
+      generationParams: { temp: 0, seed: 42, predict: outputBudget, reasoning_budget: 0 },
+      responseFormat: { type: 'json_object' },
       captureThinking: false,
     })
+    deadline = setTimeout(() => { cancel({ requestId: run.requestId }).catch(() => {}) }, 170_000)
     // Attach rejection handling immediately; events and final share errors.
     run.final.catch(() => {})
-    for await (const event of run.events) {
-      if (event.type === 'contentDelta' && event.text && ttft === null) ttft = performance.now() - begin
+    let content = ''
+    let completedJson = null
+    try { for await (const event of run.events) {
+      if (event.type === 'contentDelta' && event.text) {
+        if (ttft === null) ttft = performance.now() - begin
+        content += event.text
+        if (!completedJson) {
+          completedJson = firstJsonObject(content)
+          if (completedJson) cancel({ requestId: run.requestId }).catch(() => {})
+        }
+      }
+    } } catch (error) {
+      if (!completedJson) throw error
     }
-    const final = await run.final
-    const recoveredJson = final.stopReason === 'length' ? firstJsonObject(final.contentText || '') : null
+    const final = await run.final.catch(error => {
+      if (!completedJson) throw error
+      return { contentText: completedJson, stopReason: 'completed', stats: null }
+    })
+    const recoveredJson = completedJson || firstJsonObject(final.contentText || '')
     if ((final.stopReason === 'length' || final.stopReason === 'cancelled') && !recoveredJson) {
-      return send(res, 502, { error: 'Incomplete model output; shorten the observation' })
+      return send(res, 502, { error: 'Incomplete model output; shorten the observation', stop_reason: final.stopReason, generated_tokens: final.stats?.generatedTokens ?? null })
     }
     send(res, 200, {
       output_text: recoveredJson || final.contentText,
       metrics: {
-        model: modelName, quantization, sdk_model: descriptor.name,
+        model: modelName, model_mode: modelMode, output_budget: outputBudget, quantization, sdk_model: descriptor.name,
         sha256: descriptor.sha256Checksum, reasoning_budget: 0, model_load_ms: modelLoadMs,
         total_ms: performance.now() - begin, ttft_ms: ttft,
         prompt_tokens: final.stats?.promptTokens ?? null,
@@ -121,6 +144,7 @@ const server = http.createServer(async (req, res) => {
     console.error('Local inference failed:', error.message)
     if (!res.headersSent) send(res, 502, { error: 'Local inference failed' })
   } finally {
+    clearTimeout(deadline)
     busy = false
   }
 })

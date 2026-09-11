@@ -11,6 +11,7 @@
     "qvac:benchmark": "backend\\.venv\\Scripts\\python.exe backend\\scripts\\benchmark_multilingual.py",
     "qvac:lora:preflight": "node qvac/finetune-lora.mjs",
     "qvac:lora:train": "node qvac/finetune-lora.mjs --run",
+    "qvac:lora:smoke": "node qvac/finetune-lora.mjs --run --smoke",
     "qvac:hardware": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\capture-hardware.ps1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

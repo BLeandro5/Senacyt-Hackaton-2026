@@ -8,6 +8,31 @@ from app.schemas.equipment import EquipmentExtracted
 
 
 class ExtractionRegressions(unittest.TestCase):
+    @patch('app.ai.extractor.generate_with_qvac')
+    def test_references_and_inspected_subsets_do_not_create_extra_devices(self, generate):
+        import json
+        text = Path(__file__).with_name('fixtures').joinpath('demo_final_es.txt').read_text(encoding='utf-8')
+        generate.return_value = json.dumps({'equipment': [
+            {'modality':'CT','manufacturer':'Philips','model':'Incisive CT','estimated_age_years':8,'age_description':'aproximadamente ocho años','condition':'operativo con fallas'},
+            {'modality':'CT','manufacturer':'Philips'},
+            {'modality':'MRI','manufacturer':'Siemens','model':'Magnetom','configuration':'1.5T','estimated_age_years':6},
+            {'modality':'MRI','manufacturer':'Siemens','model':'Magnetom','configuration':'1.5T'},
+            {'modality':'MRI'}, {'modality':'Ultrasound','manufacturer':'GE','model':'LOGIQ','configuration':'portátil'},
+            {'modality':'Ultrasound','manufacturer':'Philips'}, {'modality':'Ultrasound'}, {'modality':'Ultrasound'}, {'modality':'X-ray','configuration':'móvil'}]})
+        items = extract_equipment(text)
+        self.assertEqual([e.modality for e in items], ['CT']*2+['MRI']*3+['Ultrasound']*4+['X-ray'])
+        self.assertEqual(items[0].model,'Incisive CT')
+        self.assertIn('fallas',items[0].condition)
+        self.assertTrue(all(e.estimated_age_years is None for e in items if e.modality=='MRI'))
+
+    @patch('app.ai.extractor.generate_with_qvac')
+    def test_omitted_modality_word_preserves_brand_subgroups(self, generate):
+        generate.return_value = '{"equipment":[{"modality":"CT","manufacturer":"Philips"}],"facility":"unknown"}'
+        from app.ai.extractor import extract_result
+        result = extract_result('Vi dos tomógrafos Philips y uno Siemens.')
+        self.assertEqual([item.manufacturer for item in result.equipment], ['Philips', 'Philips', 'Siemens'])
+        self.assertIsNone(result.facility)
+
     def test_narrative_subgroup_is_not_total_for_modality(self):
         text = Path(__file__).with_name('fixtures').joinpath('uncertain_inventory_es.txt').read_text(encoding='utf-8')
         items = [EquipmentExtracted(modality='CT', manufacturer=brand)

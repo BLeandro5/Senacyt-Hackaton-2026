@@ -45,11 +45,12 @@ class LocalMediaTests(unittest.TestCase):
             with self.assertRaises(HTTPException) as error: recognize_photo('data:image/png;base64,AAA=')
         self.assertEqual(error.exception.status_code,503)
         self.assertFalse(validate_model('/nonexistent/local/model'))
-    def test_followup_prioritizes_quantity_and_skips_known_brand(self):
+    def test_followup_validates_ai_quantity_and_skips_known_brand(self):
         items=[EquipmentExtracted(modality='Ultrasound',manufacturer='Philips') for _ in range(6)]
         bad=FollowUpCandidate(equipment_index=0,field='manufacturer',question='Marca?')
-        questions=validated_questions(items,'Creo que hay unos seis ultrasonidos Philips.',[bad])
-        self.assertGreater(len(questions),2)
+        quantity=FollowUpCandidate(equipment_index=0,field='quantity',question='¿La cantidad de seis es aproximada?')
+        questions=validated_questions(items,'Creo que hay unos seis ultrasonidos Philips.',[bad,quantity])
+        self.assertEqual(len(questions),1)
         self.assertEqual(questions[0].field,'quantity')
         self.assertNotIn('manufacturer',[q.field for q in questions])
-        self.assertEqual(validated_questions(items,'Dos CT Philips.',[],['0:age'])[0].field,'age')
+        self.assertEqual(validated_questions(items,'Dos CT Philips.',[],['0:age']),[])

@@ -2,20 +2,22 @@
 import { access, appendFile, mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { finetune, loadModel, unloadModel } from '@qvac/sdk'
+import os from 'node:os'
+import { finetune, loadModel, unloadModel, close } from '@qvac/sdk'
 import { finetuneModelPath, verifyFinetuneModel } from './finetune-model.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 // The automatic review is deliberately conservative. Override this only with
 // another reviewed dataset, never with the source draft by accident.
 const datasetRoot = path.resolve(root, process.env.QVAC_TRAINING_DATASET || 'backend/training/aegis_v1_v2_reviewed')
-const outputRoot = path.resolve(root, process.env.QVAC_LORA_OUTPUT || 'artifacts/medpsy-aegis-v1-v2-lora')
+const outputRoot = path.resolve(root, process.env.QVAC_LORA_OUTPUT || (process.argv.includes('--smoke') ? 'artifacts/medpsy-aegis-smoke' : 'artifacts/medpsy-aegis-v1-v2-lora'))
 const train = path.join(datasetRoot, 'train_chat.jsonl')
 const validation = path.join(datasetRoot, 'validation_chat.jsonl')
 const trainRaw = path.join(datasetRoot, 'train_raw.jsonl')
 const validationRaw = path.join(datasetRoot, 'validation_raw.jsonl')
 const allowDraft = process.argv.includes('--allow-draft')
 const run = process.argv.includes('--run')
+const smoke = process.argv.includes('--smoke')
 
 async function exists(target) { try { await access(target); return true } catch { return false } }
 function fail(message) { console.error(`Preflight failed: ${message}`); process.exitCode = 1 }
@@ -30,6 +32,16 @@ if (process.exitCode) process.exit()
 const trainRows = await readRows(train)
 const validationRows = await readRows(validation)
 const reviewRows = [...await readRows(trainRaw), ...await readRows(validationRaw)]
+for (const [rows, reviewed] of [[trainRows, await readRows(trainRaw)], [validationRows, await readRows(validationRaw)]]) {
+  rows.forEach((row, index) => {
+    const messages = row.messages || []
+    if (messages.map(message => message.role).join(',') !== 'system,user,assistant' ||
+        messages[1]?.content !== reviewed[index]?.input ||
+        JSON.stringify(JSON.parse(messages[2]?.content || 'null')) !== JSON.stringify(reviewed[index]?.expected)) {
+      fail(`raw/chat mismatch at example ${index + 1}`)
+    }
+  })
+}
 const drafts = reviewRows.filter(row => row.metadata?.review_status !== 'approved')
 if (!trainRows.length || !validationRows.length) fail('training and validation must not be empty')
 if (trainRows.length !== reviewRows.filter(row => row.metadata.split === 'train').length || validationRows.length !== reviewRows.filter(row => row.metadata.split === 'validation').length) fail('chat and reviewed raw split sizes differ')
@@ -49,20 +61,35 @@ await mkdir(outputRoot, { recursive: true })
 await mkdir(path.join(outputRoot, 'checkpoints'), { recursive: true })
 const manifest = { ...overview, startedAt: new Date().toISOString(), assistantLossOnly: true,
   // QVAC uses token counts here, not numbers of training examples.
-  epochs: 3, learningRate: 0.0001, contextLength: 2048, batchSize: 128, microBatchSize: 128,
+  epochs: smoke ? 1 : 3, learningRate: 0.0001, contextLength: 2048, batchSize: 128, microBatchSize: 128,
+  smoke, actualTrainExamples: smoke ? 2 : trainRows.length, actualValidationExamples: smoke ? 1 : validationRows.length,
+  batchUnit: 'tokens', hardware: { platform: os.platform(), arch: os.arch(), cpu: os.cpus()[0]?.model, memoryBytes: os.totalmem() },
+  device: process.env.QVAC_TRAINING_DEVICE || 'gpu',
   loraRank: 8, loraAlpha: 16, loraModules: 'attn_q,attn_k,attn_v,attn_o,ffn_gate,ffn_up,ffn_down' }
 await writeFile(path.join(outputRoot, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n')
+// Tiny existing examples only; never draw smoke samples from the held-out test.
+let trainingPath = train
+let validationPath = validation
+if (smoke) {
+  trainingPath = path.join(outputRoot, 'smoke-train.jsonl')
+  validationPath = path.join(outputRoot, 'smoke-validation.jsonl')
+  await writeFile(trainingPath, trainRows.slice(0, 2).map(row => JSON.stringify(row)).join('\n') + '\n')
+  await writeFile(validationPath, validationRows.slice(0, 1).map(row => JSON.stringify(row)).join('\n') + '\n')
+}
 let modelId
 try {
-  modelId = await loadModel({ modelSrc: finetuneModelPath, modelType: 'llamacpp-completion', modelConfig: { device: 'gpu', ctx_size: manifest.contextLength } })
+  console.log(JSON.stringify({ type: 'loading', device: manifest.device }))
+  modelId = await loadModel({ modelSrc: finetuneModelPath, modelType: 'llamacpp-completion', modelConfig: { device: manifest.device, ctx_size: manifest.contextLength } }, { timeout: 180_000 })
+  console.log(JSON.stringify({ type: 'loaded', modelId }))
   const handle = finetune({ modelId, options: {
-    trainDatasetDir: train, validation: { type: 'dataset', path: validation }, outputParametersDir: outputRoot,
+    trainDatasetDir: trainingPath, validation: { type: 'dataset', path: validationPath }, outputParametersDir: outputRoot,
     numberOfEpochs: manifest.epochs, learningRate: manifest.learningRate, lrMin: 1e-6,
     contextLength: manifest.contextLength, batchSize: manifest.batchSize, microBatchSize: manifest.microBatchSize,
     assistantLossOnly: true, loraModules: manifest.loraModules, loraRank: 8, loraAlpha: 16, loraSeed: 42,
-    checkpointSaveDir: path.join(outputRoot, 'checkpoints'), checkpointSaveSteps: 25,
+    checkpointSaveDir: path.join(outputRoot, 'checkpoints'), checkpointSaveSteps: smoke ? 1 : 25,
     lrScheduler: 'cosine', warmupRatio: 0.05, warmupRatioSet: true,
-  } })
+  } }, { timeout: 300_000 })
+  handle.result.catch(() => {})
   for await (const tick of handle.progressStream) {
     await appendFile(path.join(outputRoot, 'progress.jsonl'), JSON.stringify(tick) + '\n')
     console.log(JSON.stringify({ type: 'progress', ...tick }))
@@ -76,4 +103,6 @@ try {
   throw error
 } finally {
   if (modelId) await unloadModel({ modelId, clearStorage: false })
+  await writeFile(path.join(outputRoot, 'timing.json'), JSON.stringify({ finishedAt: new Date().toISOString(), durationMs: Date.now() - Date.parse(manifest.startedAt) }, null, 2))
+  await close()
 }

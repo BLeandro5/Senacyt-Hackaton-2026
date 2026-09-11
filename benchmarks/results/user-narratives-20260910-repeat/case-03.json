@@ -1,0 +1,111 @@
+{
+  "case": 3,
+  "text": "Durante una visita al Centro Médico del Pacífico, el técnico de servicio explicó que el hospital ha renovado parte de su infraestructura en los últimos años. En el área de tomografía se encontró un CT Philips que habría sido instalado en 2019 y actualmente está operativo, aunque el personal reporta fallas intermitentes en el software. Cerca de él había otro tomógrafo Siemens mucho más antiguo, probablemente de más de diez años, que se utiliza como respaldo y no siempre está disponible. En resonancia magnética se observaron tres equipos: dos Siemens y uno GE. Uno de los Siemens parece ser de 1.5T y tendría unos ocho años; del segundo no se conoce la antigüedad. El GE fue instalado recientemente según el personal, pero no se obtuvo una fecha exacta. Además, se identificaron dos sistemas de rayos X fijos, tres móviles y al menos seis equipos de ultrasonido, aunque solo cuatro pudieron ser inspeccionados físicamente.",
+  "raw_output": "{\"equipment\":[{\"modality\":\"CT\",\"manufacturer\":\"Philips\",\"model\":null,\"configuration\":\"1.5T\",\"estimated_age_years\":8,\"condition\":\"intermittent software failures\"}],\"facility\":\"Centro Médico del Pacífico\",\"city\":\"Pacífico\",\"country\":\"Mexico\"}",
+  "result": {
+    "equipment": [
+      {
+        "modality": "CT",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": "Operativo"
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 10.0,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": "1.5T",
+        "estimated_age_years": 8.0,
+        "age_description": "Aproximadamente 8 años",
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "X-ray",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      }
+    ],
+    "detected_language": "es",
+    "facility": "Centro Médico del Pacífico",
+    "city": "Pacífico",
+    "country": null,
+    "follow_up_candidates": []
+  },
+  "counts": {
+    "CT": 3,
+    "MRI": 5,
+    "X-ray": 1,
+    "Ultrasound": 1
+  },
+  "seconds": 0.67
+}

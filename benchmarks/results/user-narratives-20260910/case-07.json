@@ -1,0 +1,137 @@
+{
+  "case": 7,
+  "text": "En el Hospital Internacional del Sur se realizó una visita conjunta con personal de ventas y servicio. Se observó que la información sobre los equipos estaba dispersa y algunos colaboradores daban datos diferentes. En tomografía, una persona indicó que había dos equipos Philips, pero durante la visita se encontró un Philips y un Siemens. El Philips tendría alrededor de siete años y el Siemens aproximadamente cuatro, aunque ninguna fecha fue confirmada documentalmente. En resonancia magnética se observó un equipo GE y otro Siemens. El GE estaba operativo y parecía tener unos nueve años; el Siemens había sido instalado recientemente según el técnico, pero no se conocía el año exacto. También se encontraron cuatro ecógrafos Mindray y dos GE, aunque uno de estos últimos estaba guardado y podría estar fuera de servicio. Se recomienda realizar preguntas de seguimiento para confirmar cantidades, antigüedad y estado de algunos equipos antes de consolidar los datos.",
+  "raw_output": "{\"equipment\":[{\"modality\":\"CT\",\"manufacturer\":\"Philips\",\"model\":null,\"configuration\":\"1.5T\",\"estimated_age_years\":7,\"condition\":\"operativo\"},{\"modality\":\"CT\",\"manufacturer\":\"Siemens\",\"model\":null,\"configuration\":null,\"estimated_age_years\":4,\"condition\":\"no_fecha_documento\"},{\"modality\":\"MRI\",\"manufacturer\":\"GE\",\"model\":null,\"configuration\":\"3T\",\"estimated_age_years\":9,\"condition\":\"operativo\"},{\"modality\":\"MRI\",\"manufacturer\":\"Siemens\",\"model\":null,\"configuration\":null,\"estimated_age_years\":null,\"condition\":\"instalado_recientemente\"},{\"modality\":\"Ultrasound\",\"manufacturer\":\"Mindray\",\"model\":null,\"configuration\":\"4D\",\"estimated_age_years\":null,\"condition\":\"guardado_fuera_servicio\"},{\"modality\":\"X-ray\",\"manufacturer\":\"GE\",\"model\":null,\"configuration\":\"64 cortes\",\"estimated_age_years\":null,\"condition\":\"no_fecha_documento\"}],\"facility\":\"Hospital Internacional del Sur\",\"city\":\"null\",\"country\":\"null\"}",
+  "result": {
+    "equipment": [
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 7.0,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 7.0,
+        "age_description": "Aproximadamente 7 años",
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 9.0,
+        "age_description": "Aproximadamente 9 años",
+        "condition": "Operativo"
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 9.0,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "Mindray",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      }
+    ],
+    "detected_language": "es",
+    "facility": "Hospital Internacional del Sur",
+    "city": null,
+    "country": null,
+    "follow_up_candidates": []
+  },
+  "counts": {
+    "CT": 5,
+    "MRI": 4,
+    "Ultrasound": 4
+  },
+  "seconds": 1.9
+}

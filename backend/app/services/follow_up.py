@@ -1,4 +1,4 @@
-"""Two contextual questions maximum; model wording is subordinate to data rules."""
+"""Contextual questions; model wording is subordinate to data rules."""
 from app.schemas.follow_up import FollowUpCandidate
 from app.services.evidence import _quantity_status, UNKNOWN, _normalized
 
@@ -21,5 +21,4 @@ def validated_questions(equipment,text,proposals=(),answered=()):
         # never overrides quantity semantics or introduces a new missing field.
         question=proposed.question if proposed and field!='quantity' else fallback
         result.append(FollowUpCandidate(equipment_index=index,field=field,question=question))
-        if len(result)==2: break
     return result

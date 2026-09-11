@@ -1,0 +1,41 @@
+{
+  "source_cases": 546,
+  "unique_cases": 546,
+  "duplicates": [],
+  "decisions": {
+    "approved": 207,
+    "exclude": 339
+  },
+  "by_source": {
+    "backend\\training\\aegis_260_production_clean": {
+      "approved": 95,
+      "exclude": 151
+    },
+    "backend\\training\\aegis_v2_300_production_draft": {
+      "exclude": 188,
+      "approved": 112
+    }
+  },
+  "splits": {
+    "train": 145,
+    "validation": 31,
+    "test": 31
+  },
+  "template_families": 125,
+  "approved_template_families": 71,
+  "template_overlap_between_splits": 0,
+  "approved_difficulty": {
+    "simple": 77,
+    "adversarial": 66,
+    "medium": 44,
+    "complex": 20
+  },
+  "weights_trained": false,
+  "limitations": [
+    "Revisión automática de proyección, no certificación humana de los labels.",
+    "Particiones nuevas agrupadas por plantilla normalizada; las métricas antiguas no son comparables.",
+    "Puede haber similitud semántica residual entre familias distintas.",
+    "Los estados no soportados quedan excluidos. No se amplía la app.",
+    "Los casos excluidos se conservan completos; no sirven aún para entrenar el esquema actual."
+  ]
+}

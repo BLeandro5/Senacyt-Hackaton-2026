@@ -1,0 +1,966 @@
+{
+  "source": "training\\aegis_260_production_clean",
+  "review_file": "training\\aegis_260_production_clean\\automatic-review-decisions.json",
+  "splits": {
+    "train": 35,
+    "validation": 12,
+    "test": 8
+  },
+  "excluded": [
+    {
+      "id": "AEGIS-0155",
+      "split": "train",
+      "reason": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    {
+      "id": "AEGIS-0171",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0054",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0177",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0214",
+      "split": "train",
+      "reason": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0192",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0103",
+      "split": "train",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0056",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0152",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0068",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0238",
+      "split": "train",
+      "reason": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0249",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0094",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0105",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0250",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0183",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0136",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0089",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0205",
+      "split": "train",
+      "reason": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    {
+      "id": "AEGIS-0118",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0123",
+      "split": "train",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0257",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0234",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0134",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0252",
+      "split": "train",
+      "reason": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0075",
+      "split": "train",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0231",
+      "split": "train",
+      "reason": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0248",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0206",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0133",
+      "split": "train",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0172",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0187",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0121",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0042",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0202",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0144",
+      "split": "train",
+      "reason": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0079",
+      "split": "train",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0046",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0080",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0162",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0208",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0241",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0095",
+      "split": "train",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0167",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0256",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0207",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0084",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0115",
+      "split": "train",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0044",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0258",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0141",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0100",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0212",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0168",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0112",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0092",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0159",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0135",
+      "split": "train",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0129",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0117",
+      "split": "train",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0008",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0096",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0253",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk"
+    },
+    {
+      "id": "AEGIS-0216",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0195",
+      "split": "train",
+      "reason": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    {
+      "id": "AEGIS-0085",
+      "split": "train",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0110",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0067",
+      "split": "train",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0132",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0040",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0050",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0018",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0203",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0036",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0113",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0151",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0188",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0101",
+      "split": "train",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0087",
+      "split": "train",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0251",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0020",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0038",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0052",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0174",
+      "split": "train",
+      "reason": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0245",
+      "split": "train",
+      "reason": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0071",
+      "split": "train",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0126",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0146",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0030",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0184",
+      "split": "train",
+      "reason": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0218",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0032",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0165",
+      "split": "train",
+      "reason": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    {
+      "id": "AEGIS-0142",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0069",
+      "split": "train",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0224",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain"
+    },
+    {
+      "id": "AEGIS-0072",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0209",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0128",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0028",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0193",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0024",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0196",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0186",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0244",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0016",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0194",
+      "split": "train",
+      "reason": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0097",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0191",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0120",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0104",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0237",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0161",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0166",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0065",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0228",
+      "split": "train",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0219",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0232",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk"
+    },
+    {
+      "id": "AEGIS-0119",
+      "split": "train",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0064",
+      "split": "train",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0107",
+      "split": "train",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0073",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0239",
+      "split": "train",
+      "reason": "ambiguous_tag:duplicate_risk"
+    },
+    {
+      "id": "AEGIS-0175",
+      "split": "train",
+      "reason": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    {
+      "id": "AEGIS-0156",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0091",
+      "split": "train",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0227",
+      "split": "train",
+      "reason": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0137",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0060",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0081",
+      "split": "train",
+      "reason": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0164",
+      "split": "train",
+      "reason": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0004",
+      "split": "train",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0236",
+      "split": "train",
+      "reason": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0111",
+      "split": "train",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0173",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0229",
+      "split": "validation",
+      "reason": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0127",
+      "split": "validation",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0048",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0014",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0002",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0246",
+      "split": "validation",
+      "reason": "ambiguous_tag:duplicate_risk"
+    },
+    {
+      "id": "AEGIS-0176",
+      "split": "validation",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0143",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0211",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0086",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0148",
+      "split": "validation",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0201",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0131",
+      "split": "validation",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0108",
+      "split": "validation",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0139",
+      "split": "validation",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0145",
+      "split": "validation",
+      "reason": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    {
+      "id": "AEGIS-0062",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0109",
+      "split": "validation",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0006",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0169",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0125",
+      "split": "validation",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0063",
+      "split": "validation",
+      "reason": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0034",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0070",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0179",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0255",
+      "split": "validation",
+      "reason": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0010",
+      "split": "test",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0182",
+      "split": "test",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0012",
+      "split": "test",
+      "reason": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0243",
+      "split": "test",
+      "reason": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0093",
+      "split": "test",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0242",
+      "split": "test",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0149",
+      "split": "test",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0213",
+      "split": "test",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0102",
+      "split": "test",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0022",
+      "split": "test",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0163",
+      "split": "test",
+      "reason": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0077",
+      "split": "test",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0181",
+      "split": "test",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0197",
+      "split": "test",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0026",
+      "split": "test",
+      "reason": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0259",
+      "split": "test",
+      "reason": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0217",
+      "split": "test",
+      "reason": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0124",
+      "split": "test",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0204",
+      "split": "test",
+      "reason": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0230",
+      "split": "test",
+      "reason": "important_note_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0061",
+      "split": "test",
+      "reason": "quantity_statement_not_in_production_schema"
+    },
+    {
+      "id": "AEGIS-0076",
+      "split": "test",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0116",
+      "split": "test",
+      "reason": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    {
+      "id": "AEGIS-0260",
+      "split": "test",
+      "reason": "ambiguous_tag:duplicate_risk"
+    },
+    {
+      "id": "AEGIS-0083",
+      "split": "test",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0198",
+      "split": "test",
+      "reason": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    {
+      "id": "AEGIS-0215",
+      "split": "test",
+      "reason": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    {
+      "id": "AEGIS-0088",
+      "split": "test",
+      "reason": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    {
+      "id": "AEGIS-0078",
+      "split": "test",
+      "reason": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    {
+      "id": "AEGIS-0099",
+      "split": "test",
+      "reason": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    }
+  ]
+}

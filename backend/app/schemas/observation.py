@@ -44,7 +44,7 @@ class EquipmentAnalysisMetadata(BaseModel):
 
 
 class ObservationAnalysisResponse(BaseModel):
-    follow_up_candidates: List[FollowUpCandidate] = Field(default_factory=list,max_length=2)
+    follow_up_candidates: List[FollowUpCandidate] = Field(default_factory=list)
     detected_language: str = 'other'
     facility: str | None = None
     city: str | None = None

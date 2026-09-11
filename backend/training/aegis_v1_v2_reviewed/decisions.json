@@ -1,0 +1,2190 @@
+{
+  "format": "aegis-label-review-v1",
+  "reviewer": "automatic-projection-v2",
+  "decisions": {
+    "AEGIS-0033": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0222": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0155": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: ambiguous_modality; Equipo 1: nota con información pendiente: Posible CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Probable GE; 1.5T; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No inspeccionado; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado"
+    },
+    "AEGIS-0171": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 3: nota con información pendiente: 1.5T; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 7: nota con información pendiente: Portátil; marca ilegible"
+    },
+    "AEGIS-0054": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0177": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 1: nota con información pendiente: Posible duplicado con registro previo; Equipo 2: nota con información pendiente: Descrito como nuevo; Equipo 3: nota con información pendiente: Portátil"
+    },
+    "AEGIS-0214": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reportes contradictorios sobre fallas; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Marca no visible"
+    },
+    "AEGIS-0192": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: inventory_conflict; Equipo 2: nota con información pendiente: Reciente según personal; sin fecha; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Mantenimiento externo; Equipo 5: nota con información pendiente: Posible duplicado por movilidad"
+    },
+    "AEGIS-0247": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0103": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0056": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0152": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: inventory_conflict; Equipo 2: nota con información pendiente: Reciente según personal; sin fecha; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Mantenimiento externo; Equipo 5: nota con información pendiente: Posible duplicado por movilidad"
+    },
+    "AEGIS-0068": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0009": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0238": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 2: conteo abierto no representable; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable"
+    },
+    "AEGIS-0249": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0094": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0105": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0049": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0250": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0225": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0183": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Sede secundaria; no inspeccionado; Equipo 5: nota con información pendiente: 3T; relativamente nuevo; Equipo 6: estado con evidencia mixta; pendiente de corrección; Equipo 6: nota con información pendiente: 1.5T; posible renovación"
+    },
+    "AEGIS-0136": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0089": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0205": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: ambiguous_modality; Equipo 1: nota con información pendiente: Posible CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Probable GE; 1.5T; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No inspeccionado; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado"
+    },
+    "AEGIS-0118": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0123": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0257": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0234": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0134": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0252": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 2: conteo abierto no representable; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable"
+    },
+    "AEGIS-0075": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0231": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 2: conteo abierto no representable; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable"
+    },
+    "AEGIS-0248": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0007": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0206": {
+      "decision": "exclude",
+      "note": "Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil de urgencias; no inspeccionado; Equipo 6: nota con información pendiente: Mantenimiento programado futuro; no marcar como en mantenimiento"
+    },
+    "AEGIS-0133": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0172": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: inventory_conflict; Equipo 2: nota con información pendiente: Reciente según personal; sin fecha; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Mantenimiento externo; Equipo 5: nota con información pendiente: Posible duplicado por movilidad"
+    },
+    "AEGIS-0187": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 1: nota con información pendiente: Posible duplicado con registro previo; Equipo 2: nota con información pendiente: Descrito como nuevo; Equipo 3: nota con información pendiente: Portátil"
+    },
+    "AEGIS-0121": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0015": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0042": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0202": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: inventory_conflict; Equipo 2: nota con información pendiente: Reciente según personal; sin fecha; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Mantenimiento externo; Equipo 5: nota con información pendiente: Posible duplicado por movilidad"
+    },
+    "AEGIS-0144": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reportes contradictorios sobre fallas; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Marca no visible"
+    },
+    "AEGIS-0079": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0046": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0080": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0162": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: inventory_conflict; Equipo 2: nota con información pendiente: Reciente según personal; sin fecha; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Mantenimiento externo; Equipo 5: nota con información pendiente: Posible duplicado por movilidad"
+    },
+    "AEGIS-0208": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Equipo 2: nota con información pendiente: Aviso de servicio pendiente; condición no confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Posible tercer equipo en quirófano"
+    },
+    "AEGIS-0241": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0013": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0095": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0167": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 1: nota con información pendiente: Posible duplicado con registro previo; Equipo 2: nota con información pendiente: Descrito como nuevo; Equipo 3: nota con información pendiente: Portátil"
+    },
+    "AEGIS-0256": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0207": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 1: nota con información pendiente: Posible duplicado con registro previo; Equipo 2: nota con información pendiente: Descrito como nuevo; Equipo 3: nota con información pendiente: Portátil"
+    },
+    "AEGIS-0084": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0115": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0044": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0258": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0141": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 3: nota con información pendiente: 1.5T; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 7: nota con información pendiente: Portátil; marca ilegible"
+    },
+    "AEGIS-0100": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0212": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: inventory_conflict; Equipo 2: nota con información pendiente: Reciente según personal; sin fecha; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Mantenimiento externo; Equipo 5: nota con información pendiente: Posible duplicado por movilidad"
+    },
+    "AEGIS-0168": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Equipo 2: nota con información pendiente: Aviso de servicio pendiente; condición no confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Posible tercer equipo en quirófano"
+    },
+    "AEGIS-0112": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0092": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0159": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Inspección limitada; marca no visible; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No convertir a edad numérica"
+    },
+    "AEGIS-0135": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0129": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0117": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0008": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0096": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0253": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk"
+    },
+    "AEGIS-0233": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0045": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0011": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0216": {
+      "decision": "exclude",
+      "note": "Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil de urgencias; no inspeccionado; Equipo 6: nota con información pendiente: Mantenimiento programado futuro; no marcar como en mantenimiento"
+    },
+    "AEGIS-0195": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: ambiguous_modality; Equipo 1: nota con información pendiente: Posible CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Probable GE; 1.5T; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No inspeccionado; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado"
+    },
+    "AEGIS-0035": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0085": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0110": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0067": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0132": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0031": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0040": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0050": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0018": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0203": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Sede secundaria; no inspeccionado; Equipo 5: nota con información pendiente: 3T; relativamente nuevo; Equipo 6: estado con evidencia mixta; pendiente de corrección; Equipo 6: nota con información pendiente: 1.5T; posible renovación"
+    },
+    "AEGIS-0036": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0113": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0151": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 3: nota con información pendiente: 1.5T; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 7: nota con información pendiente: Portátil; marca ilegible"
+    },
+    "AEGIS-0188": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Equipo 2: nota con información pendiente: Aviso de servicio pendiente; condición no confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Posible tercer equipo en quirófano"
+    },
+    "AEGIS-0101": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0087": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0251": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0020": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0038": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0052": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0174": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reportes contradictorios sobre fallas; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Marca no visible"
+    },
+    "AEGIS-0245": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 2: conteo abierto no representable; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable"
+    },
+    "AEGIS-0071": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0126": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0146": {
+      "decision": "exclude",
+      "note": "Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil de urgencias; no inspeccionado; Equipo 6: nota con información pendiente: Mantenimiento programado futuro; no marcar como en mantenimiento"
+    },
+    "AEGIS-0029": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0030": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0184": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reportes contradictorios sobre fallas; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Marca no visible"
+    },
+    "AEGIS-0218": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Equipo 2: nota con información pendiente: Aviso de servicio pendiente; condición no confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Posible tercer equipo en quirófano"
+    },
+    "AEGIS-0032": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0053": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0138": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0165": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: ambiguous_modality; Equipo 1: nota con información pendiente: Posible CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Probable GE; 1.5T; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No inspeccionado; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado"
+    },
+    "AEGIS-0074": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0057": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0130": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0019": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0142": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: inventory_conflict; Equipo 2: nota con información pendiente: Reciente según personal; sin fecha; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Mantenimiento externo; Equipo 5: nota con información pendiente: Posible duplicado por movilidad"
+    },
+    "AEGIS-0069": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0224": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0072": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0209": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Inspección limitada; marca no visible; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No convertir a edad numérica"
+    },
+    "AEGIS-0128": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0028": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0193": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Sede secundaria; no inspeccionado; Equipo 5: nota con información pendiente: 3T; relativamente nuevo; Equipo 6: estado con evidencia mixta; pendiente de corrección; Equipo 6: nota con información pendiente: 1.5T; posible renovación"
+    },
+    "AEGIS-0024": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0196": {
+      "decision": "exclude",
+      "note": "Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil de urgencias; no inspeccionado; Equipo 6: nota con información pendiente: Mantenimiento programado futuro; no marcar como en mantenimiento"
+    },
+    "AEGIS-0186": {
+      "decision": "exclude",
+      "note": "Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil de urgencias; no inspeccionado; Equipo 6: nota con información pendiente: Mantenimiento programado futuro; no marcar como en mantenimiento"
+    },
+    "AEGIS-0244": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0016": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0194": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reportes contradictorios sobre fallas; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Marca no visible"
+    },
+    "AEGIS-0039": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0150": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0003": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0097": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0191": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 3: nota con información pendiente: 1.5T; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 7: nota con información pendiente: Portátil; marca ilegible"
+    },
+    "AEGIS-0017": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0120": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0021": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0104": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0237": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0161": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 3: nota con información pendiente: 1.5T; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 7: nota con información pendiente: Portátil; marca ilegible"
+    },
+    "AEGIS-0166": {
+      "decision": "exclude",
+      "note": "Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil de urgencias; no inspeccionado; Equipo 6: nota con información pendiente: Mantenimiento programado futuro; no marcar como en mantenimiento"
+    },
+    "AEGIS-0065": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0228": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0219": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Inspección limitada; marca no visible; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No convertir a edad numérica"
+    },
+    "AEGIS-0232": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk"
+    },
+    "AEGIS-0180": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0119": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0122": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0190": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0066": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0064": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0107": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0073": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0239": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk"
+    },
+    "AEGIS-0082": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0114": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0175": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: ambiguous_modality; Equipo 1: nota con información pendiente: Posible CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Probable GE; 1.5T; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No inspeccionado; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado"
+    },
+    "AEGIS-0051": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0156": {
+      "decision": "exclude",
+      "note": "Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil de urgencias; no inspeccionado; Equipo 6: nota con información pendiente: Mantenimiento programado futuro; no marcar como en mantenimiento"
+    },
+    "AEGIS-0091": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0227": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0137": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0027": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0060": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0081": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Posiblemente retirado; no confirmado"
+    },
+    "AEGIS-0164": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reportes contradictorios sobre fallas; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Marca no visible"
+    },
+    "AEGIS-0004": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0236": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0111": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0221": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0173": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Sede secundaria; no inspeccionado; Equipo 5: nota con información pendiente: 3T; relativamente nuevo; Equipo 6: estado con evidencia mixta; pendiente de corrección; Equipo 6: nota con información pendiente: 1.5T; posible renovación"
+    },
+    "AEGIS-0025": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0223": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0254": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0055": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0170": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0229": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0127": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0090": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0048": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0014": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0002": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0246": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk"
+    },
+    "AEGIS-0176": {
+      "decision": "exclude",
+      "note": "Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil de urgencias; no inspeccionado; Equipo 6: nota con información pendiente: Mantenimiento programado futuro; no marcar como en mantenimiento"
+    },
+    "AEGIS-0143": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Sede secundaria; no inspeccionado; Equipo 5: nota con información pendiente: 3T; relativamente nuevo; Equipo 6: estado con evidencia mixta; pendiente de corrección; Equipo 6: nota con información pendiente: 1.5T; posible renovación"
+    },
+    "AEGIS-0211": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 3: nota con información pendiente: 1.5T; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 7: nota con información pendiente: Portátil; marca ilegible"
+    },
+    "AEGIS-0106": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0086": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0041": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0148": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Equipo 2: nota con información pendiente: Aviso de servicio pendiente; condición no confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Posible tercer equipo en quirófano"
+    },
+    "AEGIS-0201": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 3: nota con información pendiente: 1.5T; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 7: nota con información pendiente: Portátil; marca ilegible"
+    },
+    "AEGIS-0131": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0240": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0108": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0139": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0145": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: ambiguous_modality; Equipo 1: nota con información pendiente: Posible CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Probable GE; 1.5T; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No inspeccionado; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado"
+    },
+    "AEGIS-0210": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0005": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0062": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0109": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0220": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0006": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0169": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Inspección limitada; marca no visible; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No convertir a edad numérica"
+    },
+    "AEGIS-0125": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0063": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Ubicado en otra sede"
+    },
+    "AEGIS-0034": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0070": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0179": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Inspección limitada; marca no visible; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No convertir a edad numérica"
+    },
+    "AEGIS-0255": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0010": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0182": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: inventory_conflict; Equipo 2: nota con información pendiente: Reciente según personal; sin fecha; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Mantenimiento externo; Equipo 5: nota con información pendiente: Posible duplicado por movilidad"
+    },
+    "AEGIS-0023": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0012": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0243": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0093": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0242": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0149": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Inspección limitada; marca no visible; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No convertir a edad numérica"
+    },
+    "AEGIS-0213": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Sede secundaria; no inspeccionado; Equipo 5: nota con información pendiente: 3T; relativamente nuevo; Equipo 6: estado con evidencia mixta; pendiente de corrección; Equipo 6: nota con información pendiente: 1.5T; posible renovación"
+    },
+    "AEGIS-0102": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0022": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: No inspeccionado directamente"
+    },
+    "AEGIS-0163": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Sede secundaria; no inspeccionado; Equipo 5: nota con información pendiente: 3T; relativamente nuevo; Equipo 6: estado con evidencia mixta; pendiente de corrección; Equipo 6: nota con información pendiente: 1.5T; posible renovación"
+    },
+    "AEGIS-0077": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0181": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 3: nota con información pendiente: 1.5T; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 7: nota con información pendiente: Portátil; marca ilegible"
+    },
+    "AEGIS-0197": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 1: nota con información pendiente: Posible duplicado con registro previo; Equipo 2: nota con información pendiente: Descrito como nuevo; Equipo 3: nota con información pendiente: Portátil"
+    },
+    "AEGIS-0026": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 2: la salida pierde la distinción reportado/observado"
+    },
+    "AEGIS-0259": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 2: conteo abierto no representable; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable"
+    },
+    "AEGIS-0098": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0217": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Equipo 1: nota con información pendiente: Posible duplicado con registro previo; Equipo 2: nota con información pendiente: Descrito como nuevo; Equipo 3: nota con información pendiente: Portátil"
+    },
+    "AEGIS-0124": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0037": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0204": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: at_least; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reportes contradictorios sobre fallas; Equipo 3: conteo abierto no representable; Equipo 4: conteo abierto no representable; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Marca no visible"
+    },
+    "AEGIS-0230": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0061": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0226": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0200": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0160": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0043": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0076": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0116": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Fabricante probable, no confirmado"
+    },
+    "AEGIS-0260": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk"
+    },
+    "AEGIS-0083": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0198": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Equipo 2: nota con información pendiente: Aviso de servicio pendiente; condición no confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Posible tercer equipo en quirófano"
+    },
+    "AEGIS-0215": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: ambiguous_modality; Equipo 1: nota con información pendiente: Posible CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Probable GE; 1.5T; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No inspeccionado; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado"
+    },
+    "AEGIS-0088": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-0078": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-0099": {
+      "decision": "exclude",
+      "note": "Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No observados; en otras áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No observados; en otras áreas"
+    },
+    "AEGIS-0001": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0295": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 1: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 2: conteo abierto no representable; Equipo 2: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 3: conteo abierto no representable; Equipo 3: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 4: conteo abierto no representable; Equipo 4: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Conteo observado mínimo; total reportado abierto"
+    },
+    "AEGIS-V2-0044": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0033": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0093": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0128": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0223": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0118": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0279": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0294": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0270": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0050": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0246": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0123": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0066": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0075": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0014": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0185": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0020": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0025": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0215": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0238": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0154": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0139": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0261": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: source_uncertainty; Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Fuente expresó duda y posible confusión"
+    },
+    "AEGIS-V2-0266": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0056": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0178": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0068": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0037": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0254": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0201": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0076": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0149": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0272": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: identity_conflict; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Conflicto con registro previo Canon; posible reemplazo o activo distinto"
+    },
+    "AEGIS-V2-0163": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: modalidad fuera del conjunto actual de entrenamiento; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0094": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0009": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0104": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0080": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0027": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0038": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0289": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0189": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0108": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0113": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0230": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados"
+    },
+    "AEGIS-V2-0196": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Registro electrónico indica Samsung; posible reemplazo o conflicto; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0150": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados"
+    },
+    "AEGIS-V2-0157": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible Ultrasound; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0255": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0155": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0184": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: modalidad fuera del conjunto actual de entrenamiento; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0290": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0103": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0004": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0171": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0029": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0183": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0168": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0069": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0052": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado no soportado; se omite este caso del entrenamiento"
+    },
+    "AEGIS-V2-0269": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0164": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0286": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0022": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0240": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados; Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0049": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0146": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica GE; posible reemplazo o conflicto; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0117": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0026": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0232": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0205": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 5: modalidad fuera del conjunto actual de entrenamiento; Equipo 6: modalidad fuera del conjunto actual de entrenamiento; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0110": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0006": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0165": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0083": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0102": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0298": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0153": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0101": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0082": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0019": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0070": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0145": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0209": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0287": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Reportado por otro colaborador; no inspeccionado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Reportado por otro colaborador; no inspeccionado"
+    },
+    "AEGIS-V2-0202": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0007": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0043": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0245": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0045": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0199": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0284": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: identity_conflict; Equipo 1: nota con información pendiente: Conflicto con registro previo Fujifilm; posible reemplazo o activo distinto"
+    },
+    "AEGIS-V2-0065": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0173": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: modalidad fuera del conjunto actual de entrenamiento; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0046": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0015": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0085": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0127": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0054": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0278": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0175": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0147": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible C-Arm; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0121": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0259": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 1: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 2: conteo abierto no representable; Equipo 2: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 3: conteo abierto no representable; Equipo 3: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 4: conteo abierto no representable; Equipo 4: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Conteo observado mínimo; total reportado abierto"
+    },
+    "AEGIS-V2-0002": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0097": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0186": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica GE; posible reemplazo o conflicto; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0024": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0105": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados; Equipo 2: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0143": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0055": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0126": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0220": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados"
+    },
+    "AEGIS-V2-0100": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0106": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0041": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0030": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0234": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0001": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0161": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0277": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0235": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0193": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0241": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0120": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0249": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: source_uncertainty; Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Fuente expresó duda y posible confusión"
+    },
+    "AEGIS-V2-0293": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0021": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0281": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0218": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0071": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0222": {
+      "decision": "exclude",
+      "note": "Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0167": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible PET/CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0229": {
+      "decision": "exclude",
+      "note": "Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0170": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados; Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0203": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0252": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0116": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0214": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0088": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0210": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados"
+    },
+    "AEGIS-V2-0017": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0077": {
+      "decision": "exclude",
+      "note": "Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0169": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0023": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0011": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0274": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0192": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0003": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0012": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado no soportado; se omite este caso del entrenamiento"
+    },
+    "AEGIS-V2-0078": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0244": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0271": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 1: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 2: conteo abierto no representable; Equipo 2: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 3: conteo abierto no representable; Equipo 3: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 4: conteo abierto no representable; Equipo 4: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Conteo observado mínimo; total reportado abierto"
+    },
+    "AEGIS-V2-0098": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0039": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0107": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0151": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0089": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0158": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0092": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0212": {
+      "decision": "exclude",
+      "note": "Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 5: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0225": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0251": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Reportado por otro colaborador; no inspeccionado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Reportado por otro colaborador; no inspeccionado"
+    },
+    "AEGIS-V2-0091": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0160": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados"
+    },
+    "AEGIS-V2-0152": {
+      "decision": "exclude",
+      "note": "Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0063": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0273": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: source_uncertainty; Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Fuente expresó duda y posible confusión"
+    },
+    "AEGIS-V2-0182": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0051": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0256": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0262": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0248": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: identity_conflict; Equipo 1: nota con información pendiente: Conflicto con registro previo Canon; posible reemplazo o activo distinto"
+    },
+    "AEGIS-V2-0053": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0243": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0180": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados; Equipo 2: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0013": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0095": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0267": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0239": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0028": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0136": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0138": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0285": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: source_uncertainty; Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Fuente expresó duda y posible confusión"
+    },
+    "AEGIS-V2-0231": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0263": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Reportado por otro colaborador; no inspeccionado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Reportado por otro colaborador; no inspeccionado"
+    },
+    "AEGIS-V2-0016": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0197": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0042": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0216": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica Samsung; posible reemplazo o conflicto; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0275": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Reportado por otro colaborador; no inspeccionado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Reportado por otro colaborador; no inspeccionado"
+    },
+    "AEGIS-V2-0296": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: identity_conflict; Equipo 1: nota con información pendiente: Conflicto con registro previo Canon; posible reemplazo o activo distinto"
+    },
+    "AEGIS-V2-0119": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0191": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: modalidad fuera del conjunto actual de entrenamiento; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0140": {
+      "decision": "exclude",
+      "note": "Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0125": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0162": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0018": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0086": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0300": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0064": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0207": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible X-Ray; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0010": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0258": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0280": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0072": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0179": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0206": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica GE; posible reemplazo o conflicto; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0190": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados"
+    },
+    "AEGIS-V2-0036": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0035": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0283": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 1: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 2: conteo abierto no representable; Equipo 2: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 3: conteo abierto no representable; Equipo 3: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 4: conteo abierto no representable; Equipo 4: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Conteo observado mínimo; total reportado abierto"
+    },
+    "AEGIS-V2-0217": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible C-Arm; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0074": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0297": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: source_uncertainty; Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Fuente expresó duda y posible confusión"
+    },
+    "AEGIS-V2-0058": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0219": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0134": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0115": {
+      "decision": "exclude",
+      "note": "Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0233": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: modalidad fuera del conjunto actual de entrenamiento; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0176": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica Samsung; posible reemplazo o conflicto; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0031": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0081": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0062": {
+      "decision": "exclude",
+      "note": "Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra sede; no inspeccionado"
+    },
+    "AEGIS-V2-0237": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible PET/CT; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0198": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0060": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0137": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0148": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0132": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0159": {
+      "decision": "exclude",
+      "note": "Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0195": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Paradas espontáneas reportadas; Equipo 2: nota con información pendiente: Aparentemente nuevo; sin fecha confirmada; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: En otra planta; no inspeccionado; Equipo 6: nota con información pendiente: Almacenado; estado activo no confirmado"
+    },
+    "AEGIS-V2-0282": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0200": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Solo presencia visible; estado y edad reportados"
+    },
+    "AEGIS-V2-0111": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0211": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0099": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0292": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0288": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0257": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0299": {
+      "decision": "exclude",
+      "note": "Equipo 1: la salida pierde la distinción reportado/observado; Equipo 1: nota con información pendiente: Reportado por otro colaborador; no inspeccionado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Reportado por otro colaborador; no inspeccionado"
+    },
+    "AEGIS-V2-0208": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0213": {
+      "decision": "exclude",
+      "note": "Equipo 2: nota con información pendiente: Presencia confirmada; marca no visible; Equipo 3: nota con información pendiente: Desgaste exterior; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: No inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: No inspeccionado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Pendiente de baja; instalación actual no confirmada"
+    },
+    "AEGIS-V2-0226": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica GE; posible reemplazo o conflicto; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0268": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0227": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible Ultrasound; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0057": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0156": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica Samsung; posible reemplazo o conflicto; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0264": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0174": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0142": {
+      "decision": "exclude",
+      "note": "Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 5: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0122": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0135": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0242": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0124": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0172": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0034": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0236": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica Samsung; posible reemplazo o conflicto; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0079": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección"
+    },
+    "AEGIS-V2-0112": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0221": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0133": {
+      "decision": "exclude",
+      "note": "Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0194": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 2: nota con información pendiente: Placa no legible; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0032": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado no soportado; se omite este caso del entrenamiento"
+    },
+    "AEGIS-V2-0005": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0166": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: manufacturer_conflict; Equipo 1: nota con información pendiente: Registro electrónico indica GE; posible reemplazo o conflicto; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: estado con evidencia mixta; pendiente de corrección; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: En bodega; no inspeccionado"
+    },
+    "AEGIS-V2-0144": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0228": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0087": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0260": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: identity_conflict; Equipo 1: nota con información pendiente: Conflicto con registro previo Fujifilm; posible reemplazo o activo distinto"
+    },
+    "AEGIS-V2-0247": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: open_count; Equipo 1: conteo abierto no representable; Equipo 1: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 2: conteo abierto no representable; Equipo 2: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 3: conteo abierto no representable; Equipo 3: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 4: conteo abierto no representable; Equipo 4: nota con información pendiente: Conteo observado mínimo; total reportado abierto; Equipo 5: conteo abierto no representable; Equipo 5: nota con información pendiente: Conteo observado mínimo; total reportado abierto"
+    },
+    "AEGIS-V2-0253": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0109": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0224": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0181": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0114": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0059": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0141": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: count_conflict; Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado con evidencia mixta; pendiente de corrección; Equipo 2: estado no soportado; se omite este caso del entrenamiento; Equipo 2: nota con información pendiente: Falla intermitente reportada; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Prestado a otra unidad; no inspeccionado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Prestado a otra unidad; no inspeccionado"
+    },
+    "AEGIS-V2-0073": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0129": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: modalidad fuera del conjunto actual de entrenamiento; Equipo 1: nota con información pendiente: Reinicios intermitentes reportados"
+    },
+    "AEGIS-V2-0250": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0048": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0265": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0187": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible Mammography; fabricante y modalidad no confirmados; Equipo 2: modalidad fuera del conjunto actual de entrenamiento; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0276": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0204": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: conflicting_counts; Conflicto o conteo pendiente: duplicate_risk; Equipo 2: nota con información pendiente: Placa no legible; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: nota con información pendiente: Portátil y móvil entre departamentos; posible duplicado"
+    },
+    "AEGIS-V2-0067": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0096": {
+      "decision": "exclude",
+      "note": "Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: No disponible para inspección"
+    },
+    "AEGIS-V2-0090": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0047": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0008": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0131": {
+      "decision": "exclude",
+      "note": "Equipo 1: nota con información pendiente: Fabricante inferido por apariencia; no confirmado; Equipo 2: la salida pierde la distinción reportado/observado; Equipo 2: nota con información pendiente: Confirmación verbal; no inspeccionado"
+    },
+    "AEGIS-V2-0291": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0177": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: duplicate_risk; Conflicto o conteo pendiente: uncertain_modality; Equipo 1: nota con información pendiente: Posible MRI; fabricante y modalidad no confirmados; Equipo 2: nota con información pendiente: Fabricante inferido por diseño; placa ilegible; Equipo 3: modalidad fuera del conjunto actual de entrenamiento; Equipo 3: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 4: modalidad fuera del conjunto actual de entrenamiento; Equipo 4: nota con información pendiente: Posible duplicado por movilidad entre áreas; Equipo 5: la salida pierde la distinción reportado/observado; Equipo 5: modalidad fuera del conjunto actual de entrenamiento; Equipo 5: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado; Equipo 6: la salida pierde la distinción reportado/observado; Equipo 6: modalidad fuera del conjunto actual de entrenamiento; Equipo 6: nota con información pendiente: Reportado pero no inspeccionado; posible duplicado"
+    },
+    "AEGIS-V2-0188": {
+      "decision": "exclude",
+      "note": "Equipo 1: estado con evidencia mixta; pendiente de corrección; Equipo 1: nota con información pendiente: Alarma aislada; impacto no determinado; Equipo 3: estado con evidencia mixta; pendiente de corrección; Equipo 3: la salida pierde la distinción reportado/observado; Equipo 3: nota con información pendiente: Retirado del servicio clínico; pendiente traslado"
+    },
+    "AEGIS-V2-0084": {
+      "decision": "exclude",
+      "note": "Equipo 3: modalidad fuera del conjunto actual de entrenamiento"
+    },
+    "AEGIS-V2-0040": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    },
+    "AEGIS-V2-0130": {
+      "decision": "exclude",
+      "note": "Conflicto o conteo pendiente: inventory_conflict; Equipo 4: la salida pierde la distinción reportado/observado; Equipo 4: nota con información pendiente: Registro de inventario no verificado; no localizado"
+    },
+    "AEGIS-V2-0061": {
+      "decision": "approved",
+      "note": "Etiqueta compatible con extracción; desconocidos y negaciones conservados."
+    }
+  }
+}

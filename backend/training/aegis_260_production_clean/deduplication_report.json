@@ -1,0 +1,138 @@
+{
+  "source": "training\\aegis_260_production_draft",
+  "policy": "test > validation > train",
+  "before": {
+    "test": 39,
+    "validation": 39,
+    "train": 182
+  },
+  "after": {
+    "test": 38,
+    "validation": 39,
+    "train": 169
+  },
+  "removed": [
+    {
+      "id": "AEGIS-0059",
+      "removed_from": "test",
+      "retained_id": "AEGIS-0023",
+      "retained_split": "test",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0199",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0169",
+      "retained_split": "validation",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0147",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0177",
+      "retained_split": "train",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0178",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0148",
+      "retained_split": "validation",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0157",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0177",
+      "retained_split": "train",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0189",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0159",
+      "retained_split": "train",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0058",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0040",
+      "retained_split": "train",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0047",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0029",
+      "retained_split": "train",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0235",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0256",
+      "retained_split": "train",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0140",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0116",
+      "retained_split": "test",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0154",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0204",
+      "retained_split": "test",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0153",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0183",
+      "retained_split": "train",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0158",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0198",
+      "retained_split": "test",
+      "reason": "Exact normalized duplicate"
+    },
+    {
+      "id": "AEGIS-0185",
+      "removed_from": "train",
+      "retained_id": "AEGIS-0215",
+      "retained_split": "test",
+      "reason": "Exact normalized duplicate"
+    }
+  ],
+  "remaining_difficulty": {
+    "test": {
+      "simple": 8,
+      "complex": 12,
+      "adversarial": 6,
+      "medium": 12
+    },
+    "validation": {
+      "complex": 12,
+      "simple": 9,
+      "adversarial": 6,
+      "medium": 12
+    },
+    "train": {
+      "simple": 40,
+      "adversarial": 27,
+      "complex": 47,
+      "medium": 55
+    }
+  },
+  "limitations": [
+    "Only exact normalized duplicates are removed.",
+    "Template-family or semantic near-duplicates need human review."
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "source_zip_sha256": "d31d31fda269b8db586c8137501a1e630a6f27b83ea74b377a3444581637e764",
+  "total": 260,
+  "splits": {
+    "train": 182,
+    "validation": 39,
+    "test": 39
+  },
+  "unique_normalized_inputs": 246,
+  "duplicate_groups": [
+    [
+      {
+        "id": "AEGIS-0199",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0169",
+        "split": "validation"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0177",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0147",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0157",
+        "split": "train"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0183",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0153",
+        "split": "train"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0178",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0148",
+        "split": "validation"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0256",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0235",
+        "split": "train"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0159",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0189",
+        "split": "train"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0040",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0058",
+        "split": "train"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0029",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0047",
+        "split": "train"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0140",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0116",
+        "split": "test"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0154",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0204",
+        "split": "test"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0158",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0198",
+        "split": "test"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0185",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0215",
+        "split": "test"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0023",
+        "split": "test"
+      },
+      {
+        "id": "AEGIS-0059",
+        "split": "test"
+      }
+    ]
+  ],
+  "cross_split_duplicate_groups": [
+    [
+      {
+        "id": "AEGIS-0199",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0169",
+        "split": "validation"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0178",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0148",
+        "split": "validation"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0140",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0116",
+        "split": "test"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0154",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0204",
+        "split": "test"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0158",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0198",
+        "split": "test"
+      }
+    ],
+    [
+      {
+        "id": "AEGIS-0185",
+        "split": "train"
+      },
+      {
+        "id": "AEGIS-0215",
+        "split": "test"
+      }
+    ]
+  ],
+  "difficulty": {
+    "simple": 60,
+    "adversarial": 40,
+    "complex": 80,
+    "medium": 80
+  },
+  "negative_examples": 13,
+  "corrected_examples": 137,
+  "corrections_by_field": {
+    "manufacturer": 26,
+    "country": 127
+  },
+  "unmapped_fields_by_name": {
+    "observation_status": 715,
+    "condition_status": 715,
+    "needs_human_review": 260,
+    "notes": 295,
+    "quantity_statement": 223
+  },
+  "review_status": "draft",
+  "weights_trained": false,
+  "evaluation_limitations": [
+    "Fixed source splits contain duplicate leakage; do not treat scores as independent generalization.",
+    "No semantic label approval or template-family leakage audit has been performed.",
+    "Schema projection cannot evaluate observation status, condition certainty, open quantities or review decisions as structured outputs."
+  ]
+}

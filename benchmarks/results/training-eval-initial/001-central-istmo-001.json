@@ -1,0 +1,98 @@
+{
+  "id": "central-istmo-001",
+  "expected_counts": {
+    "CT": 2,
+    "MRI": 2,
+    "Ultrasound": 4,
+    "X-ray": 1
+  },
+  "actual_counts": {
+    "CT": 2,
+    "MRI": 1,
+    "Ultrasound": 4,
+    "X-ray": 1
+  },
+  "raw_output": "{\"equipment\":[{\"modality\":\"CT\",\"manufacturer\":\"Philips\",\"model\":null,\"configuration\":\"8 años\",\"estimated_age_years\":8,\"condition\":\"fallas en sistema de enfriamiento\"}],\"facility\":\"Hospital Central del Istmo\",\"city\":\"Istmo\",\"country\":\"Colombia\"}",
+  "actual": {
+    "equipment": [
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 8.0,
+        "age_description": "Aproximadamente 8 años",
+        "condition": "Operativo"
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "Mindray",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "Mindray",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": "Portátil",
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "X-ray",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": "Móvil",
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      }
+    ],
+    "detected_language": "es",
+    "facility": "Hospital Central del Istmo",
+    "city": "Istmo",
+    "country": null,
+    "follow_up_candidates": []
+  },
+  "counts_match": false
+}

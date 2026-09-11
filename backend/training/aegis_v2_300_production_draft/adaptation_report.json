@@ -1,0 +1,40 @@
+{
+  "source_zip_sha256": "8a29fdcca2d33e4ade036c82bb98645de079c825b945a0ffbe34a0e0727ff942",
+  "total": 300,
+  "splits": {
+    "train": 210,
+    "validation": 45,
+    "test": 45
+  },
+  "unique_normalized_inputs": 300,
+  "duplicate_groups": [],
+  "cross_split_duplicate_groups": [],
+  "difficulty": {
+    "adversarial": 60,
+    "simple": 60,
+    "medium": 80,
+    "complex": 100
+  },
+  "negative_examples": 25,
+  "corrected_examples": 263,
+  "corrections_by_field": {
+    "country": 255,
+    "city": 166,
+    "facility": 20,
+    "manufacturer": 20
+  },
+  "unmapped_fields_by_name": {
+    "observation_status": 790,
+    "condition_status": 790,
+    "quantity_statement": 445,
+    "notes": 454,
+    "needs_human_review": 300
+  },
+  "review_status": "draft",
+  "weights_trained": false,
+  "evaluation_limitations": [
+    "Fixed source splits contain duplicate leakage; do not treat scores as independent generalization.",
+    "No semantic label approval or template-family leakage audit has been performed.",
+    "Schema projection cannot evaluate observation status, condition certainty, open quantities or review decisions as structured outputs."
+  ]
+}

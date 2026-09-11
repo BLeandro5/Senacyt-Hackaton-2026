@@ -1,0 +1,101 @@
+{
+  "case": 9,
+  "text": "Durante la visita al Hospital Nacional de Especialidades se recopiló información mediante observación directa y conversación con varios técnicos. Se identificaron tres resonadores magnéticos: dos Siemens y uno Philips. Uno de los Siemens es de 3T y aparenta tener unos cinco años; el otro es de 1.5T y parece considerablemente más antiguo, quizá de diez años o más. El Philips fue reportado como recientemente adquirido, pero no se pudo verificar la fecha. En tomografía se observaron dos equipos GE y un Philips. Uno de los GE estaba apagado y el personal no pudo confirmar si seguía en uso regular. También se identificaron varios equipos de ultrasonido distribuidos por diferentes áreas, al menos seis, pero existe la posibilidad de que algunos hayan sido contados dos veces porque se trasladan entre departamentos. Se debería considerar este registro como parcialmente estimado hasta obtener una verificación adicional.",
+  "raw_output": "{\"equipment\":[{\"modality\":\"MRI\",\"manufacturer\":\"Siemens\",\"model\":null,\"configuration\":null,\"estimated_age_years\":5,\"condition\":null},{\"modality\":\"MRI\",\"manufacturer\":\"Siemens\",\"model\":null,\"configuration\":null,\"estimated_age_years\":10,\"condition\":null},{\"modality\":\"CT\",\"manufacturer\":\"GE\",\"model\":null,\"configuration\":null,\"estimated_age_years\":null,\"condition\":null},{\"modality\":\"CT\",\"manufacturer\":\"Philips\",\"model\":null,\"configuration\":null,\"estimated_age_years\":null,\"condition\":null},{\"modality\":\"Ultrasound\",\"manufacturer\":\"Philips\",\"model\":null,\"configuration\":null,\"estimated_age_years\":null,\"condition\":null},{\"modality\":\"X-ray\",\"manufacturer\":\"GE\",\"model\":null,\"configuration\":null,\"estimated_age_years\":null,\"condition\":null}],\"facility\":null,\"city\":null,\"country\":null}",
+  "result": {
+    "equipment": [
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 5.0,
+        "age_description": "Aproximadamente 5 años",
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      }
+    ],
+    "detected_language": "es",
+    "facility": null,
+    "city": null,
+    "country": null,
+    "follow_up_candidates": []
+  },
+  "counts": {
+    "MRI": 5,
+    "CT": 3,
+    "Ultrasound": 1
+  },
+  "seconds": 1.67
+}

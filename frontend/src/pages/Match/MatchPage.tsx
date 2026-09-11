@@ -4,7 +4,7 @@ import VisitContext from '../../components/VisitContext'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ChevronRight, CirclePlus, SearchCheck, Sparkles } from 'lucide-react'
-import { candidateReasons, candidateSimilarity, rankCandidates, normalizeModality, type AssetCandidate } from '../../data/equipmentMatching'
+import { candidateReasons, candidateSimilarity, hasPossibleDuplicate, rankCandidates, normalizeModality, type AssetCandidate } from '../../data/equipmentMatching'
 import type { HospitalOverview } from '../../data/hospitalOverview'
 
 type Decision = {
@@ -41,9 +41,16 @@ function MatchPage() {
       setHistory(overview.equipment)
       setAvailable(rows)
       setCandidates(equipment.map(item => {
-        const asset = rankCandidates(rows, hospitalId || '', item).find(a => (!item.brand || !a.manufacturer || a.manufacturer.toLowerCase() === item.brand.toLowerCase()) && (!item.model || !a.model || a.model.toLowerCase() === item.model.toLowerCase()))
+        const asset = rankCandidates(rows, hospitalId || '', item)[0]
         return { equipmentId: item.id, match: asset ? { id: asset.id, type: asset.modality, brand: asset.manufacturer || '', model: asset.model || '', lastSeen: asset.lastObservedAt, similarity: candidateSimilarity(asset, item) } : null }
       }))
+      setDecisions(current => [
+        ...current,
+        ...equipment
+          .filter(item => !current.some(decision => decision.equipmentId === item.id))
+          .filter(item => !hasPossibleDuplicate(rows, hospitalId || '', item))
+          .map(item => ({ equipmentId: item.id, type: 'new' as const })),
+      ])
     }).catch(cause => { if (active) setLookupError(cause.message) })
       .finally(() => { if (active) setLoading(false) })
     return () => { active = false }
@@ -133,6 +140,7 @@ function MatchPage() {
                 )
 
                 const match = candidate?.match
+                const possibleDuplicate = hasPossibleDuplicate(available, hospitalId || '', item)
                 const relatedHistory = history.filter(e => normalizeModality(e.type) === normalizeModality(item.type))
 
                 const decision = decisions.find(
@@ -309,13 +317,11 @@ function MatchPage() {
                         <div>
 
                           <p className="text-sm font-semibold text-[#172033]">
-                            {relatedHistory.length ? 'Hay observaciones anteriores para revisar' : available.length ? 'Sin candidato compatible identificado' : 'Este hospital no tiene equipos consolidados'}
+                            Equipo nuevo confirmado automáticamente
                           </p>
 
                           <p className="mt-1 text-sm leading-6 text-[#7D8998]">
-                            La información disponible no permite concluir si es nuevo o duplicado. Puedes guardar la observación pendiente de verificación.
-                            <button type="button" className="block mt-3 text-blue-700 underline" aria-pressed={decision?.type === 'review'} onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'review' })}>Guardar como pendiente de verificación</button>
-                            <button type="button" className="block mt-3 text-blue-700 underline" onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'new' })}>Sé que es un equipo diferente: registrar nuevo</button>
+                            La verificación automática no encontró otro {item.type || 'equipo'} de esta modalidad en este hospital, por lo que se registrará como nuevo.
                           </p>
 
                         </div>
@@ -323,7 +329,7 @@ function MatchPage() {
                       </div>
                     ))}
                     {!loading && !lookupError && relatedHistory.length > 0 && <details className="mt-3 text-sm"><summary className="cursor-pointer text-blue-700">Ver {relatedHistory.length} evidencias anteriores de esta modalidad</summary><p className="mt-2">Estas observaciones pueden describir el mismo equipo. Cada registro no equivale a un activo único.</p>{relatedHistory.map(e => <div key={`${e.visitId}/${e.observationId}/${e.id}`} className="mt-3 border-t pt-3"><p>{e.brand || 'Marca desconocida'} · {e.model || 'Modelo desconocido'} · {e.estimatedAge || 'Edad desconocida'}</p><p>Visita {e.visitId} · {e.recordedAt}</p><p className="mt-2 whitespace-pre-wrap">{e.originalText}</p></div>)}</details>}
-                    <button type="button" className="mt-3 text-sm text-amber-800 underline" aria-pressed={decision?.type === 'review'} onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'review' })}>No puedo decidir · Guardar pendiente de verificación</button>
+                    {!loading && !lookupError && possibleDuplicate && <button type="button" className="mt-3 text-sm text-amber-800 underline" aria-pressed={decision?.type === 'review'} onClick={() => setDecision(item.id, { equipmentId: item.id, type: 'review' })}>No puedo decidir · Guardar pendiente de verificación</button>}
                   </div>
                 )
               })}

@@ -1,0 +1,6 @@
+{
+  "case": 6,
+  "text": "Durante la inspección en el Hospital Regional del Caribe, el equipo de campo recopiló información de diferentes fuentes. El responsable de mantenimiento afirmó que existen cuatro tomógrafos en total, pero solo tres pudieron verificarse directamente. Se identificó un Philips de aproximadamente ocho años, un Siemens de unos cinco años y un GE cuya antigüedad no se conoce. El cuarto equipo estaría ubicado en una sede secundaria y no pudo inspeccionarse. En resonancia se observó un Siemens de 3T y un Philips de 1.5T; el primero parece relativamente nuevo, mientras que el segundo presenta problemas frecuentes y podría estar próximo a ser reemplazado. También se identificaron siete ecógrafos, aunque varios no tenían etiquetas claramente visibles. El personal mencionó que algunos equipos se mueven entre departamentos, por lo que existe riesgo de duplicarlos si cada área los reporta por separado.",
+  "error": "HTTPStatusError: Server error '502 Bad Gateway' for url 'http://127.0.0.1:11500/generate'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+  "seconds": 2.28
+}

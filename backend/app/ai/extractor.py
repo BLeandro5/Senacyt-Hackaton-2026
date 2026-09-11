@@ -21,7 +21,7 @@ class ExtractionResult(BaseModel):
     facility: str | None = None
     city: str | None = None
     country: str | None = None
-    follow_up_candidates: list[FollowUpCandidate] = Field(default_factory=list, max_length=2)
+    follow_up_candidates: list[FollowUpCandidate] = Field(default_factory=list)
 
 
 KNOWN_MANUFACTURERS = ('Philips', 'Siemens', 'GE', 'Mindray', 'Hologic', 'Canon', 'Fujifilm', 'Samsung', 'Esaote', 'Carestream', 'Shimadzu', 'Hitachi', 'Toshiba')

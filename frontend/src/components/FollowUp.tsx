@@ -15,6 +15,7 @@ export default function FollowUp({ observationId, equipment, update, candidates 
   const copy = assistantCopy[language]
   const [quantityType,setQuantityType]=useState<'exact'|'estimated'|'unknown'>('estimated')
   const [quantityCount,setQuantityCount]=useState(String(equipment.length))
+  const skippedAll = answered.includes('__all_follow_ups_skipped__')
   const fieldMap = { manufacturer:'brand',age:'estimatedAge',model:'model',configuration:'configuration',condition:'status',quantity:'quantityStatus' } as const
   const proposed = candidates.flatMap(candidate => {
     const index = equipment.findIndex(item => item.sourceIndex === candidate.equipment_index)
@@ -25,11 +26,15 @@ export default function FollowUp({ observationId, equipment, update, candidates 
     return answered.includes(id) ? [] : [{ item, field, label: candidate.question, index, id, prompt: candidate.question }]
   })[0]
   const fallback = nextFollowUp(equipment, answered)
-  const question = proposed || (fallback ? { ...fallback, prompt: `¿Conoces la ${fallback.label} de este equipo?` } : undefined)
+  const question = skippedAll ? undefined : proposed || (fallback ? { ...fallback, prompt: '' } : undefined)
   const questionText = question?.field === 'quantityStatus'
     ? ({ es: '¿Cuántos equipos observaste y qué tan exacta es la cantidad?', en: 'How many devices did you observe, and is the quantity exact?', pt: 'Quantos equipamentos você observou e a quantidade é exata?' })[language]
-    : question ? `${copy.question} ${fieldLabel[language][question.field]}?` : ''
-  if (answered.length >= 2 || !question) return null
+    : question ? ({
+      es: `¿Conoces ${(['brand', 'estimatedAge', 'configuration'].includes(question.field) ? 'la' : 'el')} ${fieldLabel.es[question.field]} de este equipo?`,
+      en: `Do you know the ${fieldLabel.en[question.field]} of this device?`,
+      pt: `Você conhece ${(['brand', 'estimatedAge', 'configuration'].includes(question.field) ? 'a' : 'o')} ${fieldLabel.pt[question.field]} deste equipamento?`,
+    })[language] : ''
+  if (!question) return null
   const respond = (unknown: boolean) => {
     const next = [...answered, question.id]
     try {
@@ -43,9 +48,14 @@ export default function FollowUp({ observationId, equipment, update, candidates 
       setAnswered(next); setAnswer('')
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'No se pudo guardar la respuesta.') }
   }
-  return <section className="panel mt-5"><p className="font-semibold">Pregunta {answered.length + 1} de 2 · Equipo {question.index + 1}: {question.item.type}</p>
+  const skipAll = () => {
+    const next = [...answered, '__all_follow_ups_skipped__']
+    try { writeStored(key, next); setAnswered(next) }
+    catch { setError('No se pudo guardar la omisión de preguntas.') }
+  }
+  return <section className="panel mt-5"><p className="font-semibold">Pregunta {answered.filter(id => id !== '__all_follow_ups_skipped__').length + 1} · Equipo {question.index + 1}: {question.item.type}</p>
 <label className="mt-3 block">{questionText}{question.field==='quantityStatus' ? <span className="mt-2 flex gap-3"><input aria-label="Cantidad observada" type="number" min={1} max={50} className="w-24 rounded-xl border p-3" value={quantityCount} onChange={e=>setQuantityCount(e.target.value)}/><select aria-label="Certeza de cantidad" className="rounded-xl border p-3" value={quantityType} onChange={e=>setQuantityType(e.target.value as typeof quantityType)}><option value="exact">Exacta</option><option value="estimated">Aproximada</option><option value="unknown">No sé</option></select></span> : <input value={answer} onChange={e => setAnswer(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 p-3" />}</label>
     <p className="mt-2 text-xs text-slate-500">{copy.note}</p>
-    <div className="mt-3 flex gap-4"><button disabled={question.field !== 'quantityStatus' && !answer.trim()} className="text-blue-700 disabled:opacity-40" onClick={() => respond(false)}>{copy.save}</button><button onClick={() => respond(true)}>{copy.skip}</button></div>
+    <div className="mt-3 flex flex-wrap gap-4"><button disabled={question.field !== 'quantityStatus' && !answer.trim()} className="text-blue-700 disabled:opacity-40" onClick={() => respond(false)}>{copy.save}</button><button onClick={() => respond(true)}>{copy.skip}</button><button onClick={skipAll}>{copy.skipAll}</button></div>
     {error && <p role="alert">{error}</p>}</section>
 }

@@ -1,0 +1,6 @@
+{
+  "case": 10,
+  "text": "En el Hospital de la Ciudad se llevó a cabo una revisión extensa del inventario visible. El área de diagnóstico por imagen cuenta con múltiples equipos de distintas marcas. Se observaron dos tomógrafos Philips, uno aparentemente instalado hace unos seis años y otro de antigüedad desconocida; un Siemens que el personal considera de aproximadamente nueve años; y un cuarto CT GE que actualmente se encuentra en mantenimiento. En resonancia magnética se identificaron dos equipos Siemens y uno GE. Uno de los Siemens es de 1.5T y el otro de 3T, aunque no se pudo establecer con certeza la edad de ninguno. El GE parece ser más antiguo y presenta signos de desgaste. También se encontraron ocho ecógrafos entre Mindray, GE y Philips, varios equipos de rayos X móviles y un mamógrafo Hologic. Parte de esta información proviene de observación directa y parte de comentarios del personal, por lo que el sistema debería diferenciar claramente entre datos confirmados, reportados y estimados, además de sugerir preguntas de seguimiento sobre los equipos con información incompleta.",
+  "error": "HTTPStatusError: Server error '502 Bad Gateway' for url 'http://127.0.0.1:11500/generate'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+  "seconds": 2.38
+}

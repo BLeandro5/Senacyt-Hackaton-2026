@@ -1,0 +1,93 @@
+{
+  "case": 5,
+  "text": "La visita al Hospital Universitario San Lucas cubrió varias áreas y se recogieron datos de forma incompleta debido a restricciones de acceso. En imagenología se observó un resonador GE de 1.5T que aparentemente tiene entre diez y doce años y continúa operativo, aunque con signos visibles de desgaste exterior. El personal indicó que existe un segundo MRI Siemens instalado más recientemente, pero no se permitió el acceso a la sala, por lo que solo puede registrarse como reportado. En tomografía se verificaron dos equipos Philips: uno de aproximadamente seis años y otro mucho más nuevo, posiblemente de menos de tres años. También se registró un PET/CT Siemens cuya antigüedad no pudo confirmarse. En urgencias se observaron varios equipos portátiles, incluyendo dos ecógrafos Mindray y un sistema de rayos X móvil Philips. El número total de ecógrafos podría ser mayor porque algunas unidades estaban siendo utilizadas en otras áreas.",
+  "raw_output": "{\"equipment\":[{\"modality\":\"MRI\",\"manufacturer\":\"GE\",\"model\":null,\"configuration\":\"1.5T\",\"estimated_age_years\":10,\"condition\":\"operativo con signos de desgaste exterior\"}],\"facility\":null,\"city\":null,\"country\":null}",
+  "result": {
+    "equipment": [
+      {
+        "modality": "MRI",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": "1.5T",
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": "Operativo"
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 6.0,
+        "age_description": "Aproximadamente 6 años",
+        "condition": null
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "Mindray",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "X-ray",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": "Móvil",
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      }
+    ],
+    "detected_language": "es",
+    "facility": null,
+    "city": null,
+    "country": null,
+    "follow_up_candidates": []
+  },
+  "counts": {
+    "MRI": 2,
+    "CT": 2,
+    "Ultrasound": 3,
+    "X-ray": 1
+  },
+  "seconds": 0.59
+}

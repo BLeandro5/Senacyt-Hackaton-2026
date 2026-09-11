@@ -1,0 +1,6 @@
+{
+  "case": 4,
+  "text": "En la Clínica Metropolitana Norte, el colaborador reportó que la información disponible no coincidía completamente con lo observado en sitio. El sistema interno mostraba un solo equipo de resonancia, pero durante la visita se identificaron dos. Uno era Siemens y parecía tener aproximadamente nueve años; el otro era Philips y el personal indicó que fue adquirido hace unos cuatro años. En tomografía se registraron dos equipos Philips, uno de los cuales estaba detenido por mantenimiento preventivo. También se observaron tres ecógrafos GE y dos Mindray, pero el personal mencionó que uno de los GE podría haber sido retirado recientemente y todavía aparecer en inventario. En radiología convencional se encontraron dos equipos fijos y un equipo móvil, aunque no fue posible confirmar la marca de todos. Esta observación podría entrar en conflicto con datos históricos del hospital y debería revisarse antes de consolidar la base instalada.",
+  "error": "HTTPStatusError: Server error '502 Bad Gateway' for url 'http://127.0.0.1:11500/generate'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+  "seconds": 2.27
+}

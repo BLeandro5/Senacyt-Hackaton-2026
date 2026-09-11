@@ -1,5 +1,7 @@
 import http from 'node:http'
 import { performance } from 'node:perf_hooks'
+import { stat } from 'node:fs/promises'
+import path from 'node:path'
 import { loadModel, completion, unloadModel, close } from '@qvac/sdk'
 import { descriptor, modelName, quantization, verifyModel } from './model.mjs'
 
@@ -7,6 +9,8 @@ import { descriptor, modelName, quantization, verifyModel } from './model.mjs'
 const modelPath = await verifyModel().catch(error => {
   throw new Error(`Run npm run qvac:download first. ${error.message}`)
 })
+const loraPath = process.env.QVAC_LORA_PATH ? path.resolve(process.env.QVAC_LORA_PATH) : null
+if (loraPath) await stat(loraPath).catch(() => { throw new Error(`QVAC_LORA_PATH does not exist: ${loraPath}`) })
 
 const started = performance.now()
 const modelId = await loadModel({
@@ -14,6 +18,7 @@ const modelId = await loadModel({
   modelType: 'llamacpp-completion',
   modelConfig: {
     ctx_size: 2048,
+    ...(loraPath ? { lora: loraPath } : {}),
     temp: 0,
     predict: 256,
     reasoning_budget: 0,

@@ -1,0 +1,93 @@
+{
+  "case": 1,
+  "text": "Durante la visita al Hospital Central del Istmo recorrimos las áreas de radiología, imagenología y urgencias. En tomografía se observaron dos equipos: uno Philips que, según el ingeniero biomédico, fue instalado hace aproximadamente siete u ocho años y continúa operativo, aunque ha presentado fallas ocasionales en el sistema de enfriamiento; el segundo es Siemens y parece ser más reciente, pero no fue posible confirmar ni el modelo exacto ni la fecha de instalación porque la placa estaba parcialmente cubierta. En resonancia magnética hay dos equipos Siemens; uno de ellos es de 1.5T y el personal comentó que tiene cerca de seis años, mientras que del segundo solo se pudo confirmar la marca. También se identificaron cuatro ecógrafos distribuidos entre urgencias y consulta externa: dos Mindray aparentemente del mismo modelo, un GE portátil y otro equipo cuya marca no pudo verificarse. El personal mencionó además un equipo de rayos X móvil Philips que no estaba disponible durante la inspección, por lo que no se pudo confirmar su condición ni antigüedad.",
+  "raw_output": "{\"equipment\":[{\"modality\":\"CT\",\"manufacturer\":\"Philips\",\"model\":null,\"configuration\":\"8 años\",\"estimated_age_years\":8,\"condition\":\"fallas en sistema de enfriamiento\"}],\"facility\":\"Hospital Central del Istmo\",\"city\":\"Istmo\",\"country\":\"Colombia\"}",
+  "result": {
+    "equipment": [
+      {
+        "modality": "CT",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": 8.0,
+        "age_description": "Aproximadamente 8 años",
+        "condition": "Operativo"
+      },
+      {
+        "modality": "CT",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "MRI",
+        "manufacturer": "Siemens",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "Mindray",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "Mindray",
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": "GE",
+        "model": null,
+        "configuration": "Portátil",
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "configuration": null,
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      },
+      {
+        "modality": "X-ray",
+        "manufacturer": "Philips",
+        "model": null,
+        "configuration": "Móvil",
+        "estimated_age_years": null,
+        "age_description": null,
+        "condition": null
+      }
+    ],
+    "detected_language": "es",
+    "facility": "Hospital Central del Istmo",
+    "city": "Istmo",
+    "country": null,
+    "follow_up_candidates": []
+  },
+  "counts": {
+    "CT": 2,
+    "MRI": 1,
+    "Ultrasound": 4,
+    "X-ray": 1
+  },
+  "seconds": 1.56
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "central-istmo-001",
+    "expected_counts": {
+      "CT": 2,
+      "MRI": 2,
+      "Ultrasound": 4,
+      "X-ray": 1
+    },
+    "actual_counts": {
+      "CT": 2,
+      "MRI": 1,
+      "Ultrasound": 4,
+      "X-ray": 1
+    },
+    "counts_match": false
+  },
+  {
+    "id": "santa-maria-002",
+    "expected_counts": {
+      "CT": 3,
+      "MRI": 2,
+      "Mammography": 2,
+      "Ultrasound": 5
+    },
+    "counts_match": false,
+    "error": "HTTPStatusError: Server error '502 Bad Gateway' for url 'http://127.0.0.1:11500/generate'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+  }
+]

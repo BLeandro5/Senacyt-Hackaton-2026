@@ -1,0 +1,1036 @@
+{
+  "format": "aegis-label-review-v1",
+  "reviewer": "conservative-automatic-policy-v1",
+  "warning": "Automated triage, not a human or clinical approval.",
+  "policy": "Approve only explicit, observed, unambiguous records fully representable by the current production schema.",
+  "decisions": {
+    "AEGIS-0033": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0222": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0155": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    "AEGIS-0171": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0054": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0177": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    "AEGIS-0214": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0192": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0247": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0103": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0056": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0152": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0068": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0009": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0238": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0249": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0094": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0105": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0049": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0250": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0225": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0183": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0136": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0089": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0205": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    "AEGIS-0118": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0123": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0257": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0234": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0134": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0252": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0075": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0231": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0248": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0007": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0206": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0133": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0172": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0187": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    "AEGIS-0121": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0015": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0042": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0202": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0144": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0079": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0046": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0080": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0162": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0208": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0241": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0013": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0095": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0167": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    "AEGIS-0256": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0207": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    "AEGIS-0084": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0115": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0044": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0258": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema"
+    },
+    "AEGIS-0141": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0100": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0212": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0168": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0112": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0092": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0159": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0135": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0129": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0117": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0008": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0096": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0253": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk"
+    },
+    "AEGIS-0233": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0045": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0011": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0216": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0195": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    "AEGIS-0035": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0085": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0110": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0067": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0132": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0031": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0040": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0050": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0018": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0203": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0036": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0113": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0151": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0188": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0101": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0087": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0251": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema"
+    },
+    "AEGIS-0020": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0038": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0052": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0174": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0245": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0071": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0126": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0146": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0029": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0030": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0184": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0218": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0032": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0053": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0138": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0165": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    "AEGIS-0074": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0057": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0130": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0019": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0142": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0069": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0224": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain"
+    },
+    "AEGIS-0072": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0209": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0128": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0028": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0193": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0024": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0196": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0186": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0244": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema"
+    },
+    "AEGIS-0016": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0194": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0039": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0150": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0003": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0097": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0191": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0017": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0120": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0021": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0104": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0237": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema"
+    },
+    "AEGIS-0161": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0166": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0065": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0228": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0219": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0232": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk"
+    },
+    "AEGIS-0180": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0119": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0122": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0190": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0066": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0064": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0107": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0073": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0239": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk"
+    },
+    "AEGIS-0082": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0114": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0175": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    "AEGIS-0051": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0156": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0091": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0227": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0137": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0027": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0060": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0081": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:conflict; ambiguous_tag:duplicate_risk; ambiguous_tag:uncertain; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0164": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0004": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0236": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0111": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0221": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0173": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0025": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0223": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0254": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0055": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0170": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0229": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0127": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0090": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0048": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0014": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0002": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0246": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk"
+    },
+    "AEGIS-0176": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0143": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0211": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0106": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0086": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0041": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0148": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0201": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0131": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0240": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0108": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0139": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0145": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    "AEGIS-0210": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0005": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0062": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0109": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0220": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0006": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0169": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0125": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0063": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:multi_site; ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0034": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0070": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0179": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0255": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0010": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0182": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:inventory_conflict; ambiguous_tag:mobile_assets; ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0023": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0012": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0243": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0093": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0242": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0149": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0213": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0102": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0022": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0163": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0077": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0181": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0197": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    "AEGIS-0026": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0259": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:open_count; quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0098": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0217": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk; ambiguous_tag:human_review; important_note_not_in_production_schema"
+    },
+    "AEGIS-0124": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0037": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0204": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:contradiction; ambiguous_tag:human_review; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; quantity_statement_not_in_production_schema; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0230": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema"
+    },
+    "AEGIS-0061": {
+      "decision": "exclude",
+      "note": "quantity_statement_not_in_production_schema"
+    },
+    "AEGIS-0226": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0200": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0160": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0043": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    },
+    "AEGIS-0076": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0116": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; nonconfirmed_condition_in_production_projection; uncertain_or_reported_condition; unsafe_source_inference:equipment[0].manufacturer"
+    },
+    "AEGIS-0260": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:duplicate_risk"
+    },
+    "AEGIS-0083": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0198": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:condition_uncertain; ambiguous_tag:conflicting_counts; ambiguous_tag:reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition"
+    },
+    "AEGIS-0215": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:ambiguous_modality; ambiguous_tag:reported; ambiguous_tag:uncertain_manufacturer; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review; uncertain_or_reported_condition; unknown_modality; unsafe_source_inference:equipment[0].manufacturer; unsafe_source_inference:equipment[1].manufacturer"
+    },
+    "AEGIS-0088": {
+      "decision": "exclude",
+      "note": "important_note_not_in_production_schema; quantity_statement_not_in_production_schema; unknown_modality"
+    },
+    "AEGIS-0078": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:reported_vs_observed; important_note_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0099": {
+      "decision": "exclude",
+      "note": "ambiguous_tag:mobile_assets; ambiguous_tag:observed_vs_reported; important_note_not_in_production_schema; quantity_statement_not_in_production_schema; reported_or_uninspected_equipment; source_requires_human_review"
+    },
+    "AEGIS-0001": {
+      "decision": "approved",
+      "note": "explicit_observed_facts_representable_by_production_schema"
+    }
+  },
+  "summary": {
+    "splits": {
+      "train": {
+        "approved": 35,
+        "exclude": 134
+      },
+      "validation": {
+        "exclude": 27,
+        "approved": 12
+      },
+      "test": {
+        "exclude": 30,
+        "approved": 8
+      }
+    },
+    "exclusion_reasons": {
+      "explicit_observed_facts_representable_by_production_schema": 55,
+      "ambiguous_tag:ambiguous_modality": 7,
+      "ambiguous_tag:reported": 73,
+      "ambiguous_tag:uncertain_manufacturer": 20,
+      "important_note_not_in_production_schema": 145,
+      "quantity_statement_not_in_production_schema": 86,
+      "reported_or_uninspected_equipment": 119,
+      "source_requires_human_review": 135,
+      "uncertain_or_reported_condition": 89,
+      "unknown_modality": 17,
+      "unsafe_source_inference:equipment[0].manufacturer": 16,
+      "unsafe_source_inference:equipment[1].manufacturer": 7,
+      "ambiguous_tag:reported_vs_observed": 31,
+      "nonconfirmed_condition_in_production_projection": 49,
+      "ambiguous_tag:duplicate_risk": 29,
+      "ambiguous_tag:human_review": 13,
+      "ambiguous_tag:contradiction": 7,
+      "ambiguous_tag:inventory_conflict": 8,
+      "ambiguous_tag:mobile_assets": 18,
+      "ambiguous_tag:multi_site": 10,
+      "ambiguous_tag:open_count": 5,
+      "ambiguous_tag:conflict": 10,
+      "ambiguous_tag:uncertain": 11,
+      "ambiguous_tag:condition_uncertain": 19,
+      "ambiguous_tag:observed_vs_reported": 10,
+      "ambiguous_tag:conflicting_counts": 6
+    }
+  }
+}

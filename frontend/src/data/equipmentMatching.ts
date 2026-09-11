@@ -29,6 +29,12 @@ export function rankCandidates(rows: AssetCandidate[], hospitalId: string, item:
     .sort((a, b) => rank(b) - rank(a) || a.id.localeCompare(b.id))
 }
 
+// A same-modality record in the same hospital could still be the physical
+// asset being observed. It requires human review even if other fields differ.
+export function hasPossibleDuplicate(rows: AssetCandidate[], hospitalId: string, item: ObservedItem) {
+  return rankCandidates(rows, hospitalId, item).length > 0
+}
+
 export function candidateSimilarity(candidate: AssetCandidate, item: { type: string; brand: string; model: string; configuration?: string }) {
   const normal = (value?: string | null) => (value || '').trim().toLowerCase()
   if (normalizeModality(candidate.modality) !== normalizeModality(item.type)) return 0

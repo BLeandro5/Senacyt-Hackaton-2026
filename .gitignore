@@ -41,6 +41,7 @@ models/
 *.gguf
 *.bin
 *.safetensors
+artifacts/
 
 # =========================
 # IDE / editor

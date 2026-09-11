@@ -1,0 +1,6 @@
+{
+  "case": 8,
+  "text": "La observación realizada en la Clínica Especializada San Rafael incluyó equipos de distintas generaciones. En el área principal se identificó un tomógrafo Philips que, según el personal, fue instalado alrededor de 2017 y ha recibido varias actualizaciones de software. El equipo funciona actualmente, pero se reportaron interrupciones ocasionales en los últimos meses. También se observó un CT Siemens más reciente, probablemente de cuatro años, y un equipo adicional que el personal describió como “el tomógrafo viejo”, aunque no fue posible inspeccionarlo. En resonancia se encontró un Siemens de 1.5T y un equipo GE que estaba fuera de servicio. El personal no pudo precisar si el GE será reparado o reemplazado. Además, se observaron cinco ecógrafos, dos de ellos portátiles, pero no fue posible confirmar fabricante y modelo en todos los casos.",
+  "error": "HTTPStatusError: Server error '502 Bad Gateway' for url 'http://127.0.0.1:11500/generate'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+  "seconds": 2.31
+}

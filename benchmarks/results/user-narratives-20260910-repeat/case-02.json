@@ -1,0 +1,7 @@
+{
+  "case": 2,
+  "text": "En el Hospital Santa María se realizó una revisión parcial de la base instalada de imagenología. El jefe del área indicó que cuentan con tres tomógrafos, aunque durante la visita solo fue posible observar dos. El primero era un Philips que parecía tener varios años de uso y estaba funcionando con normalidad; el segundo era GE y tenía una etiqueta donde se alcanzaba a leer parcialmente el modelo, pero no lo suficiente para confirmarlo. El tercer tomógrafo fue reportado por el personal, pero se encontraba fuera del edificio por mantenimiento. En resonancia se observó un equipo Siemens de 3T aparentemente instalado hace alrededor de cinco años y otro resonador de marca no identificada que llevaba varios meses fuera de servicio. También había dos mamógrafos Hologic, uno de los cuales parecía relativamente nuevo, y cinco ecógrafos de diferentes marcas entre GE y Mindray. No se pudo confirmar si todos los ecógrafos estaban activos ni si algunos correspondían a registros ya existentes.",
+  "error": "HTTPStatusError: Server error '502 Bad Gateway' for url 'http://127.0.0.1:11500/generate'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+  "error_body": "{\"error\":\"Incomplete model output; shorten the observation\"}",
+  "seconds": 2.27
+}

@@ -1,0 +1,193 @@
+{
+  "$defs": {
+    "EquipmentExtracted": {
+      "properties": {
+        "modality": {
+          "title": "Modality",
+          "type": "string"
+        },
+        "manufacturer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Manufacturer"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "configuration": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Configuration"
+        },
+        "estimated_age_years": {
+          "anyOf": [
+            {
+              "maximum": 150,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimated Age Years"
+        },
+        "age_description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age Description"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Condition"
+        }
+      },
+      "required": [
+        "modality"
+      ],
+      "title": "EquipmentExtracted",
+      "type": "object"
+    },
+    "FollowUpCandidate": {
+      "properties": {
+        "equipment_index": {
+          "minimum": 0,
+          "title": "Equipment Index",
+          "type": "integer"
+        },
+        "field": {
+          "enum": [
+            "quantity",
+            "manufacturer",
+            "age",
+            "model",
+            "configuration",
+            "condition"
+          ],
+          "title": "Field",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 240,
+          "minLength": 3,
+          "title": "Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "equipment_index",
+        "field",
+        "question"
+      ],
+      "title": "FollowUpCandidate",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "equipment": {
+      "items": {
+        "$ref": "#/$defs/EquipmentExtracted"
+      },
+      "title": "Equipment",
+      "type": "array"
+    },
+    "detected_language": {
+      "default": "other",
+      "enum": [
+        "es",
+        "en",
+        "pt",
+        "other"
+      ],
+      "title": "Detected Language",
+      "type": "string"
+    },
+    "facility": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Facility"
+    },
+    "city": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "City"
+    },
+    "country": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Country"
+    },
+    "follow_up_candidates": {
+      "items": {
+        "$ref": "#/$defs/FollowUpCandidate"
+      },
+      "title": "Follow Up Candidates",
+      "type": "array"
+    }
+  },
+  "required": [
+    "equipment"
+  ],
+  "title": "ExtractionResult",
+  "type": "object"
+}

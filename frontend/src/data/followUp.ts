@@ -5,7 +5,6 @@ export function unknownAnswer(value: string) {
   return /^(no (lo )?se|i don.t know|nao sei|unknown|desconocid[oa]|desconhecid[oa])[.!]?$/.test(normal(value))
 }
 export function nextFollowUp(equipment: EquipmentDraft[], answered: string[]) {
-  if (answered.length >= 2) return undefined
   return equipment.flatMap((item,index) => fields.map(([field,label]) => ({ item, field, label, index, id: `${item.id}:${field}` })))
     .find(q => (!q.item[q.field] || unknownAnswer(q.item[q.field])) && !answered.includes(q.id))
 }

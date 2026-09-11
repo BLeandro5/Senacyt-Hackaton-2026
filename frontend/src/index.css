@@ -106,3 +106,22 @@ html[data-theme='dark'] .flow-review h1, html[data-theme='dark'] .flow-review h2
 html[data-theme='dark'] .desktop-nav a:hover,
 html[data-theme='dark'] .mobile-nav a:hover,
 html[data-theme='dark'] .icon-button:hover { background-color: #334155; color: #f8fafc; }
+
+/* Shared identity; inherits the existing light/dark palette. */
+.aegis-brand, .brand .aegis-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: .06em;
+}
+.aegis-brand img {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  object-fit: contain;
+  border-radius: 8px;
+}

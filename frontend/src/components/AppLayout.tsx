@@ -3,6 +3,7 @@ import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate, useRouteErro
 import { Building2, ClipboardList, Cloud, CloudOff, LogOut, Map, Plus } from 'lucide-react'
 import { readStored, type Capture, type CurrentVisit, type Decision, type RecordDraft } from '../data/visitStore'
 import LocalStatus from './LocalStatus'
+import AegisBrand from './AegisBrand'
 import { useUiLanguage } from '../data/uiLanguage'
 import { analyticsCopy } from '../data/analyticsCopy'
 
@@ -36,7 +37,7 @@ export function AppLayout() {
     <a className="skip-link" href="#page-content">Saltar al contenido</a>
     <header className="app-header">
       <div className="header-inner">
-        <Link to="/home" className="brand">PHILIPS<span>Installed Base Intelligence</span></Link>
+        <Link to="/home" className="brand" aria-label="Aegis"><AegisBrand /></Link>
         <nav className="desktop-nav" aria-label="Navegación principal">
           <NavLink to="/home"><Building2 size={18} />Inicio</NavLink>
           <NavLink to="/visits" end><ClipboardList size={18} />Mis visitas</NavLink>

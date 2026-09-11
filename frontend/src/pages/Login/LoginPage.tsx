@@ -1,3 +1,4 @@
+import AegisBrand from '../../components/AegisBrand'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, Eye, EyeOff, LockKeyhole, ShieldCheck, User } from 'lucide-react'
@@ -40,7 +41,7 @@ function LoginPage() {
 
             <div>
               <div className="text-3xl font-bold tracking-tight">
-                PHILIPS
+                <AegisBrand />
               </div>
 
               <p className="mt-1 text-sm text-blue-100">
@@ -79,7 +80,7 @@ function LoginPage() {
             {/* Marca mobile */}
             <div className="mb-10 lg:hidden">
               <div className="text-2xl font-bold tracking-tight text-[#0756c9]">
-                PHILIPS
+                <AegisBrand />
               </div>
 
               <p className="mt-1 text-sm text-slate-500">

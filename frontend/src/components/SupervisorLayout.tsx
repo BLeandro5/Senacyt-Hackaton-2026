@@ -1,3 +1,4 @@
+import AegisBrand from './AegisBrand'
 import { useEffect, useState } from 'react'
 import {
   Navigate,
@@ -72,7 +73,7 @@ function SupervisorLayout() {
         <div className="flex h-16 items-center justify-between px-4">
           <div>
             <p className="font-bold tracking-tight text-[#0B5ED7]">
-              PHILIPS
+              <AegisBrand />
             </p>
 
             <p className="text-[10px] text-slate-400">
@@ -129,7 +130,7 @@ function SupervisorLayout() {
         <aside className="sticky top-0 hidden h-screen w-[260px] shrink-0 border-r border-slate-200 bg-white lg:flex lg:flex-col">
           <div className="border-b border-slate-100 px-7 py-7">
             <p className="text-xl font-bold tracking-tight text-[#0B5ED7]">
-              PHILIPS
+              <AegisBrand />
             </p>
 
             <p className="mt-1 text-xs text-slate-400">
